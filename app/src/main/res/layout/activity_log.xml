@@ -1,0 +1,105 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:gravity="top"
+    >
+    <TableRow
+        android:id="@+id/tableRow_1"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+        <ImageView
+            android:id="@+id/user_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon"
+            android:adjustViewBounds="true"
+            android:minHeight="200px"
+            android:minWidth="200px"
+            android:maxHeight="200px"
+            android:maxWidth="200px"
+            />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow_2"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户名："
+            android:textSize="40px"
+            />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200px"
+            android:textSize="30px"
+            />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_3"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密  码："
+            android:textSize="40px"
+            />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="200px"
+            android:textSize="30px"
+            android:inputType="textPassword"
+            />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow_4"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登 录"
+            android:textSize="30px"
+            />
+
+        <Button
+            android:id="@+id/button_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注 册"
+            android:textSize="30px"
+            />
+    </TableRow>
+    <TableRow
+        android:layout_weight="2">
+    </TableRow>
+    <TableRow
+        android:layout_weight="2"
+        android:gravity="bottom">
+        <Button
+            android:id="@+id/return_something"
+            android:text="无法登录?"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+    </TableRow>
+</TableLayout>

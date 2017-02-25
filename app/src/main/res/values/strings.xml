@@ -1,0 +1,30 @@
+<resources>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="app_name">SevenSeconds</string>
+    <string name="user_face">userFace</string>
+    <string name="sex">性别：</string>
+    <string name="birthday">出生年月：</string>
+    <string name="hint_introduction">个人简介</string>
+    <string name="line">请选择</string>
+    <string name="nickname">昵称：</string>
+    <string name="default_nickname">未命名</string>
+    <string name="config_change">确认修改</string>
+    <string name="red_love">red_love</string>
+    <string name="blank_love">blank_love</string>
+    <string name="account_manage">账号管理</string>
+    <string name="logout">退出登录</string>
+</resources>
