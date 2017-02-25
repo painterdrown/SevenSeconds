@@ -73,7 +73,7 @@ public class SquareFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         mLoadCount++;
-                        if (mLoadCount >= 3 || NetWorkUtils.getConnectedType(SquareActivity.squareActivity) == 0) {//模拟没有更多数据的情况
+                        if (mLoadCount >= 3) {//模拟没有更多数据的情况
                             xRefreshView.setLoadComplete(true);
                         } else {
                             // 刷新完成必须调用此方法停止加载
