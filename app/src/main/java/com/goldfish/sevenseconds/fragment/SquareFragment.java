@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshViewFooter;
-import com.goldfish.sevenseconds.service.NetWorkUtils;
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.activities.SquareActivity;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
 

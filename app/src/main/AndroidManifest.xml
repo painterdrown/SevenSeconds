@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.goldfish.sevenseconds.activities.SquareActivity" />
+        <activity android:name="com.goldfish.sevenseconds.activities.BarActivity" />
         <activity android:name="com.goldfish.sevenseconds.activities.MemorySheetActivity" />
         <activity android:name="com.goldfish.sevenseconds.activities.RegisterActivity"></activity>
         <activity android:name="com.goldfish.sevenseconds.activities.SettingActivity"/>

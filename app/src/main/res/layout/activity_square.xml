@@ -4,7 +4,7 @@
     android:id="@+id/activity_square"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.goldfish.sevenseconds.activities.SquareActivity">
+    tools:context="com.goldfish.sevenseconds.activities.BarActivity">
     <com.ycl.tabview.library.TabView
         android:id="@+id/tabView_square"
         android:layout_width="match_parent"

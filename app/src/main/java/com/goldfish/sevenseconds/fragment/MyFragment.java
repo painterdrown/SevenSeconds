@@ -16,7 +16,7 @@ import com.goldfish.sevenseconds.activities.InformationActivity;
 import com.goldfish.sevenseconds.activities.MessageActivity;
 import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.activities.SettingActivity;
-import com.goldfish.sevenseconds.activities.SquareActivity;
+import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.view.TurnCardListView;
 
 /**
@@ -24,6 +24,7 @@ import com.goldfish.sevenseconds.view.TurnCardListView;
  */
 
 public class MyFragment extends Fragment {
+
     private String name;
     private SQLiteOpenHelper dbChattingDatabaseHelper;
     @Override
@@ -37,7 +38,7 @@ public class MyFragment extends Fragment {
         mySetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myToSetting = new Intent(SquareActivity.squareActivity, SettingActivity.class);
+                Intent myToSetting = new Intent(BarActivity.barActivity, SettingActivity.class);
                 startActivity(myToSetting);
             }
         });
@@ -45,7 +46,7 @@ public class MyFragment extends Fragment {
         myInformation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myToInformation = new Intent(SquareActivity.squareActivity, InformationActivity.class);
+                Intent myToInformation = new Intent(BarActivity.barActivity, InformationActivity.class);
                 myToInformation.putExtra("currentUser", "y741323965");  // 到时候改成登陆成功的对象账号
                 startActivity(myToInformation);
             }
@@ -54,7 +55,7 @@ public class MyFragment extends Fragment {
         myFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myToFollow = new Intent(SquareActivity.squareActivity, MyFollowActicity.class);
+                Intent myToFollow = new Intent(BarActivity.barActivity, MyFollowActicity.class);
                 startActivity(myToFollow);
             }
         });
@@ -62,7 +63,7 @@ public class MyFragment extends Fragment {
         myMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myToMessage = new Intent(SquareActivity.squareActivity, MessageActivity.class);
+                Intent myToMessage = new Intent(BarActivity.barActivity, MessageActivity.class);
                 startActivity(myToMessage);
             }
         });
@@ -71,7 +72,7 @@ public class MyFragment extends Fragment {
         list.setOnTurnListener(new TurnCardListView.OnTurnListener() {
             @Override
             public void onTurned(int position) {
-                Toast.makeText(SquareActivity.squareActivity, "position = " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(BarActivity.barActivity, "position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,68 +107,13 @@ public class MyFragment extends Fragment {
         });
         return view;
     }
+
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 测试
-        /*Connector.getWritableDatabase();
-        MyFollow test = new MyFollow();
-        test.setName("世吹雀");
-        test.setAccount("noend22");
-        test.setIntroduction("大提琴/甜甜圈四重奏");
-        Resources res = getResources();
-        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-        test.setFace(os.toByteArray());
-        test.save();*/
-
-        /*dbChattingDatabaseHelper = new ChattingDatabaseHelper(
-                this, "MessageStore.db", null, 1);
-        SQLiteDatabase dbMessage1 = dbChattingDatabaseHelper.getWritableDatabase();
-        dbMessage1.execSQL("create table if not exists noend22 ("
-                + "id integer primary key autoincrement, "
-                + "account text, "
-                + "message text, "
-                + "time text, "
-                + "sendOrReceive integer, "
-                + "readOrNot integer)");
-        dbMessage1.execSQL("insert into noend22 (account, message, time, sendOrReceive, readOrNot) " +
-                        "values(?, ?, ?, ?, ?)",
-                new String[]{"noend22", "Hey", "2017/2/24 10:32", "0", "0"});
-        dbMessage1.execSQL("insert into noend22 (account, message, time, sendOrReceive, readOrNot) " +
-                        "values(?, ?, ?, ?, ?)",
-                new String[]{"y741323965", "Hey! What's up!", "2017/2/24 10:32", "1", "1"});
-        dbMessage1.execSQL("insert into noend22 (account, message, time, sendOrReceive, readOrNot) " +
-                        "values(?, ?, ?, ?, ?)",
-                new String[]{"noend22", "Miss me?", "2017/2/24 10:33", "0", "0"});*/
-
-        /*Resources res = getResources();
-        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-        Information test1 = new Information();
-        test1.setFace(os.toByteArray());
-        test1.setSex("男");
-        test1.setIntroduction("穿睡服的金鱼/梦幻西游");
-        test1.setName("Goldfish");
-        test1.setAccount("y741323965");
-        test1.setBirthday("1997-1-2");
-        test1.setPhone("13719326474");
-        test1.save();
-
-        Information test2 = new Information();
-        test2.setPhone("13502852468");
-        test2.setBirthday("1997-1-1");
-        test2.setAccount("noend22");
-        test2.setName("世吹雀");
-        test2.setIntroduction("大提琴/甜甜圈四重奏");
-        test2.setSex("女");
-        test2.save();*/
     }
-    public static MyFragment newInstance(String libargument)
-    {
+
+    public static MyFragment newInstance(String libargument) {
         Bundle bundle = new Bundle();
         MyFragment mm = new MyFragment();
         return mm;

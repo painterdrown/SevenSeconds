@@ -13,14 +13,14 @@ import com.ycl.tabview.library.TabViewChild;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SquareActivity extends AppCompatActivity {
+public class BarActivity extends AppCompatActivity {
 
-    public static SquareActivity squareActivity;
+    public static BarActivity barActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square);
-        squareActivity = this;
+        barActivity = this;
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
         TabView tabView = (TabView)findViewById(R.id.tabView_square);
