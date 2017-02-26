@@ -1,15 +1,80 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffff00"
-    android:orientation="vertical" >
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/activity_main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+>
+
+    <EditText
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName"
+    android:text="输入你要搜索的"
+    android:ems="10"
+    android:id="@+id/SearcheditText"
+    android:layout_below="@+id/SearchtextView"
+    android:layout_centerHorizontal="true" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20sp"
-        android:text="search"
-        />
+    android:text="搜索："
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/SearchtextView"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginTop="42dp"
+    android:layout_toStartOf="@+id/SearcheditText"
+        android:layout_toLeftOf="@+id/SearcheditText" />
 
-</LinearLayout>
+    <Button
+    android:text="精选"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/Chosen"
+    android:layout_marginLeft="29dp"
+    android:layout_marginStart="25dp"
+    android:layout_marginTop="14dp"
+    android:layout_below="@+id/SearcheditText"
+    android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+    android:text="热门"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="34dp"
+    android:id="@+id/HotTopic"
+    android:layout_marginEnd="46dp"
+    android:layout_alignBaseline="@+id/Chosen"
+    android:layout_alignBottom="@+id/Chosen"
+    android:layout_alignParentEnd="true"
+        android:layout_marginRight="46dp"
+        android:layout_alignParentRight="true" />
+
+
+    <include layout="@layout/tittle"
+    />
+
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:clipToPadding="false"
+    android:layout_marginTop="57dp"
+    android:layout_marginBottom="40dp"
+    android:layout_below="@+id/Chosen"
+    android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true" />
+
+</RelativeLayout>
+
+
+
