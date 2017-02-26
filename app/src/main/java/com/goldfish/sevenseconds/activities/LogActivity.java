@@ -1,4 +1,4 @@
-﻿package com.goldfish.sevenseconds.activities;
+package com.goldfish.sevenseconds.activities;
 
 import android.app.Notification;
 import android.app.ProgressDialog;
@@ -70,7 +70,7 @@ public class LogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log);
 
         // 测试
-        Connector.getWritableDatabase();
+       /*Connector.getWritableDatabase();
         MyFollow test = new MyFollow();
         test.setName("世吹雀");
         test.setAccount("noend22");
@@ -120,7 +120,7 @@ public class LogActivity extends AppCompatActivity {
         test2.setName("世吹雀");
         test2.setIntroduction("大提琴/甜甜圈四重奏");
         test2.setSex("女");
-        test2.save();
+        test2.save();*/
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
@@ -197,7 +197,7 @@ public class LogActivity extends AppCompatActivity {
                 check = true;
                 message.what = 1;
             } else {message.what = 0;}
-            }
+        }
         catch (IOException e) {
             e.printStackTrace();
         }
