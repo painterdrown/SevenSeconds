@@ -192,6 +192,7 @@ public class LogActivity extends AppCompatActivity {
             Response response = null;
             response = client.newCall(request).execute();
             String reponseData = response.body().string();
+            Log.d("test",reponseData);
             Gson gson = new Gson();
             Users aa = gson.fromJson(reponseData, Users.class);
             Message message = new Message();
