@@ -2,8 +2,10 @@
     android:id="@+id/tableLayout1"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:gravity="top"
+    android:background="@drawable/log_background"
     >
+    <TableRow android:layout_weight="2">
+    </TableRow>
     <TableRow
         android:id="@+id/tableRow_1"
         android:gravity="center"
@@ -19,23 +21,26 @@
             android:minWidth="200px"
             android:maxHeight="200px"
             android:maxWidth="200px"
+            android:paddingBottom="30dp"
             />
     </TableRow>
+
     <TableRow
         android:id="@+id/tableRow_2"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
+            android:layout_gravity="center"
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名："
+            android:text="用户名"
             android:textSize="40px"
             />
 
         <EditText
+            android:layout_weight="1"
             android:id="@+id/editText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,19 +51,20 @@
 
     <TableRow
         android:id="@+id/tableRow_3"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_gravity="center"
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="密  码："
+            android:text="密    码"
             android:textSize="40px"
             />
 
         <EditText
+            android:layout_weight="1"
             android:id="@+id/editText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,18 +77,21 @@
     <TableRow
         android:id="@+id/tableRow_4"
         android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <Button
+
             android:id="@+id/button_log"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="登 录"
+            android:background="#00000000"
             android:textSize="30px"
             />
 
         <Button
+            android:background="#00000000"
             android:id="@+id/button_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,16 +99,39 @@
             android:textSize="30px"
             />
     </TableRow>
+
     <TableRow
         android:layout_weight="2">
     </TableRow>
+
     <TableRow
         android:layout_weight="2"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <Button
             android:id="@+id/return_something"
+            android:gravity="left"
             android:text="无法登录?"
+            android:textSize="40px"
+            android:layout_weight="1"
+            android:textColor="#FFF68F"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:background="#00000000"/>
+
+        <TextView />
+        <TextView />
+
+        <Button
+            android:gravity="right"
+            android:layout_weight="1"
+            android:id="@+id/connect_us"
+            android:textColor="#FFF68F"
+            android:text="联系我们"
+            android:textSize="40px"
+            android:background="#00000000"
+            />
     </TableRow>
 </TableLayout>

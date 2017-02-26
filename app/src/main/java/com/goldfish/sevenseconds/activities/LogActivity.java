@@ -7,12 +7,14 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -68,7 +70,6 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Exception();
         setContentView(R.layout.activity_log);
-
         // 测试
        /*Connector.getWritableDatabase();
         MyFollow test = new MyFollow();
@@ -124,6 +125,7 @@ public class LogActivity extends AppCompatActivity {
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
+        Button button_connect = (Button)findViewById(R.id.connect_us);
         Button button_log = (Button) findViewById(R.id.button_log);
         Button button_register = (Button) findViewById(R.id.button_register);
         Button button_return = (Button) findViewById(R.id.return_something);
