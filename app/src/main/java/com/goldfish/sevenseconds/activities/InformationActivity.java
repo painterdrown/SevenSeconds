@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,14 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
+import com.jph.takephoto.model.TImage;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.picker.DatePicker;
@@ -38,6 +44,7 @@ public class InformationActivity extends AppCompatActivity {
 
     private String currentUser;        // 当前操作的User
     private SQLiteDatabase db;            // 数据库
+    private final String[] items = { "拍照", "从相册中选择" };
 
     private TextView setName;           // 设置昵称
     private TextView setSex;            // 设置性别
@@ -156,8 +163,31 @@ public class InformationActivity extends AppCompatActivity {
 
     // 设置头像
     private void changeFace() {
-        Intent intent = new Intent(InformationActivity.this, PhotoActivity.class);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    Intent intent = new Intent(InformationActivity.this, PhotographActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    // select photo
+                }
+            }
+        });
+        builder.show();
+    }
+    private ArrayList<TImage> images;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (requestCode == 1) {
+                    images = (ArrayList<TImage>) data.getSerializableExtra("images");
+                    Glide.with(this).load(new File(images.get(0).getCompressPath())).into(setUserFace);
+                    setName.setText("ok");
+                }
+        }
     }
 
     // 设置性别
