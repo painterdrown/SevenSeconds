@@ -33,8 +33,10 @@ import org.litepal.tablemanager.Connector;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LogActivity extends AppCompatActivity {
@@ -187,19 +189,16 @@ public class LogActivity extends AppCompatActivity {
 
     private void compare_user() {
         try {
+            RequestBody requestBody = new FormBody.Builder()
+                    .add("username",user)
+                    .add("password",psw)
+                    .build();
             OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://139.199.158.84:3000/api/signin").build();
+            Request request = new Request.Builder().url("http://139.199.158.84:3000/api/check").post(requestBody).build();
             Response response = null;
             response = client.newCall(request).execute();
             String reponseData = response.body().string();
-            Log.d("test",reponseData);
-            Gson gson = new Gson();
-            Users aa = gson.fromJson(reponseData, Users.class);
-            Message message = new Message();
-            if (aa.getUsername().equals(user) && aa.getPassword().equals(psw)) {
-                check = true;
-                message.what = 1;
-            } else {message.what = 0;}
+            if (reponseData.equals("true")) check = true;
         }
         catch (IOException e) {
             e.printStackTrace();

@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android.support.v7.widget.AppCompatButtonandroid="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/log_background"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -29,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
-                android:hint="Name" />
+                android:hint="用户名" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -43,27 +44,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"/>
+                android:hint="密码"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_signup"
+            android:id="@+id/register_ensure"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Create Account"/>
+            android:textSize="25sp"
+            android:background="@drawable/button_style_1"
+            android:text="注册"/>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Already a member? Login"
-            android:gravity="center"
-            android:textSize="16dip"/>
-
+            android:textSize="25sp"
+            android:background="@drawable/button_style_1"
+            android:text="已经是会员了？"
+            android:gravity="center"/>
     </LinearLayout>
 </ScrollView>
