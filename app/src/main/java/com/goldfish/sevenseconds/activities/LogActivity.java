@@ -23,15 +23,18 @@ import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.Information;
+import com.goldfish.sevenseconds.bean.LastUser;
 import com.goldfish.sevenseconds.bean.MyFollow;
 import com.goldfish.sevenseconds.bean.Users;
 import com.goldfish.sevenseconds.db.ChattingDatabaseHelper;
 import com.google.gson.Gson;
 
+import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -131,6 +134,11 @@ public class LogActivity extends AppCompatActivity {
         Button button_log = (Button) findViewById(R.id.button_log);
         Button button_register = (Button) findViewById(R.id.button_register);
         Button button_return = (Button) findViewById(R.id.return_something);
+        EditText edittextuser = (EditText) findViewById(R.id.editText1);
+        List<LastUser> lastUsers = DataSupport.findAll(LastUser.class);
+        if (lastUsers.size() != 0){
+            edittextuser.setText(lastUsers.get(0).getName());
+        }
         button_log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,21 +153,16 @@ public class LogActivity extends AppCompatActivity {
                 progressDialog.show();
 
 
-                /*
-                List<LastUser> llasts = DataSupport.findAll(LastUser.class);
-                if (llasts.size() != 0) {
-                    edittextuser.setText(llasts.get(0).getName());
-                }
-                */
-
 
                 check = false;
                 compare_user();
-                if (check == true) Log.d("test","true");else Log.d("test","false");
                 if (check == true) {
                         /*LastUser llast = new LastUser();
                         llast.setName(user);
                         llast.updateAll();*/
+                    LastUser lastUser = new LastUser();
+                    lastUser.setName(user);
+                    lastUser.updateAll();
                     progressDialog.dismiss();
                     Intent intent = new Intent(LogActivity.this, BarActivity.class);
                     startActivity(intent);

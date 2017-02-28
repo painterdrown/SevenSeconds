@@ -17,6 +17,7 @@
         <ImageView android:src="@drawable/icon"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
+            android:paddingBottom="30dp"
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal" />
 
@@ -30,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
+                android:textSize="40px"
                 android:hint="用户名" />
         </android.support.design.widget.TextInputLayout>
 
@@ -43,6 +45,7 @@
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="40px"
                 android:inputType="textPassword"
                 android:hint="密码"/>
         </android.support.design.widget.TextInputLayout>
@@ -54,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:textSize="25sp"
+            android:textSize="30px"
             android:background="@drawable/button_style_1"
             android:text="注册"/>
 
@@ -63,7 +66,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:textSize="25sp"
+            android:textSize="30px"
             android:background="@drawable/button_style_1"
             android:text="已经是会员了？"
             android:gravity="center"/>

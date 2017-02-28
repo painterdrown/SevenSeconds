@@ -32,7 +32,6 @@ public class SquareFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         View view = inflater.inflate(R.layout.fragment_square,container,false);
 
-        initMem();
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
         recyclerView.setHasFixedSize(true);
@@ -61,6 +60,7 @@ public class SquareFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        initMem();
                         xRefreshView.stopRefresh();
                     }
                 }, 500);

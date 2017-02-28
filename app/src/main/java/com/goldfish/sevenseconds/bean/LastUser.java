@@ -9,11 +9,9 @@ import org.litepal.crud.DataSupport;
 public class LastUser extends DataSupport {
 
     private String name;
-
     public void setName(String mid){
         this.name = mid;
     }
-
     public String getName(){
         return this.name;
     }

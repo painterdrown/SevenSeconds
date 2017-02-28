@@ -9,5 +9,6 @@
         <mapping class="com.goldfish.sevenseconds.bean.LastUser"></mapping>
         <mapping class="com.goldfish.sevenseconds.bean.MyFollow"></mapping>
         <mapping class="com.goldfish.sevenseconds.bean.Information"></mapping>
+        <mapping class="com.goldfish.sevenseconds.bean.Lastmes"></mapping>
     </list>
 </litepal>
