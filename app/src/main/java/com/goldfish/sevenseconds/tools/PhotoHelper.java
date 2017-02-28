@@ -16,6 +16,15 @@ import java.io.File;
 
 public class PhotoHelper {
 
+    public void selectPhotoMethod(TakePhoto takePhoto) {
+        File file=new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg");
+        if (!file.getParentFile().exists())file.getParentFile().mkdirs();
+        Uri imageUri = Uri.fromFile(file);
+        configCompress(takePhoto);
+        configTakePhotoOption(takePhoto);
+        takePhoto.onPickFromGalleryWithCrop(imageUri,getCropOptions());
+    }
+
     public void takePhotoMethod(TakePhoto takePhoto) {
         // 保存图片路径
         File file=new File(Environment.getExternalStorageDirectory(), "/temp/"+System.currentTimeMillis() + ".jpg");

@@ -11,18 +11,17 @@ import com.jph.takephoto.model.TResult;
 import java.util.ArrayList;
 
 /**
- * Created by lenovo on 2017/2/26.
+ * Created by lenovo on 2017/2/28.
  */
 
-public class PhotographActivity extends TakePhotoActivity {
-
+public class SelectPhotoActivity extends TakePhotoActivity {
     private PhotoHelper photoHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         photoHelper = new PhotoHelper();
-        photoHelper.takePhotoMethod(getTakePhoto());
+        photoHelper.selectPhotoMethod(getTakePhoto());
     }
 
     @Override

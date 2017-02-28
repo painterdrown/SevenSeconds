@@ -171,7 +171,8 @@ public class InformationActivity extends AppCompatActivity {
                     Intent intent = new Intent(InformationActivity.this, PhotographActivity.class);
                     startActivityForResult(intent, 1);
                 } else {
-                    // select photo
+                    Intent intent = new Intent(InformationActivity.this, SelectPhotoActivity.class);
+                    startActivityForResult(intent, 1);
                 }
             }
         });
