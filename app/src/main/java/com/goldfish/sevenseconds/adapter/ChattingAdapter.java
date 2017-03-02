@@ -53,7 +53,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<ChattingAdapter.ViewHo
     @Override
     public ChattingAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.chatting_item, parent, false);
+                .inflate(R.layout.chatting_item, null);
         ChattingAdapter.ViewHolder holder = new ChattingAdapter.ViewHolder(view);
         return holder;
     }

@@ -75,6 +75,9 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Exception();
         setContentView(R.layout.activity_log);
+        Intent intent = new Intent(LogActivity.this, BarActivity.class);
+        startActivity(intent);
+
         // 测试
        /*Connector.getWritableDatabase();
         MyFollow test = new MyFollow();
@@ -160,7 +163,7 @@ public class LogActivity extends AppCompatActivity {
                         /*LastUser llast = new LastUser();
                         llast.setName(user);
                         llast.updateAll();*/
-                    LastUser lastUser = new LastUser();
+                   LastUser lastUser = new LastUser();
                     lastUser.setName(user);
                     lastUser.updateAll();
                     progressDialog.dismiss();

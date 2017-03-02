@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/amem_review"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp">
+
+    <com.goldfish.sevenseconds.view.CircleImageView
+        android:id="@+id/amem_review_face"
+        android:src="@drawable/app_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/amem_review_info"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/amem_review_face">
+
+        <TextView
+            android:id="@+id/amem_review_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="穿睡服的金鱼"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="1dp"
+            android:textSize="13sp"/>
+        <TextView
+            android:id="@+id/amem_review_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/amem_review_name"
+            android:text="2017-3-1"
+            android:textSize="13sp"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:id="@+id/amem_review_like_number"
+            android:text="1000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/amem_review_like_text"
+            android:textSize="15sp"
+            android:layout_alignParentBottom="true"/>
+        <TextView
+            android:id="@+id/amem_review_like_text"
+            android:layout_alignParentRight="true"
+            android:text="赞"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/amem_message"
+        android:layout_toRightOf="@+id/amem_review_face"
+        android:layout_below="@+id/amem_review_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
+        android:textColor="#000000"/>
+
+</RelativeLayout>

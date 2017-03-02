@@ -31,7 +31,7 @@
         </activity>
         <activity android:name="com.goldfish.sevenseconds.activities.BarActivity" />
         <activity android:name="com.goldfish.sevenseconds.activities.MemorySheetActivity" />
-        <activity android:name="com.goldfish.sevenseconds.activities.RegisterActivity"></activity>
+        <activity android:name="com.goldfish.sevenseconds.activities.RegisterActivity"/>
         <activity android:name="com.goldfish.sevenseconds.activities.SettingActivity"/>
         <activity android:name="com.goldfish.sevenseconds.activities.InformationActivity"/>
         <activity android:name="com.goldfish.sevenseconds.activities.MessageActivity"/>
@@ -39,7 +39,9 @@
         <activity android:name="com.goldfish.sevenseconds.activities.PhotographActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name=".activities.SelectPhotoActivity"/>
+        <activity android:name="com.goldfish.sevenseconds.activities.SelectPhotoActivity"/>
+        <activity android:name="com.goldfish.sevenseconds.activities.MemorySheetOthersActivity"/>
     </application>
+
 
 </manifest>
