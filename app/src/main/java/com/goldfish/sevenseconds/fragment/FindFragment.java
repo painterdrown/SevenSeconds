@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.TimeLineAdapter;
+import com.goldfish.sevenseconds.adapter.TimeLineSideBarAdapter;
 import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.item.TimeLineModel;
 
@@ -28,6 +29,7 @@ import java.util.List;
 public class FindFragment extends Fragment {
     private String name;
     private TimeLineAdapter mTimeLineAdapter;
+    private TimeLineSideBarAdapter mTimeLineSideBarAdapter;
     private DrawerLayout drawerLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView RecyclerViewInSideBar;
@@ -57,7 +59,7 @@ public class FindFragment extends Fragment {
         RecyclerViewInSideBar = (RecyclerView) view.findViewById(R.id.recyclerViewInSideBar);
         RecyclerViewInSideBar.setLayoutManager(getLinearLayoutManager());
         RecyclerViewInSideBar.setHasFixedSize(true);
-
+        initTimeLineViewInSideBar();
         /*drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -105,6 +107,17 @@ public class FindFragment extends Fragment {
         mTimeLineAdapter = new TimeLineAdapter(mDataList, mOrientation);
         mRecyclerView.setAdapter(mTimeLineAdapter);
     }
+    private void initTimeLineViewInSideBar(){
+        for(int i = 0;i <20;i++) {
+            TimeLineModel model = new TimeLineModel();
+            model.setName("Random"+i);
+            model.setAge(i);
+            mDataList.add(model);
+        }
+        mTimeLineSideBarAdapter = new TimeLineSideBarAdapter(mDataList, mOrientation);
+        RecyclerViewInSideBar.setAdapter(mTimeLineSideBarAdapter);
+    }
 }
+
 
 
