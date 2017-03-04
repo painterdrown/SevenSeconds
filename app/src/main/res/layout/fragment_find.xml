@@ -11,84 +11,122 @@ android:paddingRight="@dimen/activity_horizontal_margin"
 android:paddingTop="@dimen/activity_vertical_margin"
 >
 
-    <EditText
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:inputType="textPersonName"
-    android:text="输入你要搜索的"
-    android:ems="10"
-    android:id="@+id/SearcheditText"
-    android:layout_below="@+id/SearchtextView"
-    android:layout_centerHorizontal="true" />
 
-    <TextView
-    android:text="搜索："
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/SearchtextView"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_marginTop="42dp"
-    android:layout_toStartOf="@+id/SearcheditText"
-        android:layout_toLeftOf="@+id/SearcheditText" />
-
-    <Button
-    android:text="精选"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/Chosen"
-    android:layout_marginLeft="29dp"
-    android:layout_marginStart="25dp"
-    android:layout_marginTop="14dp"
-    android:layout_below="@+id/SearcheditText"
-    android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true" />
-
-    <Button
-    android:text="热门"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="34dp"
-    android:id="@+id/HotTopic"
-    android:layout_marginEnd="46dp"
-    android:layout_alignBaseline="@+id/Chosen"
-    android:layout_alignBottom="@+id/Chosen"
-    android:layout_alignParentEnd="true"
-        android:layout_marginRight="46dp"
-        android:layout_alignParentRight="true" />
-
-
-    <android.support.v7.widget.RecyclerView
-    android:id="@+id/recyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:clipToPadding="false"
-    android:layout_marginTop="57dp"
-        android:layout_below="@+id/Chosen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
     <com.github.mzule.fantasyslide.FantasyDrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/app_icon" />
+            android:layout_height="match_parent">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="输入你要搜索的"
+                android:ems="10"
+                android:id="@+id/SearcheditText"
+                android:layout_below="@+id/SearchtextView"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:text="搜索："
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/SearchtextView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="42dp"
+                android:layout_toStartOf="@+id/SearcheditText"
+                android:layout_toLeftOf="@+id/SearcheditText" />
+
+            <Button
+                android:text="精选"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Chosen"
+                android:layout_marginLeft="29dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="14dp"
+                android:layout_below="@+id/SearcheditText"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
+
+            <Button
+                android:text="热门"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="34dp"
+                android:id="@+id/HotTopic"
+                android:layout_marginEnd="46dp"
+                android:layout_alignBaseline="@+id/Chosen"
+                android:layout_alignBottom="@+id/Chosen"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="46dp"
+                android:layout_alignParentRight="true" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:clipToPadding="false"
+                android:layout_marginTop="57dp"
+                android:layout_below="@+id/Chosen"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
 
         <com.github.mzule.fantasyslide.SideBar
             android:id="@+id/leftSideBar"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/colorPrimary"
+            android:background="@color/color_white"
             app:maxTranslationX="66dp">
 
             <!-- 这里是 SideBar 的子视图-->
+            <LinearLayout
+                android:id="@+id/userInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:gravity="center_horizontal"
+                android:onClick="onClick"
+                android:orientation="vertical">
+
+                <com.goldfish.sevenseconds.view.CircleImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/icon"
+                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_width="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mzule"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewInSideBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:clipToPadding="false"
+                    android:layout_marginTop="57dp"
+                    android:layout_below="@+id/Chosen"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </LinearLayout>
+
 
         </com.github.mzule.fantasyslide.SideBar>
         <!-- 如果需要的话，可以添加右侧边栏-->

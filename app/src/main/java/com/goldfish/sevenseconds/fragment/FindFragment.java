@@ -1,9 +1,12 @@
 package com.goldfish.sevenseconds.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +28,9 @@ import java.util.List;
 public class FindFragment extends Fragment {
     private String name;
     private TimeLineAdapter mTimeLineAdapter;
+    private DrawerLayout drawerLayout;
     private RecyclerView mRecyclerView;
+    private RecyclerView RecyclerViewInSideBar;
     private Orientation mOrientation;
 
     private List<TimeLineModel> mDataList = new ArrayList<>();
@@ -33,6 +38,9 @@ public class FindFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         View view = inflater.inflate(R.layout.fragment_find,container,false);
 
+        //final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
+        //indicator.setColor(Color.WHITE);
+        //getSupportActionBar().setHomeAsUpIndicator(indicator);
         // hide the action bar
         /*ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
@@ -45,6 +53,21 @@ public class FindFragment extends Fragment {
         mRecyclerView.setLayoutManager(getLinearLayoutManager());
         mRecyclerView.setHasFixedSize(true);
         initTimeLineView();
+
+        RecyclerViewInSideBar = (RecyclerView) view.findViewById(R.id.recyclerViewInSideBar);
+        RecyclerViewInSideBar.setLayoutManager(getLinearLayoutManager());
+        RecyclerViewInSideBar.setHasFixedSize(true);
+
+        /*drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
+                    //indicator.setProgress(slideOffset);
+                }
+            }
+        });*/
         return view;
     }
     @Override
@@ -83,3 +106,5 @@ public class FindFragment extends Fragment {
         mRecyclerView.setAdapter(mTimeLineAdapter);
     }
 }
+
+
