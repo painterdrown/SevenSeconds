@@ -50,4 +50,5 @@ dependencies {
     compile 'cn.aigestudio.wheelpicker:WheelPicker:1.0.3'
     compile project(':timelineview')
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
+    compile 'com.zhy:percent-support-extends:1.0.1'
 }

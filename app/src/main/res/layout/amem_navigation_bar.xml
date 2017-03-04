@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <TextView
+        android:id="@+id/nav_bar_edit"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/nav_bar_function"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="写点评论吧..."
+        android:background="@drawable/nav_bar_edit_bg"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"/>
+
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:gravity="center_vertical"
+        android:id="@+id/nav_bar_function"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/nav_bar_msg"
+            android:src="@drawable/navigation_message"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentBottom="true"/>
+
+        <ImageView
+            android:id="@+id/nav_bar_like"
+            android:layout_toRightOf="@id/nav_bar_msg"
+            android:src="@drawable/navigation_star"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentBottom="true"/>
+
+        <ImageView
+            android:id="@+id/nav_bar_share"
+            android:src="@drawable/navigation_share"
+            android:layout_toRightOf="@id/nav_bar_like"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentBottom="true"/>
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

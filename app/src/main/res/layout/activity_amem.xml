@@ -1,150 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:scrollbars="vertical"
-    android:fadingEdge="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:id="@+id/activity_amem"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fadingEdge="vertical"
+        android:fillViewport="false"
+        android:layout_above="@+id/nav_bar">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/memorysheet_cover"
+            <com.goldfish.sevenseconds.view.AmemTitle
+                android:id="@+id/amem_bar"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/memory_test"/>
+                android:layout_height="wrap_content"/>
 
             <RelativeLayout
+                android:layout_below="@+id/amem_bar"
+                android:id="@+id/activity_amem"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_height="match_parent">
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1.5dp"
-                    android:background="@color/color_white"
-                    android:layout_alignLeft="@+id/memorysheet_title"
-                    android:layout_alignRight="@+id/memorysheet_title" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
 
-                <TextView
-                    android:id="@+id/memorysheet_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:textSize="20sp"
-                    android:textColor="@color/color_white"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:text="第一次因为动漫哭泣" />
+                    <com.zhy.android.percent.support.PercentRelativeLayout
+                        android:id="@+id/amem_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/memory_test">
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1.5dp"
-                    android:background="@color/color_white"
-                    android:layout_alignLeft="@+id/memorysheet_title"
-                    android:layout_toLeftOf="@+id/memorysheet_time"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="29dp"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:background="#50000000"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:id="@+id/view" />
 
-                <TextView
-                    android:id="@+id/memorysheet_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/color_white"
-                    android:text="2007年7月"
-                    android:layout_marginTop="25dp"
-                    android:layout_centerHorizontal="true"/>
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1.5dp"
-                    android:background="@color/color_white"
-                    android:layout_alignRight="@+id/memorysheet_title"
-                    android:layout_toRightOf="@+id/memorysheet_time"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="29dp"/>
+                    </com.zhy.android.percent.support.PercentRelativeLayout>
 
-            </RelativeLayout>
+                    <TextView
+                        android:background="@drawable/label_bd"
+                        android:textSize="10.5sp"
+                        android:gravity="center"
+                        android:text="海贼王"
+                        android:lines="1"
+                        android:textColor="@color/color_white"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="3.5dp"
+                        android:paddingRight="3.5dp"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="#50000000"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/view" />
 
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp">
-            <TextView
-                android:id="@+id/memorysheet_brief"
-                android:text="海贼王321集——和梅利的最后道别"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:layout_marginLeft="20dp"/>
-
-            <View
-                android:id="@+id/line"
-                android:layout_width="wrap_content"
-                android:layout_height="2dp"
-                android:background="@color/color_blank"
-                android:layout_marginTop="40dp"
-                android:layout_alignRight="@+id/memorysheet_brief"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/amem_context"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="55dp">
-
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lineSpacingMultiplier="1.5"
-                    android:textColor="@color/color_blank"
-                    android:text="啊啊"/>
+                    android:layout_marginTop="80dp">
 
-            </LinearLayout>
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1.5dp"
+                        android:background="@color/color_white"
+                        android:layout_alignLeft="@+id/memorysheet_title"
+                        android:layout_alignRight="@+id/memorysheet_title" />
 
+                    <TextView
+                        android:id="@+id/memorysheet_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:textSize="20sp"
+                        android:textColor="@color/color_white"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="4dp"
+                        android:text="第一次因为动漫哭泣" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1.5dp"
+                        android:background="@color/color_white"
+                        android:layout_alignLeft="@+id/memorysheet_title"
+                        android:layout_toLeftOf="@+id/memorysheet_time"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="29dp"/>
+
+                    <TextView
+                        android:id="@+id/memorysheet_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_white"
+                        android:text="2007年7月"
+                        android:layout_marginTop="25dp"
+                        android:layout_centerHorizontal="true"/>
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1.5dp"
+                        android:background="@color/color_white"
+                        android:layout_alignRight="@+id/memorysheet_title"
+                        android:layout_toRightOf="@+id/memorysheet_time"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="29dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/amem_context"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="200dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingMultiplier="1.282"
+                            android:textColor="@color/color_blank"
+                            android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/amem_label_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/amem_context"
+                    android:layout_marginBottom="30dp">
+
+                    <com.goldfish.sevenseconds.view.CircleImageView
+                        android:id="@+id/amem_like_image"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginLeft="70dp"
+                        app:civ_border_color="@color/color_gray"
+                        android:background="@drawable/like"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                    <TextView
+                        android:layout_below="@+id/amem_like_image"
+                        android:layout_alignLeft="@+id/amem_like_image"
+                        android:layout_alignRight="@+id/amem_like_image"
+                        android:text="点赞"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.goldfish.sevenseconds.view.CircleImageView
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/amem_admire_image"
+                        android:layout_marginTop="50dp"
+                        app:civ_border_color="@color/color_gray"
+                        android:background="@drawable/red_love"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                    <TextView
+                        android:layout_below="@+id/amem_admire_image"
+                        android:layout_alignLeft="@+id/amem_admire_image"
+                        android:layout_alignRight="@+id/amem_admire_image"
+                        android:text="赞赏"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.goldfish.sevenseconds.view.CircleImageView
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/amem_share_image"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginRight="70dp"
+                        app:civ_border_color="@color/color_gray"
+                        android:background="@drawable/share"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp" />
+
+                    <TextView
+                        android:layout_below="@+id/amem_share_image"
+                        android:layout_alignLeft="@+id/amem_share_image"
+                        android:layout_alignRight="@+id/amem_share_image"
+                        android:text="分享"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </RelativeLayout>
         </RelativeLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/amem_context">
-            <TextView
-                android:id="@+id/amem_review_text"
-                android:text="评论"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
-</ScrollView>
+    <com.goldfish.sevenseconds.view.AmemNav
+        android:id="@+id/nav_bar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
