@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.bean.LastUser;
+import com.goldfish.sevenseconds.bean.Lastmes;
 import com.goldfish.sevenseconds.bean.MyFollow;
 import com.goldfish.sevenseconds.bean.Users;
 import com.goldfish.sevenseconds.db.ChattingDatabaseHelper;
@@ -75,8 +77,6 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Exception();
         setContentView(R.layout.activity_log);
-        Intent intent = new Intent(LogActivity.this, BarActivity.class);
-        startActivity(intent);
 
         // 测试
        /*Connector.getWritableDatabase();
@@ -133,6 +133,28 @@ public class LogActivity extends AppCompatActivity {
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
+        List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
+        if (lastmess.size() != 0)  {
+            check = false;
+            Lastmes lastmes = DataSupport.findFirst(Lastmes.class);
+            user = lastmes.getUsername();
+            psw = lastmes.getPass();
+            compare_user();
+            if (check == true) {
+                List<LastUser> lastusers = DataSupport.findAll(LastUser.class);
+                if (lastusers.size() == 0){
+                    LastUser lastUser = new LastUser();
+                    lastUser.setName(user);
+                    lastUser.save();
+                }
+                LastUser lastUser = new LastUser();
+                lastUser.setName(user);
+                lastUser.updateAll();
+                Intent intent = new Intent(LogActivity.this, BarActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
         Button button_connect = (Button)findViewById(R.id.connect_us);
         Button button_log = (Button) findViewById(R.id.button_log);
         Button button_register = (Button) findViewById(R.id.button_register);
@@ -145,6 +167,7 @@ public class LogActivity extends AppCompatActivity {
         button_log.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 EditText edittextuser = (EditText) findViewById(R.id.editText1);
                 EditText edittextpsw = (EditText) findViewById(R.id.editText2);
                 user = edittextuser.getText().toString();
@@ -163,7 +186,19 @@ public class LogActivity extends AppCompatActivity {
                         /*LastUser llast = new LastUser();
                         llast.setName(user);
                         llast.updateAll();*/
-                   LastUser lastUser = new LastUser();
+                    List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
+                    if (lastmess.size() != 0)  DataSupport.deleteAll(Lastmes.class);
+                    Lastmes lastMes = new Lastmes();
+                    lastMes.setUsername(user);
+                    lastMes.setPass(psw);
+                    lastMes.save();
+                    List<LastUser> lastusers = DataSupport.findAll(LastUser.class);
+                    if (lastusers.size() == 0){
+                        LastUser lastUser = new LastUser();
+                        lastUser.setName(user);
+                        lastUser.save();
+                    }
+                    LastUser lastUser = new LastUser();
                     lastUser.setName(user);
                     lastUser.updateAll();
                     progressDialog.dismiss();

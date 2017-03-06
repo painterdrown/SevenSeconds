@@ -1,5 +1,7 @@
 package com.goldfish.sevenseconds.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,7 +10,10 @@ import android.widget.ListView;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.SettingAdapter;
+import com.goldfish.sevenseconds.bean.Lastmes;
 import com.goldfish.sevenseconds.item.SettingItem;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +24,13 @@ import java.util.List;
 
 public class SettingActivity extends AppCompatActivity {
     private List<SettingItem> settingItemsList = new ArrayList<SettingItem>();
+    public static Activity setingActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        setingActivity = this;
         init();
 
         SettingAdapter adapter = new SettingAdapter(
@@ -34,9 +41,12 @@ public class SettingActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // 点击跳转(For test)
-                /*Intent dialogueBox = new Intent(MyToSetting.this, DialogueBox.class);
-                startActivity(dialogueBox);*/
+                 //点击跳转(For test)
+                if (position == 1) {
+                    DataSupport.deleteAll(Lastmes.class);
+                    Intent intent = new Intent(SettingActivity.this,LogActivity.class);
+                    setingActivity.startActivity(intent);
+                }
             }
         });
 
