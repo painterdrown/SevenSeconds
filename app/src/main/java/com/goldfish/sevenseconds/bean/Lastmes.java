@@ -1,23 +1,22 @@
 package com.goldfish.sevenseconds.bean;
 
+import android.provider.ContactsContract;
+
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by zzz87 on 2017/2/28.
  */
 
-public class Lastmes {
-    private boolean mess;
+public class Lastmes extends DataSupport{
     private String username;
     private String pass;
-    public void setMess(boolean mid){
-        this.mess = mid;
-    }
     public void setUsername(String mid){
         this.username = mid;
     }
     public void setPass(String mid){
         this.pass = mid;
     }
-    public boolean getMess(){ return this.mess; }
     public String getPass() {
         return pass;
     }
