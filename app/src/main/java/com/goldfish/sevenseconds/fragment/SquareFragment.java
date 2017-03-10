@@ -104,8 +104,8 @@ public class SquareFragment extends Fragment {
         return mm;
     }
     private void initMem(){
-        for (int i = 0;i<10;i++){
-            MemorySheetPreview apple = new MemorySheetPreview("apple",R.drawable.apple_pic,"fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck");
+        for (int i = 0;i < 10; i++){
+            MemorySheetPreview apple = new MemorySheetPreview("apple",R.drawable.apple_pic,"fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck", "zhangziyang", "1");
             memlist.add(apple);
         }
     }

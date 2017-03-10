@@ -77,6 +77,8 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
                 intent.putExtra("images",now.getImageid());
                 intent.putExtra("name",now.getName());
                 intent.putExtra("contents",now.getContents());
+                intent.putExtra("account", now.getAccount());
+                intent.putExtra("memoryID", now.getMemoryID());
                 BarActivity.barActivity.startActivity(intent);
             }
         });
