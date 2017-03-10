@@ -77,6 +77,8 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Exception();
         setContentView(R.layout.activity_log);
+        Intent intent1 = new Intent(LogActivity.this, BarActivity.class);
+        startActivity(intent1);
 
         // 测试
        /*Connector.getWritableDatabase();
@@ -131,7 +133,7 @@ public class LogActivity extends AppCompatActivity {
         test2.setSex("女");
         test2.save();*/
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        /*android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
         List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
         if (lastmess.size() != 0)  {
@@ -182,11 +184,11 @@ public class LogActivity extends AppCompatActivity {
 
                 check = false;
                 compare_user();
-                if (check == true) {
+                if (check == true) {*/
                         /*LastUser llast = new LastUser();
                         llast.setName(user);
                         llast.updateAll();*/
-                    List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
+                    /*List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
                     if (lastmess.size() != 0)  DataSupport.deleteAll(Lastmes.class);
                     Lastmes lastMes = new Lastmes();
                     lastMes.setUsername(user);
@@ -243,6 +245,6 @@ public class LogActivity extends AppCompatActivity {
         }
         catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

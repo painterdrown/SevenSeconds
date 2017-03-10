@@ -19,6 +19,9 @@ import com.goldfish.sevenseconds.bean.MemorySheet;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.ResponseCache;
 
@@ -39,6 +42,7 @@ public class MemorySheetActivity extends AppCompatActivity {
     private TextView userIntroduction;
     private String titleName;
     private String titleIntro;
+    private byte[] titleFace;
     private String myAccount;
 
     // Nav
@@ -72,7 +76,11 @@ public class MemorySheetActivity extends AppCompatActivity {
         Intent getData = getIntent();
         memAccount = getData.getStringExtra("account");
         memID = getData.getStringExtra("memoryID");
-        myAccount = "zhangziyang"; // 以后全局获取账号
+        myAccount = "a"; // 以后全局获取账号
+        // for text
+        memAccount = "b";
+
+
 
         // TitleBar
         unFollowIt = (Button) findViewById(R.id.amem_title_unfollow_btn);
@@ -142,7 +150,6 @@ public class MemorySheetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (navBarFinished) {
-                    // 添加到我的忆单，等api
                     downTask = new DownTask();
                     downTask.execute("add memory sheet");
                 }
@@ -206,16 +213,20 @@ public class MemorySheetActivity extends AppCompatActivity {
                     response = client.newCall(request).execute();
                     if (response.isSuccessful()) {
                         String responseData = response.body().string();
-                        if (responseData.equals("success")) {
-                            result = "success in titleBar";
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        if (jsonObject.getBoolean("ok")) {
+                            result = "success in adding memory sheet";
                         } else {
-                            result = "failed";
+                            result = jsonObject.getString("errMsg");
                         }
                     } else {
                         result = "failed";
                     }
                 }
                 catch (IOException e) {
+                    e.printStackTrace();
+                    result = "failed";
+                } catch (JSONException e) {
                     e.printStackTrace();
                     result = "failed";
                 }
@@ -230,7 +241,7 @@ public class MemorySheetActivity extends AppCompatActivity {
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request
                             .Builder()
-                            .url("http://139.199.158.84:3000/api/visit")
+                            .url("http://139.199.158.84:3000/api/otherAccount")
                             .post(requestBody).build();
                     Response response = null;
                     response = client.newCall(request).execute();
@@ -239,6 +250,7 @@ public class MemorySheetActivity extends AppCompatActivity {
                         titleBarInfo = gson.fromJson(responseData, TitleBarInfo.class);
                         titleName = titleBarInfo.getName();
                         titleIntro = titleBarInfo.getIntroduction();
+                        titleFace = titleBarInfo.getFace();
                         result = "success in titleBar";
                     } else {
                         result = "failed";
@@ -252,7 +264,6 @@ public class MemorySheetActivity extends AppCompatActivity {
 
             // 导航栏的点击事件
             if (params.equals("navBar")) {
-                // 等api
                 result = "success in navBar";
             }
 
@@ -278,6 +289,8 @@ public class MemorySheetActivity extends AppCompatActivity {
             if (result.equals("success in titleBar")) {
                 userName.setText(titleName);
                 userIntroduction.setText(titleIntro);
+
+                // setFace
                 titleBarFinished = true;
             }
             else if(result.equals("success in navBar")) {

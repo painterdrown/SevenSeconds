@@ -8,6 +8,42 @@ public class TitleBarInfo {
 
     private String name;
     private String introduction;
+    private boolean ok;
+    private byte[] face;
+    private String birthday;
+    private String sex;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public byte[] getFace() {
+        return face;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setFace(byte[] face) {
+        this.face = face;
+    }
+
+    public void setOk(boolean ok) {
+        this.ok = ok;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public boolean getOk() {
+        return ok;
+    }
 
     public String getIntroduction() {
         return introduction;
