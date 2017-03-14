@@ -1,5 +1,4 @@
-package com.painterdrown.sevens.helpers;
-
+package com.goldfish.sevenseconds.tools;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -151,7 +150,7 @@ public class Http
      * jo.put("password", "...");
      *
      * 【返回值】
-     * ok属性，通过jo.getBoolean("ok")拿到，如果是false就通过jo.getString("erreMsg")拿到错误信息
+     * ok属性，通过jo.getBoolean("ok")拿到，如果是false就通过jo.getString("errMsg")拿到错误信息
      */
     public static JSONObject login(JSONObject jo)
     {

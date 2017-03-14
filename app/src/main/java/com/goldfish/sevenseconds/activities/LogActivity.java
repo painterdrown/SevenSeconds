@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
@@ -26,11 +27,14 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.bean.LastUser;
 import com.goldfish.sevenseconds.bean.Lastmes;
+import com.goldfish.sevenseconds.tools.Http;
 import com.goldfish.sevenseconds.bean.MyFollow;
 import com.goldfish.sevenseconds.bean.Users;
 import com.goldfish.sevenseconds.db.ChattingDatabaseHelper;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
@@ -48,6 +52,7 @@ public class LogActivity extends AppCompatActivity {
     private String user;
     private String psw;
     private boolean check;
+    private  String err_msg;
     private ChattingDatabaseHelper dbChattingDatabaseHelper;
     private Handler handler = new Handler(){
         @Override
@@ -77,10 +82,11 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Exception();
         setContentView(R.layout.activity_log);
+        /*
         Intent intent1 = new Intent(LogActivity.this, BarActivity.class);
         startActivity(intent1);
+        */
 
-        // 测试
        /*Connector.getWritableDatabase();
         MyFollow test = new MyFollow();
         test.setName("世吹雀");
@@ -133,29 +139,37 @@ public class LogActivity extends AppCompatActivity {
         test2.setSex("女");
         test2.save();*/
 
-        /*android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
         List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
         if (lastmess.size() != 0)  {
-            check = false;
             Lastmes lastmes = DataSupport.findFirst(Lastmes.class);
             user = lastmes.getUsername();
             psw = lastmes.getPass();
-            compare_user();
-            if (check == true) {
-                List<LastUser> lastusers = DataSupport.findAll(LastUser.class);
-                if (lastusers.size() == 0){
-                    LastUser lastUser = new LastUser();
-                    lastUser.setName(user);
-                    lastUser.save();
-                }
-                LastUser lastUser = new LastUser();
-                lastUser.setName(user);
-                lastUser.updateAll();
-                Intent intent = new Intent(LogActivity.this, BarActivity.class);
-                startActivity(intent);
-                finish();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        compare_user();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (check == true) {
+                        List<LastUser> lastusers = DataSupport.findAll(LastUser.class);
+                        if (lastusers.size() == 0){
+                            LastUser lastUser = new LastUser();
+                            lastUser.setName(user);
+                            lastUser.save();
+                        }
+                        LastUser lastUser = new LastUser();
+                        lastUser.setName(user);
+                        lastUser.updateAll();
+                        Intent intent = new Intent(LogActivity.this, BarActivity.class);
+                        startActivity(intent);
+                        finish();
+                                      }
             }
+                            }).start();
         }
         Button button_connect = (Button)findViewById(R.id.connect_us);
         Button button_log = (Button) findViewById(R.id.button_log);
@@ -174,43 +188,52 @@ public class LogActivity extends AppCompatActivity {
                 EditText edittextpsw = (EditText) findViewById(R.id.editText2);
                 user = edittextuser.getText().toString();
                 psw = edittextpsw.getText().toString();
-                ProgressDialog progressDialog = new ProgressDialog(LogActivity.this);
+                final ProgressDialog progressDialog = new ProgressDialog(LogActivity.this);
                 progressDialog.setTitle("is loging");
                 progressDialog.setMessage("waiting");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
 
-
-                check = false;
-                compare_user();
-                if (check == true) {*/
-                        /*LastUser llast = new LastUser();
-                        llast.setName(user);
-                        llast.updateAll();*/
-                    /*List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
-                    if (lastmess.size() != 0)  DataSupport.deleteAll(Lastmes.class);
-                    Lastmes lastMes = new Lastmes();
-                    lastMes.setUsername(user);
-                    lastMes.setPass(psw);
-                    lastMes.save();
-                    List<LastUser> lastusers = DataSupport.findAll(LastUser.class);
-                    if (lastusers.size() == 0){
-                        LastUser lastUser = new LastUser();
-                        lastUser.setName(user);
-                        lastUser.save();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            compare_user();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (check == true) {
+                            LastUser llast = new LastUser();
+                            llast.setName(user);
+                            llast.updateAll();
+                            List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
+                            if (lastmess.size() != 0)  DataSupport.deleteAll(Lastmes.class);
+                            Lastmes lastMes = new Lastmes();
+                            lastMes.setUsername(user);
+                            lastMes.setPass(psw);
+                            lastMes.save();
+                            List<LastUser> lastusers = DataSupport.findAll(LastUser.class);
+                            if (lastusers.size() == 0){
+                                LastUser lastUser = new LastUser();
+                                lastUser.setName(user);
+                                lastUser.save();
+                            }
+                            LastUser lastUser = new LastUser();
+                            lastUser.setName(user);
+                            lastUser.updateAll();
+                            progressDialog.dismiss();
+                            Intent intent = new Intent(LogActivity.this, BarActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            progressDialog.dismiss();
+                            Looper.prepare();
+                            Toast.makeText(LogActivity.this, err_msg, Toast.LENGTH_LONG).show();
+                            Looper.loop();
+                        }
                     }
-                    LastUser lastUser = new LastUser();
-                    lastUser.setName(user);
-                    lastUser.updateAll();
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(LogActivity.this, BarActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(LogActivity.this, "Your ID not exits or PassWord is Wrong", Toast.LENGTH_LONG).show();
-                }
+                }).start();
             }
         });
         button_register.setOnClickListener(new View.OnClickListener() {
@@ -224,27 +247,21 @@ public class LogActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.baidu.com"));
+                intent.setData(Uri.parse("http://www.sysu7s.cn/cotact_us/"));
                 startActivity(intent);
             }
         });
     }
 
-    private void compare_user() {
-        try {
-            RequestBody requestBody = new FormBody.Builder()
-                    .add("username",user)
-                    .add("password",psw)
-                    .build();
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url("http://139.199.158.84:3000/api/check").post(requestBody).build();
-            Response response = null;
-            response = client.newCall(request).execute();
-            String reponseData = response.body().string();
-            if (reponseData.equals("true")) check = true;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }*/
+    private void compare_user() throws JSONException {
+        Http http = new Http();
+        JSONObject jo = new JSONObject();
+        jo.put("account",user);
+        jo.put("password",psw);
+        JSONObject answer = new JSONObject();
+        answer = http.login(jo);
+        check = answer.getBoolean("ok");
+        err_msg = answer.getString("errMsg");
+        Log.d("err_msg",err_msg);
     }
 }
