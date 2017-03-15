@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +22,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.bean.SetInfo;
+import com.google.gson.Gson;
 import com.jph.takephoto.model.TImage;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
@@ -30,11 +36,20 @@ import org.litepal.tablemanager.Connector;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
+import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
+import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
+import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import cn.qqtheme.framework.picker.DatePicker;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by lenovo on 2017/2/22.
@@ -45,6 +60,7 @@ public class InformationActivity extends AppCompatActivity {
     private String currentUser;        // 当前操作的User
     private SQLiteDatabase db;            // 数据库
     private final String[] items = { "拍照", "从相册中选择" };
+    private DownTask downTask;
 
     private TextView setName;           // 设置昵称
     private TextView setSex;            // 设置性别
@@ -52,6 +68,13 @@ public class InformationActivity extends AppCompatActivity {
     private ImageView setUserFace;      // 头像
     private EditText setIntroduction;  // 设置个人简介
     private Button confirm;             // 确认修改
+
+    private String name;
+    private String sex;
+    private String birthday;
+    private String introduction;
+    private byte[] face;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +93,8 @@ public class InformationActivity extends AppCompatActivity {
         setDate = (TextView) findViewById(R.id.select_birthday);
         setIntroduction = (EditText) findViewById(R.id.introduction);
 
-        Log.d("test","ok");
-
-        initializeInfo();
+        downTask = new DownTask();
+        downTask.execute("get");
 
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +155,127 @@ public class InformationActivity extends AppCompatActivity {
         db.close();
     }
 
+    // 异步
+
+    class DownTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "failed";
+            Gson gson = new Gson();
+
+            // 联网获得个人信息
+            if (params[0].equals("get")) {
+                try {
+                    SetInfo setInfo;
+                    RequestBody requestBody = new FormBody.Builder()
+                            .add("username", currentUser).build();
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request
+                            .Builder()
+                            .url("http://139.199.158.84:3000/api/getUserInfo")
+                            .post(requestBody).build();
+                    Response response = null;
+                    response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        String responseData = response.body().string();
+                        setInfo = gson.fromJson(responseData, SetInfo.class);
+                        if (setInfo.getOk()) {
+                            name = setInfo.getName();
+                            introduction = setInfo.getIntroduction();
+                            face = setInfo.getFace();
+                            sex = setInfo.getSex();
+                            birthday = setInfo.getBirthday();
+                            result = "success in getting Information";
+                        } else {
+                            result = setInfo.getErrMsg();
+                        }
+
+                    } else {
+                        result = "failed";
+                    }
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    result = "failed";
+                }
+            }
+            // 在服务器数据库更新
+            else if (params[0].equals("post")) {
+                try {
+                    SetInfo setInfo;
+                    RequestBody requestBody = new FormBody.Builder()
+                            .add("name", name)
+                            .add("introduction", introduction)
+                            .add("birthday", birthday)
+                            .add("sex", sex).build();
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request
+                            .Builder()
+                            .url("http://139.199.158.84:3000/api/setUserInfo")
+                            .post(requestBody).build();
+                    Response response = null;
+                    response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        String responseData = response.body().string();
+                        setInfo = gson.fromJson(responseData, SetInfo.class);
+                        if (setInfo.getOk()) {
+                            result = "success in posting Information";
+                        } else {
+                            result = setInfo.getErrMsg();
+                        }
+
+                    } else {
+                        result = "failed";
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.equals("success in getting Information")) {
+                // 在本地数据库更新
+                Information updateInformation = new Information();
+                updateInformation.setName(name);
+                updateInformation.setBirthday(birthday);
+                updateInformation.setSex(sex);
+                updateInformation.setIntroduction(introduction);
+                updateInformation.setFace(face);
+                if (DataSupport.select("account")
+                        .where("account = ?", currentUser)
+                        .find(Information.class) != null) {
+                    updateInformation.updateAll("account = ?", currentUser);
+                } else {
+                    updateInformation.save();
+                }
+                initializeInfo();
+            }
+            else if (s.equals("success in posting Information")) {
+                // 在本地数据库更新
+                Information updateInformation = new Information();
+                updateInformation.setName(name);
+                updateInformation.setBirthday(birthday);
+                updateInformation.setSex(sex);
+                updateInformation.setIntroduction(introduction);
+                updateInformation.setFace(face);
+                if (DataSupport.select("account")
+                        .where("account = ?", currentUser)
+                        .find(Information.class) != null) {
+                    updateInformation.updateAll("account = ?", currentUser);
+                } else {
+                    updateInformation.save();
+                }
+            } else {
+                Toast.makeText(InformationActivity.this, s, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     // 设置昵称
     private void changeNickname() {
 
@@ -163,7 +306,7 @@ public class InformationActivity extends AppCompatActivity {
 
     // 设置头像
     private void changeFace() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -176,7 +319,7 @@ public class InformationActivity extends AppCompatActivity {
                 }
             }
         });
-        builder.show();
+        builder.show();*/
     }
     private ArrayList<TImage> images;
     @Override
@@ -273,35 +416,22 @@ public class InformationActivity extends AppCompatActivity {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         obmp.compress(Bitmap.CompressFormat.PNG, 100, os);
 
-        String name = setName.getText().toString();
-        String sex = setSex.getText().toString();
-        String date = setDate.getText().toString();
-        byte[] face = os.toByteArray();
-        String introduction = setIntroduction.getText().toString();
+        name = setName.getText().toString();
+        sex = setSex.getText().toString();
+        birthday = setDate.getText().toString();
+        face = os.toByteArray();
+        introduction = setIntroduction.getText().toString();
 
-        // 在服务器数据库更新
+        downTask = new DownTask();
+        downTask.execute("post");
 
-        // 在本地数据库更新
-        Information updateInformation = new Information();
-        updateInformation.setName(name);
-        updateInformation.setBirthday(date);
-        updateInformation.setSex(sex);
-        updateInformation.setIntroduction(introduction);
-        updateInformation.setFace(face);
-        if (DataSupport.select("account")
-                .where("account = ?", currentUser)
-                .find(Information.class) != null) {
-            updateInformation.updateAll("account = ?", currentUser);
-        } else {
-            updateInformation.save();
-        }
-
+        db.close();
         finish();
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        db.close();
     }
 }

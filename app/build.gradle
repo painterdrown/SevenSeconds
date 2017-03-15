@@ -51,4 +51,6 @@ dependencies {
     compile project(':timelineview')
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
     compile 'com.zhy:percent-support-extends:1.0.1'
+    compile 'cn.finalteam.rxgalleryfinal:library:0.0.3'
+    provided 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }

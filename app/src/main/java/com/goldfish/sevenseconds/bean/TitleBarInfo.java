@@ -12,6 +12,15 @@ public class TitleBarInfo {
     private byte[] face;
     private String birthday;
     private String sex;
+    private String errMsg;
+
+    public String getErrMsg() {
+        return errMsg;
+    }
+
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
 
     public String getSex() {
         return sex;

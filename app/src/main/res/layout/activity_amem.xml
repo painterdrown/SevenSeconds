@@ -154,7 +154,7 @@
                     android:layout_marginBottom="30dp">
 
                     <com.goldfish.sevenseconds.view.CircleImageView
-                        android:id="@+id/amem_like_image"
+                        android:id="@+id/amem_like_image_icon"
                         android:layout_marginTop="50dp"
                         android:layout_marginLeft="70dp"
                         app:civ_border_color="@color/color_gray"
@@ -163,9 +163,9 @@
                         android:layout_height="40dp" />
 
                     <TextView
-                        android:layout_below="@+id/amem_like_image"
-                        android:layout_alignLeft="@+id/amem_like_image"
-                        android:layout_alignRight="@+id/amem_like_image"
+                        android:layout_below="@+id/amem_like_image_icon"
+                        android:layout_alignLeft="@+id/amem_like_image_icon"
+                        android:layout_alignRight="@+id/amem_like_image_icon"
                         android:text="点赞"
                         android:layout_marginTop="5dp"
                         android:textAlignment="center"

@@ -267,7 +267,7 @@ public class Http
      JSONObject jo = new JSONObject();
      jo.put("account", "a");
      */
-    public static Bitmap getUserPace(final JSONObject jo)
+    public static Bitmap getUserFace(final JSONObject jo)
     {
         String url = API_PATH + "/get-user-face";
 

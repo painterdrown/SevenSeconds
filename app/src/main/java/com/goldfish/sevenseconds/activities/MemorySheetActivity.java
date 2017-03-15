@@ -2,10 +2,13 @@ package com.goldfish.sevenseconds.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,13 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.bean.MemorySheet;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
+import com.goldfish.sevenseconds.tools.Http;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.ResponseCache;
 
@@ -57,7 +63,16 @@ public class MemorySheetActivity extends AppCompatActivity {
     private TextView contextTitle;
     private TextView contextTime;
     private LinearLayout contextDetail;
+    private Bitmap memCover;
+    private String memTitle;
+    private String[] memLabel;
+    private String memTime;
+    private String memContext;
+    private int reviewCount;
+    private int collectCount;
+    private int likeCount;
 
+    private ImageView likeMemory;
 
     private Context context;
     private DownTask downTask;
@@ -107,8 +122,8 @@ public class MemorySheetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 添加到我的关注
                 if (titleBarFinished) {
-                    followIt.setVisibility(View.GONE);
-                    unFollowIt.setVisibility(View.VISIBLE);
+                    downTask = new DownTask();
+                    downTask.execute("follow it");
                 }
             }
         });
@@ -118,8 +133,8 @@ public class MemorySheetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // 从我的关注删去
                 if (titleBarFinished) {
-                    unFollowIt.setVisibility(View.GONE);
-                    followIt.setVisibility(View.VISIBLE);
+                    downTask = new DownTask();
+                    downTask.execute("unfollow it");
                 }
             }
         });
@@ -131,8 +146,8 @@ public class MemorySheetActivity extends AppCompatActivity {
         // Nav
         barEdit = (TextView) findViewById(R.id.nav_bar_edit);
         barMsg = (ImageView) findViewById(R.id.nav_bar_msg);
-        barLike = (ImageView) findViewById(R.id.nav_bar_share);
-        barShare = (ImageView) findViewById(R.id.nav_bar_like);
+        barShare = (ImageView) findViewById(R.id.nav_bar_share);
+        barLike = (ImageView) findViewById(R.id.nav_bar_like);
         navBarFinished = false;
 
         barMsg.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +175,7 @@ public class MemorySheetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (navBarFinished) {
-                    // 分享
+                    Toast.makeText(MemorySheetActivity.this, "该功能敬请期待！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -189,6 +204,16 @@ public class MemorySheetActivity extends AppCompatActivity {
         downTask = new DownTask();
         downTask.execute("context");
 
+        likeMemory = (ImageView) findViewById(R.id.amem_like_image_icon);
+        likeMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (true) {
+                    downTask = new DownTask();
+                    downTask.execute("like");
+                }
+            }
+        });
     }
     class DownTask extends AsyncTask<String, Integer, String> {
 
@@ -197,17 +222,86 @@ public class MemorySheetActivity extends AppCompatActivity {
             String result = "failed";
             Gson gson = new Gson();
 
-            // 添加忆单
-            if (params.equals("add memory sheet")) {
+            // 点赞
+            if (params[0].equals("like")) {
                 try {
                     RequestBody requestBody = new FormBody.Builder()
-                            .add("myAccount", myAccount)
-                            .add("otherAccount", memAccount)
+                            .add("myUsername", myAccount)
+                            .add("otherUsername", memAccount)
                             .add("memoryId", memID).build();
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request
                             .Builder()
-                            .url("http://139.199.158.84:3000/api/addMemSheet")
+                            .url("http://139.199.158.84:3000/api/likeMemSheet")
+                            .post(requestBody).build();
+                    Response response = null;
+                    response = client.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        String responseData = response.body().string();
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        if (jsonObject.getBoolean("ok")) {
+                            result = "点赞成功！";
+                        } else {
+                            result = jsonObject.getString("errMsg");
+                        }
+                    } else {
+                        result = "failed";
+                    }
+                }
+                catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                    result = "failed";
+                }
+            }
+
+            // 添加关注
+            else if (params[0].equals("follow it")) {
+                try {
+                    JSONObject jo = new JSONObject();
+                    jo.put("myAccount", myAccount);
+                    jo.put("otherAccount", memAccount);
+                    JSONObject jo_return = Http.addFollow(jo);
+                    if (jo_return.getBoolean("ok")) {
+                        result = "success in following it";
+                    } else {
+                        result = jo_return.getString("errMsg");
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    result = "failed";
+                }
+            }
+
+            // 取消关注
+            else if (params[0].equals("unfollow it")) {
+                try {
+                    JSONObject jo = new JSONObject();
+                    jo.put("myAccount", myAccount);
+                    jo.put("otherAccount", memAccount);
+                    JSONObject jo_return = Http.deleteFollow(jo);
+                    if (jo_return.getBoolean("ok")) {
+                        result = "success in following it";
+                    } else {
+                        result = jo_return.getString("errMsg");
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    result = "failed";
+                }
+            }
+
+            // 添加忆单
+            else if (params[0].equals("add memory sheet")) {
+                try {
+                    RequestBody requestBody = new FormBody.Builder()
+                            .add("username", myAccount)
+                            .add("memoryId", memID).build();
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request
+                            .Builder()
+                            .url("http://139.199.158.84:3000/api/collectMemory")
                             .post(requestBody).build();
                     Response response = null;
                     response = client.newCall(request).execute();
@@ -233,25 +327,30 @@ public class MemorySheetActivity extends AppCompatActivity {
             }
 
             // 标题栏的点击事件
-            if (params.equals("titleBar")) {
+            else if (params[0].equals("titleBar")) {
                 try {
                     TitleBarInfo titleBarInfo;
                     RequestBody requestBody = new FormBody.Builder()
-                            .add("account", memAccount).build();
+                            .add("username", memAccount).build();
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request
                             .Builder()
-                            .url("http://139.199.158.84:3000/api/otherAccount")
+                            .url("http://139.199.158.84:3000/api/getUserInfo")
                             .post(requestBody).build();
                     Response response = null;
                     response = client.newCall(request).execute();
                     if (response.isSuccessful()) {
                         String responseData = response.body().string();
                         titleBarInfo = gson.fromJson(responseData, TitleBarInfo.class);
-                        titleName = titleBarInfo.getName();
-                        titleIntro = titleBarInfo.getIntroduction();
-                        titleFace = titleBarInfo.getFace();
-                        result = "success in titleBar";
+                        if (titleBarInfo.getOk()) {
+                            titleName = titleBarInfo.getName();
+                            titleIntro = titleBarInfo.getIntroduction();
+                            titleFace = titleBarInfo.getFace();
+                            result = "success in titleBar";
+                        } else {
+                            result = titleBarInfo.getErrMsg();
+                        }
+
                     } else {
                         result = "failed";
                     }
@@ -263,15 +362,34 @@ public class MemorySheetActivity extends AppCompatActivity {
             }
 
             // 导航栏的点击事件
-            if (params.equals("navBar")) {
+            else if (params[0].equals("navBar")) {
                 result = "success in navBar";
             }
 
-            if (params.equals("context")) {
-                // 等api
-                result = "success in context";
-            }
+            // 获得忆单主体
+            else if (params[0].equals("context")) {
+                try {
+                    JSONObject jo = new JSONObject();
+                    jo.put("memoryId", memID);
+                    JSONObject jo_return = Http.getMemory(jo);
+                    memTitle = jo_return.getString("title");
+                    memTime = jo_return.getString("time");
+                    reviewCount = jo_return.getInt("reviewCount");
+                    collectCount = jo_return.getInt("collectCount");
+                    likeCount = jo_return.getInt("likeCount");
+                    result = "success in context";
 
+                    jo = new JSONObject();
+                    jo.put("memoryId", memID);
+                    jo.put("i", 0);
+                    Bitmap return_cover = Http.getMemoryImg(jo);
+                    memCover = return_cover;
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    result = "failed";
+                }
+            }
             return result;
         }
 
@@ -289,19 +407,36 @@ public class MemorySheetActivity extends AppCompatActivity {
             if (result.equals("success in titleBar")) {
                 userName.setText(titleName);
                 userIntroduction.setText(titleIntro);
-
                 // setFace
                 titleBarFinished = true;
+                Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
             }
             else if(result.equals("success in navBar")) {
                 navBarFinished = true;
+                Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
             }
             else if (result.equals("success in context")) {
+                //contextCover.setBackground();
+                //contextLabel;
+                contextTitle.setText(memTitle);
+                contextTime.setText(memTime);
+                //contextDetail;
+                contextCover.setBackground(new BitmapDrawable(memCover));
                 contextFinished = true;
+                Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+            else if (result.equals("success in following it")) {
+                followIt.setVisibility(View.GONE);
+                unFollowIt.setVisibility(View.VISIBLE);
+                Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
+            }
+            else if (result.equals("success in unfollowing it")) {
+                unFollowIt.setVisibility(View.GONE);
+                followIt.setVisibility(View.VISIBLE);
+                Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
             }
-
         }
 
         // 在调用AsyncTask的cancel()方法时调用。
