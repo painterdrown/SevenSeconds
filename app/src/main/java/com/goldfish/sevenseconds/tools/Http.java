@@ -385,4 +385,26 @@ public class Http
     {
         return postForJSONObject("/collect-memory", jo);
     }
+
+    /*
+     【需要的参数】
+     account
+
+     【返回的属性】
+     ok
+     username
+
+     【用法】 记得要在新开的线程里调用这个函数
+     JSONObject jo = new JSONObject();
+     jo.put("account", "...");
+     JSONObject result = Http.getUsername(jo);
+     if (result.getBoolean("ok")) {
+        // 成功取到用户名
+        String username = result.getString("username");
+     }
+     */
+    public static JSONObject getUsername(JSONObject jo)
+    {
+        return postForJSONObject("/get-username", jo);
+    }
 }
