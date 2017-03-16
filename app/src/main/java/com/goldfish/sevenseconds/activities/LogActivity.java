@@ -248,7 +248,7 @@ public class LogActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.sysu7s.cn/cotact_us/"));
+                intent.setData(Uri.parse("http://www.sysu7s.cn/contact_us/"));
                 startActivity(intent);
             }
         });

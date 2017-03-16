@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.fragment.MyFragment;
@@ -21,8 +22,10 @@ public class BarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square);
         barActivity = this;
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) actionBar.hide();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.square_toolbar);
+        toolbar.setNavigationIcon(R.drawable.app_icon);
+        setSupportActionBar(toolbar);
         TabView tabView = (TabView)findViewById(R.id.tabView_square);
         List<TabViewChild> tabViewChildList=new ArrayList<>();
         TabViewChild tabViewChild01=new TabViewChild(R.drawable.squaresl,R.drawable.squarensel,"广场",  SquareFragment.newInstance("广场"));
