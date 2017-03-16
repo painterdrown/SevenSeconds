@@ -1,15 +1,17 @@
 package com.goldfish.sevenseconds.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +22,15 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.SetInfo;
 import com.google.gson.Gson;
 import com.jph.takephoto.model.TImage;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.yuyh.library.imgsel.ImageLoader;
+import com.yuyh.library.imgsel.ImgSelActivity;
+import com.yuyh.library.imgsel.ImgSelConfig;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
@@ -40,16 +42,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.finalteam.rxgalleryfinal.RxGalleryFinal;
-import cn.finalteam.rxgalleryfinal.imageloader.ImageLoaderType;
-import cn.finalteam.rxgalleryfinal.rxbus.RxBusResultSubscriber;
-import cn.finalteam.rxgalleryfinal.rxbus.event.ImageRadioResultEvent;
 import cn.qqtheme.framework.picker.DatePicker;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.darsh.multipleimageselect.helpers.Constants.REQUEST_CODE;
+
 
 /**
  * Created by lenovo on 2017/2/22.
@@ -79,6 +80,7 @@ public class InformationActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_information);
 
         // 得到MyPage操作的当前用户账号
@@ -304,6 +306,13 @@ public class InformationActivity extends AppCompatActivity {
         builder.show();
     }
 
+    // 自定义图片加载器
+    private ImageLoader loader = new ImageLoader() {
+        public void displayImage(Context context, String path, ImageView imageView) {
+            Glide.with(context).load(path).into(imageView);
+        }
+    };
+
     // 设置头像
     private void changeFace() {
         /*AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
@@ -320,10 +329,52 @@ public class InformationActivity extends AppCompatActivity {
             }
         });
         builder.show();*/
+        ImgSelConfig config = new com.yuyh.library.imgsel.ImgSelConfig.Builder(this, loader)
+                // 是否多选
+                .multiSelect(false)
+                .btnText("Confirm")
+                // 确定按钮背景色
+                //.btnBgColor(Color.parseColor(""))
+                // 确定按钮文字颜色
+                .btnTextColor(Color.WHITE)
+                // 使用沉浸式状态栏
+                .statusBarColor(Color.parseColor("#3F51B5"))
+                // 返回图标ResId
+                .backResId(R.drawable.ic_back)
+                .title("Images")
+                .titleColor(Color.WHITE)
+                .titleBgColor(Color.parseColor("#3F51B5"))
+                .allImagesText("All Images")
+                .needCrop(true)
+                .cropSize(1, 1, 200, 200)
+                // 第一个是否显示相机
+                .needCamera(true)
+                // 最大选择图片数量
+                .maxNum(9)
+                .build();
+
+        ImgSelActivity.startActivity(this, config, REQUEST_CODE);
     }
-    private ArrayList<TImage> images;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            List<String> pathList = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
+            setUserFace.setImageURI(Uri.parse("file://"+pathList.get(0)));
+            // 测试Fresco。可不理会
+            // draweeView.setImageURI(Uri.parse("file://"+pathList.get(0)));
+            /*for (String path : pathList) {
+
+                tvResult.append(path + "\n");
+            }*/
+        }
+    }
+
+    /*private ArrayList<TImage> images;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
                 if (requestCode == 1) {
@@ -332,7 +383,7 @@ public class InformationActivity extends AppCompatActivity {
                     setName.setText("ok");
                 }
         }
-    }
+    }*/
 
     // 设置性别
     int selectWhich;

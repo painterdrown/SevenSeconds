@@ -141,11 +141,6 @@ public class LogActivity extends AppCompatActivity {
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
-        Lastmes test = new Lastmes();
-        test.setUsername("123456");
-        test.setPass("123456");
-        test.save();
-
         if (actionBar != null) actionBar.hide();
         List<Lastmes> lastmess = DataSupport.findAll(Lastmes.class);
         if (lastmess.size() != 0)  {
