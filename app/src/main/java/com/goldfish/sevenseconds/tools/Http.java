@@ -1,4 +1,5 @@
-package com.goldfish.sevenseconds.tools;
+package com.painterdrown.sevens.helpers;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -150,7 +151,7 @@ public class Http
      * jo.put("password", "...");
      *
      * 【返回值】
-     * ok属性，通过jo.getBoolean("ok")拿到，如果是false就通过jo.getString("errMsg")拿到错误信息
+     * ok属性，通过jo.getBoolean("ok")拿到，如果是false就通过jo.getString("erreMsg")拿到错误信息
      */
     public static JSONObject login(JSONObject jo)
     {
@@ -267,7 +268,7 @@ public class Http
      JSONObject jo = new JSONObject();
      jo.put("account", "a");
      */
-    public static Bitmap getUserFace(final JSONObject jo)
+    public static Bitmap getUserPace(final JSONObject jo)
     {
         String url = API_PATH + "/get-user-face";
 
@@ -325,5 +326,50 @@ public class Http
             e.printStackTrace();
         }
         return str.split("\\,");
+    }
+
+    /*
+     【需要的参数】
+     account
+
+     【返回的属性】
+     ok:           Boolean
+     account:      String
+     username:     String
+     introduction: String
+     birthday:     String
+     sex:          String
+     */
+    public static JSONObject getUserInfo(JSONObject jo)
+    {
+        return postForJSONObject("/get-user-info", jo);
+    }
+
+    /*
+     【需要的参数】
+     memoryId
+
+     【返回的属性】
+     ok
+     */
+    public static JSONObject likeMemory(JSONObject jo)
+    {
+        return postForJSONObject("/like-memory", jo);
+    }
+
+    /*
+     【需要的参数】
+     account:      String
+     username:     String
+     introduction: String
+     birthday:     String
+     sex:          String("男"/"女")
+
+     【返回的属性】
+     ok
+     */
+    public static JSONObject modifyUserInfo(JSONObject jo)
+    {
+        return postForJSONObject("/like-memory", jo);
     }
 }
