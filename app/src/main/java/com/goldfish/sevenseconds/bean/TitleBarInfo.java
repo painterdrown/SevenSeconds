@@ -1,15 +1,17 @@
 package com.goldfish.sevenseconds.bean;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by lenovo on 2017/3/5.
  */
 
 public class TitleBarInfo {
 
+    private boolean ok;
     private String name;
     private String introduction;
-    private boolean ok;
-    private byte[] face;
+    private Bitmap face;
     private String birthday;
     private String sex;
     private String errMsg;
@@ -26,7 +28,7 @@ public class TitleBarInfo {
         return sex;
     }
 
-    public byte[] getFace() {
+    public Bitmap getFace() {
         return face;
     }
 
@@ -38,7 +40,7 @@ public class TitleBarInfo {
         this.birthday = birthday;
     }
 
-    public void setFace(byte[] face) {
+    public void setFace(Bitmap face) {
         this.face = face;
     }
 
