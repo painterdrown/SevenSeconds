@@ -127,7 +127,12 @@ public class Http
     {
         JSONObject joToReturn = null;
         try {
-            joToReturn = new JSONObject(postJSON(API_PATH + action, jo).body().string());
+            Response response = postJSON(API_PATH + action, jo);
+            if (response.isSuccessful()) {
+                joToReturn = new JSONObject(response.body().string());
+            } else {
+                joToReturn.putBoolean("ok", false);
+            }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
