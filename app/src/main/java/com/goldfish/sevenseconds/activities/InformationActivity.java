@@ -26,6 +26,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.SetInfo;
+import com.goldfish.sevenseconds.bean.TitleBarInfo;
 import com.google.gson.Gson;
 import com.jph.takephoto.model.TImage;
 import com.yuyh.library.imgsel.ImageLoader;
@@ -60,7 +61,6 @@ public class InformationActivity extends AppCompatActivity {
 
     private String currentUser;        // 当前操作的User
     private SQLiteDatabase db;            // 数据库
-    private final String[] items = { "拍照", "从相册中选择" };
     private DownTask downTask;
 
     private TextView setName;           // 设置昵称
@@ -70,6 +70,7 @@ public class InformationActivity extends AppCompatActivity {
     private EditText setIntroduction;  // 设置个人简介
     private Button confirm;             // 确认修改
 
+    private Information information;  // 作者信息
     private String name;
     private String sex;
     private String birthday;
@@ -158,7 +159,6 @@ public class InformationActivity extends AppCompatActivity {
     }
 
     // 异步
-
     class DownTask extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -315,20 +315,6 @@ public class InformationActivity extends AppCompatActivity {
 
     // 设置头像
     private void changeFace() {
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    Intent intent = new Intent(InformationActivity.this, PhotographActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-                    Intent intent = new Intent(InformationActivity.this, SelectPhotoActivity.class);
-                    startActivityForResult(intent, 1);
-                }
-            }
-        });
-        builder.show();*/
         ImgSelConfig config = new com.yuyh.library.imgsel.ImgSelConfig.Builder(this, loader)
                 // 是否多选
                 .multiSelect(false)
@@ -352,7 +338,6 @@ public class InformationActivity extends AppCompatActivity {
                 // 最大选择图片数量
                 .maxNum(9)
                 .build();
-
         ImgSelActivity.startActivity(this, config, REQUEST_CODE);
     }
 
@@ -370,20 +355,6 @@ public class InformationActivity extends AppCompatActivity {
             }*/
         }
     }
-
-    /*private ArrayList<TImage> images;
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 1:
-                if (requestCode == 1) {
-                    images = (ArrayList<TImage>) data.getSerializableExtra("images");
-                    Glide.with(this).load(new File(images.get(0).getCompressPath())).into(setUserFace);
-                    setName.setText("ok");
-                }
-        }
-    }*/
 
     // 设置性别
     int selectWhich;

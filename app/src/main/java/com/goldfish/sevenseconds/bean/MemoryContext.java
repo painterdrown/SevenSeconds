@@ -1,5 +1,7 @@
 package com.goldfish.sevenseconds.bean;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by lenovo on 2017/3/10.
  */
@@ -8,7 +10,7 @@ public class MemoryContext {
 
     private String title;
     private String[] label;
-    private byte[] cover;
+    private Bitmap cover;
     private String time;
     private int reviewCount;
     private int collectCount;
@@ -32,7 +34,7 @@ public class MemoryContext {
         return ok;
     }
 
-    public byte[] getCover() {
+    public Bitmap getCover() {
         return cover;
     }
 
@@ -64,7 +66,7 @@ public class MemoryContext {
         this.collectCount = collectCount;
     }
 
-    public void setCover(byte[] cover) {
+    public void setCover(Bitmap cover) {
         this.cover = cover;
     }
 
