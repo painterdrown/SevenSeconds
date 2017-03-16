@@ -372,4 +372,17 @@ public class Http
     {
         return postForJSONObject("/like-memory", jo);
     }
+
+    /*
+     【需要的参数】
+     account
+     memoryId
+
+     【返回的属性】
+     ok
+     */
+    public static JSONObject collectMemory(JSONObject jo)
+    {
+        return postForJSONObject("/collect-memory", jo);
+    }
 }
