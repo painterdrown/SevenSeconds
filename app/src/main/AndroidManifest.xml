@@ -13,40 +13,46 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
-    tools:replace="android:icon, android:theme, android:label"
-    android:name="org.litepal.LitePalApplication"
-    android:allowBackup="true"
-    android:icon="@drawable/icon"
-    android:label="7S"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme">
-        <activity android:name="com.goldfish.sevenseconds.activities.LogActivity">
+        android:name="org.litepal.LitePalApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="7S"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:theme, android:label">
+        <activity android:name=".activities.LogActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.goldfish.sevenseconds.activities.BarActivity" />
-        <activity android:name="com.goldfish.sevenseconds.activities.MemorySheetActivity" />
-        <activity android:name="com.goldfish.sevenseconds.activities.RegisterActivity"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.SettingActivity"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.InformationActivity"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.MessageActivity"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.MyFollowActicity"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.PhotographActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.SelectPhotoActivity"/>
-        <activity android:name=".activities.UserHomePageActivity"/>
-        <activity android:name=".activities.MemorySheetReviewActivity"/>
-        <activity android:name="com.goldfish.sevenseconds.activities.MemorySheetOthersActivity"/>
-        <activity android:name="com.yuyh.library.imgsel.ImgSelActivity"/>
+        <activity android:name=".activities.BarActivity" />
+        <activity android:name=".activities.MemorySheetActivity" />
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.SettingActivity" />
+        <activity android:name=".activities.InformationActivity" />
+        <activity android:name=".activities.MessageActivity" />
+        <activity android:name=".activities.MyFollowActicity" />
+        <activity
+            android:name=".activities.PhotographActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.SelectPhotoActivity" />
+        <activity android:name=".activities.UserHomePageActivity" />
+        <activity android:name=".activities.MemorySheetReviewActivity" />
+        <activity android:name=".activities.MemorySheetOthersActivity" />
+        <activity android:name="com.yuyh.library.imgsel.ImgSelActivity" />
+        <activity android:name=".activities.Addmem"></activity>
     </application>
+
 </manifest>
