@@ -4,14 +4,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,12 +33,15 @@ import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.SetInfo;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
+import com.goldfish.sevenseconds.tools.Http;
 import com.google.gson.Gson;
 import com.jph.takephoto.model.TImage;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
@@ -71,13 +80,8 @@ public class InformationActivity extends AppCompatActivity {
     private Button confirm;             // 确认修改
 
     private Information information;  // 作者信息
-    private String name;
-    private String sex;
-    private String birthday;
-    private String introduction;
-    private byte[] face;
-
-
+    private Bitmap face;
+    private Uri uri;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,10 @@ public class InformationActivity extends AppCompatActivity {
         // 得到MyPage操作的当前用户账号
         Intent getCurrentUser = getIntent();
         currentUser = getCurrentUser.getStringExtra("currentUser");
+        information = new Information();
+
+        // 测试
+        currentUser = "a";
 
         // 获得各种按钮
         confirm = (Button) findViewById(R.id.confirm);
@@ -96,8 +104,8 @@ public class InformationActivity extends AppCompatActivity {
         setDate = (TextView) findViewById(R.id.select_birthday);
         setIntroduction = (EditText) findViewById(R.id.introduction);
 
-        downTask = new DownTask();
-        downTask.execute("get");
+        //downTask = new DownTask();
+        //downTask.execute("getUserInfo");
 
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +117,7 @@ public class InformationActivity extends AppCompatActivity {
             public void onClick(View v) { changeFace(); }
         });
 
-        setSex.setOnClickListener(new View.OnClickListener() {
+        /*setSex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeSex(); }
         });
@@ -126,13 +134,12 @@ public class InformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 confirmInformationChanged();
             }
-        });
+        });*/
     }
 
     // 对界面进行初始化
     private void initializeInfo() {
         // 本地加载异步联网更新数据库
-
         db = Connector.getWritableDatabase();
         List<Information> informationList = DataSupport
                 .select("name", "sex", "birthday", "introduction", "face")
@@ -158,121 +165,120 @@ public class InformationActivity extends AppCompatActivity {
         db.close();
     }
 
+    // 联网获得个人信息
+    private String getUserInfo() {
+        String result;
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", currentUser);
+            JSONObject jo_return = Http.getUserInfo(jo);
+            if (jo_return.getBoolean("ok")) {
+                information.setName(jo_return.getString("username"));
+                information.setIntroduction("123");
+                information.setBirthday("19970102");
+                //information.setIntroduction(jo_return.getString("introduction"));
+                //information.setBirthday(jo_return.getString("birthday"));
+                information.setSex(jo_return.getString("sex"));
+                Resources res = getResources();
+                Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
+                face = bmp;
+                //face = Http.getUserFace(jo);
+                result = "Succeed in getting information";
+            } else{
+                result = "获取用户信息失败 TAT";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "服务器故障啦~";
+        }
+        return result;
+    }
+
+    // 更新个人信息
+    private String setUserInfo() {
+        String result;
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", currentUser);
+            jo.put("username", information.getName());
+            jo.put("introduction", information.getIntroduction());
+            jo.put("birthday", information.getBirthday());
+            jo.put("sex", information.getSex());
+            JSONObject jo_return = Http.modifyUserInfo(jo);
+            if (jo_return.getBoolean("ok")) {
+                result = "Succeed in posting information";
+            } else{
+                result = "设置用户信息失败 TAT";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "服务器故障啦~";
+        }
+        return result;
+    }
+
+    // 找图片
+    @NonNull
+    private String getImage() {
+        face = getBitmapFromUri(uri);
+        if (face == null)
+            return "Failed";
+        else return "Succeed in getting image";
+    }
+
+    // 更新至本地数据库
+    private String storeInLocal() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        face.compress(Bitmap.CompressFormat.PNG, 100, os);
+
+        Information updateInformation = new Information();
+        updateInformation.setName(information.getName());
+        updateInformation.setBirthday(information.getBirthday());
+        updateInformation.setSex(information.getSex());
+        updateInformation.setIntroduction(information.getIntroduction());
+        updateInformation.setFace(os.toByteArray());
+        if (DataSupport.select("account")
+                .where("account = ?", currentUser)
+                .find(Information.class) != null) {
+            updateInformation.updateAll("account = ?", currentUser);
+        } else {
+            updateInformation.save();
+        }
+        return "Succeed in storing";
+    }
+
     // 异步
     class DownTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            String result = "failed";
-            Gson gson = new Gson();
-
-            // 联网获得个人信息
-            if (params[0].equals("get")) {
-                try {
-                    SetInfo setInfo;
-                    RequestBody requestBody = new FormBody.Builder()
-                            .add("username", currentUser).build();
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request
-                            .Builder()
-                            .url("http://139.199.158.84:3000/api/getUserInfo")
-                            .post(requestBody).build();
-                    Response response = null;
-                    response = client.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        String responseData = response.body().string();
-                        setInfo = gson.fromJson(responseData, SetInfo.class);
-                        if (setInfo.getOk()) {
-                            name = setInfo.getName();
-                            introduction = setInfo.getIntroduction();
-                            face = setInfo.getFace();
-                            sex = setInfo.getSex();
-                            birthday = setInfo.getBirthday();
-                            result = "success in getting Information";
-                        } else {
-                            result = setInfo.getErrMsg();
-                        }
-
-                    } else {
-                        result = "failed";
-                    }
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    result = "failed";
-                }
-            }
-            // 在服务器数据库更新
-            else if (params[0].equals("post")) {
-                try {
-                    SetInfo setInfo;
-                    RequestBody requestBody = new FormBody.Builder()
-                            .add("name", name)
-                            .add("introduction", introduction)
-                            .add("birthday", birthday)
-                            .add("sex", sex).build();
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request
-                            .Builder()
-                            .url("http://139.199.158.84:3000/api/setUserInfo")
-                            .post(requestBody).build();
-                    Response response = null;
-                    response = client.newCall(request).execute();
-                    if (response.isSuccessful()) {
-                        String responseData = response.body().string();
-                        setInfo = gson.fromJson(responseData, SetInfo.class);
-                        if (setInfo.getOk()) {
-                            result = "success in posting Information";
-                        } else {
-                            result = setInfo.getErrMsg();
-                        }
-
-                    } else {
-                        result = "failed";
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            String result;
+            if (params[0].equals("getUserInfo")) { result = getUserInfo(); }
+            else if (params[0].equals("setUserInfo")) { result = setUserInfo(); }
+            else if (params[0].equals("getImage")) { result = getImage();}
+            else if (params[0].equals("storeInLocal")) { result = storeInLocal(); }
+            else { result = "Failed"; }
             return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            if (s.equals("success in getting Information")) {
-                // 在本地数据库更新
-                Information updateInformation = new Information();
-                updateInformation.setName(name);
-                updateInformation.setBirthday(birthday);
-                updateInformation.setSex(sex);
-                updateInformation.setIntroduction(introduction);
-                updateInformation.setFace(face);
-                if (DataSupport.select("account")
-                        .where("account = ?", currentUser)
-                        .find(Information.class) != null) {
-                    updateInformation.updateAll("account = ?", currentUser);
-                } else {
-                    updateInformation.save();
-                }
+            if (s.equals("Succeed in getting information")) {
+                DownTask store = new DownTask();
+                store.execute("storeInLocal");
                 initializeInfo();
             }
-            else if (s.equals("success in posting Information")) {
-                // 在本地数据库更新
-                Information updateInformation = new Information();
-                updateInformation.setName(name);
-                updateInformation.setBirthday(birthday);
-                updateInformation.setSex(sex);
-                updateInformation.setIntroduction(introduction);
-                updateInformation.setFace(face);
-                if (DataSupport.select("account")
-                        .where("account = ?", currentUser)
-                        .find(Information.class) != null) {
-                    updateInformation.updateAll("account = ?", currentUser);
-                } else {
-                    updateInformation.save();
+            else if (s.equals("Succeed in posting information")) {
+                DownTask store = new DownTask();
+                store.execute("storeInLocal");
+            }
+            else if (s.equals("Succeed in getting image")){
+                setUserFace.setImageBitmap(face);
+                if (face.isRecycled()) {
+                    face.recycle();
                 }
-            } else {
+            }
+            else {
                 Toast.makeText(InformationActivity.this, s, Toast.LENGTH_SHORT).show();
             }
         }
@@ -316,43 +322,47 @@ public class InformationActivity extends AppCompatActivity {
     // 设置头像
     private void changeFace() {
         ImgSelConfig config = new com.yuyh.library.imgsel.ImgSelConfig.Builder(this, loader)
-                // 是否多选
                 .multiSelect(false)
                 .btnText("Confirm")
-                // 确定按钮背景色
-                //.btnBgColor(Color.parseColor(""))
-                // 确定按钮文字颜色
                 .btnTextColor(Color.WHITE)
-                // 使用沉浸式状态栏
                 .statusBarColor(Color.parseColor("#3F51B5"))
-                // 返回图标ResId
                 .backResId(R.drawable.ic_back)
                 .title("Images")
                 .titleColor(Color.WHITE)
                 .titleBgColor(Color.parseColor("#3F51B5"))
                 .allImagesText("All Images")
                 .needCrop(true)
-                .cropSize(1, 1, 200, 200)
-                // 第一个是否显示相机
+                .cropSize(1, 1, 100, 100)
                 .needCamera(true)
-                // 最大选择图片数量
                 .maxNum(9)
                 .build();
         ImgSelActivity.startActivity(this, config, REQUEST_CODE);
     }
+
+    @Nullable
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+        // 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                    this.getContentResolver(), uri);
+            return bitmap;
+        } catch (Exception e) {
+            Log.e("[Android]", e.getMessage());
+            Log.e("[Android]", "目录为：" + uri);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             List<String> pathList = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
-            setUserFace.setImageURI(Uri.parse("file://"+pathList.get(0)));
-            // 测试Fresco。可不理会
-            // draweeView.setImageURI(Uri.parse("file://"+pathList.get(0)));
-            /*for (String path : pathList) {
-
-                tvResult.append(path + "\n");
-            }*/
+            uri = Uri.parse("file://"+ pathList.get(0));
+            DownTask getImage = new DownTask();
+            getImage.execute("getImage");
         }
     }
 
@@ -433,24 +443,23 @@ public class InformationActivity extends AppCompatActivity {
 
         // 从ImageView获得二进制图像
         setUserFace.setDrawingCacheEnabled(true);
-        Bitmap obmp = Bitmap.createBitmap(setUserFace.getDrawingCache());
+        face = Bitmap.createBitmap(setUserFace.getDrawingCache());
         setUserFace.setDrawingCacheEnabled(false);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        obmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+        face.compress(Bitmap.CompressFormat.PNG, 100, os);
 
-        name = setName.getText().toString();
-        sex = setSex.getText().toString();
-        birthday = setDate.getText().toString();
-        face = os.toByteArray();
-        introduction = setIntroduction.getText().toString();
+        information.setName(setName.getText().toString());
+        information.setSex(setSex.getText().toString());
+        information.setBirthday(setDate.getText().toString());
+        information.setIntroduction(setIntroduction.getText().toString());
+        information.setFace(os.toByteArray());
 
-        downTask = new DownTask();
-        downTask.execute("post");
+        //downTask = new DownTask();
+        //downTask.execute("setUserInfo");
 
         db.close();
         finish();
     }
-
 
     @Override
     protected void onDestroy() {
