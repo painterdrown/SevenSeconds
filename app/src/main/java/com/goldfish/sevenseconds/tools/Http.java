@@ -131,7 +131,7 @@ public class Http
             if (response.isSuccessful()) {
                 joToReturn = new JSONObject(response.body().string());
             } else {
-                joToReturn.putBoolean("ok", false);
+                joToReturn.put("ok", false);
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
