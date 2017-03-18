@@ -275,7 +275,7 @@ public class MemorySheetActivity extends AppCompatActivity {
 
     // 点赞该忆单
     private String likeTheMemory() {
-        String result = "Failed";
+        String result;
         try {
             RequestBody requestBody = new FormBody.Builder()
                     .add("myUsername", myAccount)
@@ -309,7 +309,7 @@ public class MemorySheetActivity extends AppCompatActivity {
 
     // 添加关注
     private String follow() {
-        String result = "Failed";
+        String result;
         try {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", myAccount);
@@ -330,7 +330,7 @@ public class MemorySheetActivity extends AppCompatActivity {
 
     // 取消关注
     private String unfollow() {
-        String result = "Failed";
+        String result;
         try {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", myAccount);
@@ -351,7 +351,7 @@ public class MemorySheetActivity extends AppCompatActivity {
 
     // 添加忆单
     private String showInMyFavorites() {
-        String result = "Failed";
+        String result;
         try {
             RequestBody requestBody = new FormBody.Builder()
                     .add("username", myAccount)
@@ -384,7 +384,7 @@ public class MemorySheetActivity extends AppCompatActivity {
 
     // 标题栏的点击事件
     private String titleBar() {
-        String result = "Failed";
+        String result;
         try {
             // 查看是否已经关注过作者
             JSONObject jo = new JSONObject();
@@ -400,9 +400,11 @@ public class MemorySheetActivity extends AppCompatActivity {
             jo = new JSONObject();
             jo.put("account", memAccount);
             titleBarInfo.setFace(Http.getUserFace(jo));
+            result = "Succeed in titleBar";
         }
         catch (JSONException e) {
             e.printStackTrace();
+            result = "Failed";
         }
         return result;
     }

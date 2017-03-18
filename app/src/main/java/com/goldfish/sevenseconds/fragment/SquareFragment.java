@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
+import com.goldfish.sevenseconds.tools.Http;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,24 @@ public class SquareFragment extends Fragment {
     private String name;
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
+    private Http http = new Http();
     XRefreshView xRefreshView;
     private int mLoadCount = 0;
+
+    public void Exception(){
+        //避免出现android.os.NetworkOnMainThreadException异常
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads().detectDiskWrites().detectNetwork()
+                .penaltyLog().build());
+
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
+                .penaltyLog().penaltyDeath().build());
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
+        Exception();
         View view = inflater.inflate(R.layout.fragment_square,container,false);
-
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
         recyclerView.setHasFixedSize(true);
