@@ -375,7 +375,7 @@ public class Http
      */
     public static JSONObject modifyUserInfo(JSONObject jo)
     {
-        return postForJSONObject("/like-memory", jo);
+        return postForJSONObject("/modify-user-info", jo);
     }
 
     /*
