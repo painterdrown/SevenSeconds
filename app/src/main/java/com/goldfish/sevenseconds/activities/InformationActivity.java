@@ -95,6 +95,7 @@ public class InformationActivity extends AppCompatActivity {
 
         // 测试
         currentUser = "a";
+        information.setAccount(currentUser);
 
         // 获得各种按钮
         confirm = (Button) findViewById(R.id.confirm);
@@ -104,8 +105,8 @@ public class InformationActivity extends AppCompatActivity {
         setDate = (TextView) findViewById(R.id.select_birthday);
         setIntroduction = (EditText) findViewById(R.id.introduction);
 
-        //downTask = new DownTask();
-        //downTask.execute("getUserInfo");
+        downTask = new DownTask();
+        downTask.execute("getUserInfo");
 
         setName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +118,7 @@ public class InformationActivity extends AppCompatActivity {
             public void onClick(View v) { changeFace(); }
         });
 
-        /*setSex.setOnClickListener(new View.OnClickListener() {
+        setSex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeSex(); }
         });
@@ -134,7 +135,7 @@ public class InformationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 confirmInformationChanged();
             }
-        });*/
+        });
     }
 
     // 对界面进行初始化
@@ -174,8 +175,8 @@ public class InformationActivity extends AppCompatActivity {
             JSONObject jo_return = Http.getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 information.setName(jo_return.getString("username"));
-                information.setIntroduction("123");
-                information.setBirthday("19970102");
+                information.setIntroduction("1234");
+                information.setBirthday("1997-01-02");
                 //information.setIntroduction(jo_return.getString("introduction"));
                 //information.setBirthday(jo_return.getString("birthday"));
                 information.setSex(jo_return.getString("sex"));
@@ -237,9 +238,10 @@ public class InformationActivity extends AppCompatActivity {
         updateInformation.setSex(information.getSex());
         updateInformation.setIntroduction(information.getIntroduction());
         updateInformation.setFace(os.toByteArray());
+        updateInformation.setAccount(information.getAccount());
         if (DataSupport.select("account")
                 .where("account = ?", currentUser)
-                .find(Information.class) != null) {
+                .find(Information.class).size() != 0) {
             updateInformation.updateAll("account = ?", currentUser);
         } else {
             updateInformation.save();
@@ -454,8 +456,8 @@ public class InformationActivity extends AppCompatActivity {
         information.setIntroduction(setIntroduction.getText().toString());
         information.setFace(os.toByteArray());
 
-        //downTask = new DownTask();
-        //downTask.execute("setUserInfo");
+        downTask = new DownTask();
+        downTask.execute("setUserInfo");
 
         db.close();
         finish();
