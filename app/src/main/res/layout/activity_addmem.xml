@@ -8,6 +8,48 @@
     android:background="@drawable/log_background"
     tools:context="com.goldfish.sevenseconds.activities.Addmem">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/admem_toolbar"
+        android:id="@+id/admem_title"
+        android:hint="回忆标题..."/>
+    <me.originqiu.library.EditTag
+        android:id="@+id/admem_edit_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/admem_title"
+        app:tag_layout="@layout/view_sample_tag"
+        app:input_layout="@layout/view_sample_input_tag"/>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/admem_edit_tag"
+            android:layout_above="@+id/add_pic"
+            android:id="@+id/add_contents">
+        <LinearLayout
+            android:id="@+id/ll_channel_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/content_1"
+                android:hint="添加你的回忆..."/>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/add_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        android:text="添加图片"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/admem_toolbar"
         android:layout_width="match_parent"
