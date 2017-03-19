@@ -56,6 +56,7 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent myToFollow = new Intent(BarActivity.barActivity, MyFollowActicity.class);
+                myToFollow.putExtra("currentUser", "y741323965");  // 到时候改成登陆成功的对象账号
                 startActivity(myToFollow);
             }
         });

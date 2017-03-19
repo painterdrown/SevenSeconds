@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.activities.MemorySheetActivity;
 import com.goldfish.sevenseconds.activities.MemorySheetOthersActivity;
 import com.goldfish.sevenseconds.adapter.AmemReviewAdapter;
 import com.goldfish.sevenseconds.item.AmemReviewItem;
@@ -47,7 +46,7 @@ public class AmemReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = null;
         //if (getArguments().getString("title").equals("评论")) {
-            view = inflater.inflate(R.layout.fragment_amem_review, null);
+            view = inflater.inflate(R.layout.activity_amem_review, null);
             initReviewView();
             recyclerView = (RecyclerView) view.findViewById(R.id.amem_review_layout);
             LinearLayoutManager layoutManager = new LinearLayoutManager(MemorySheetOthersActivity.memorySheetOthersActivity);

@@ -128,8 +128,12 @@ public class Http
         JSONObject joToReturn = null;
         try {
             Response response = postJSON(API_PATH + action, jo);
-            if (response.isSuccessful()) {
-                joToReturn = new JSONObject(response.body().string());
+            if (response != null) {
+                if (response.isSuccessful()) {
+                    joToReturn = new JSONObject(response.body().string());
+                } else {
+                    joToReturn.put("ok", false);
+                }
             } else {
                 joToReturn.put("ok", false);
             }

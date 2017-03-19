@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.MemorySheetActivity;
 import com.goldfish.sevenseconds.activities.MemorySheetOthersActivity;
+import com.goldfish.sevenseconds.activities.MemorySheetReviewActivity;
 import com.goldfish.sevenseconds.item.AmemReviewItem;
 
 import java.io.ByteArrayInputStream;
@@ -71,7 +72,13 @@ public class AmemReviewAdapter extends RecyclerView.Adapter<AmemReviewAdapter.Vi
         holder.amem_reviewView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MemorySheetOthersActivity.memorySheetOthersActivity,"click",Toast.LENGTH_LONG).show();
+
+            }
+        });
+        holder.amem_face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
             }
         });
         holder.amem_like.setText(amemReviewItem.getLike());
