@@ -28,7 +28,7 @@
         android:label="7S"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon, android:theme, android:label, android:supportsRtl">
+        tools:replace="android:icon, android:theme, android:label">
         <activity android:name=".activities.LogActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
