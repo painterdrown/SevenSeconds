@@ -174,10 +174,10 @@ public class InformationActivity extends AppCompatActivity {
             JSONObject jo_return = Http.getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 information.setName(jo_return.getString("username"));
-                information.setIntroduction("1234");
-                information.setBirthday("1997-01-02");
-                //information.setIntroduction(jo_return.getString("introduction"));
-                //information.setBirthday(jo_return.getString("birthday"));
+                //information.setIntroduction("1234");
+                //information.setBirthday("1997-01-02");
+                information.setIntroduction(jo_return.getString("introduction"));
+                information.setBirthday(jo_return.getString("birthday"));
                 information.setSex(jo_return.getString("sex"));
                 Resources res = getResources();
                 Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
