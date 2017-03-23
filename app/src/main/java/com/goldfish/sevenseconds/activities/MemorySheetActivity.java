@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.ResponseCache;
+import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -389,9 +390,9 @@ public class MemorySheetActivity extends AppCompatActivity {
             // 查看是否已经关注过作者
             JSONObject jo = new JSONObject();
             jo.put("account", myAccount);
-            String[] myFollowers = Http.getFollowingList(jo);
-            for (int i = 0; i < myFollowers.length; i++) {
-                if (myFollowers[i].equals(memAccount)) {
+            ArrayList<String> myFollowers = Http.getFollowingList(jo);
+            for (int i = 0; i < myFollowers.size(); i++) {
+                if (myFollowers.get(i).equals(memAccount)) {
                     hadFollowed = true;
                 }
             }

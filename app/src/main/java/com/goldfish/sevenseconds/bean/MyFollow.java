@@ -13,6 +13,15 @@ public class MyFollow extends DataSupport {
     private String name;
     private String introduction;
     private byte[] face;
+    private String myAccount;
+
+    public String getMyAccount() {
+        return myAccount;
+    }
+
+    public void setMyAccount(String myAccount) {
+        this.myAccount = myAccount;
+    }
 
     public int getId() {
         return id;
