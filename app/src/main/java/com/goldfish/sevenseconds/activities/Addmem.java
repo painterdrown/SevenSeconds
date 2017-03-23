@@ -15,6 +15,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +24,13 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -38,6 +44,8 @@ import java.util.jar.Manifest;
 
 import me.originqiu.library.EditTag;
 
+import static android.R.attr.height;
+import static android.R.attr.width;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class Addmem extends AppCompatActivity {
@@ -47,6 +55,7 @@ public class Addmem extends AppCompatActivity {
     private List<String> tagStrings = new ArrayList<>();
     private List<String> addimages = new ArrayList<>();
     private String imagerealpath;
+    private LinearLayout contents;
 
     class addTask extends AsyncTask<Void , Integer,Boolean>{
         @Override
@@ -93,6 +102,7 @@ public class Addmem extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        contents = (LinearLayout) findViewById(R.id.add_contents);
         Connector.getDatabase();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmem);
@@ -116,13 +126,6 @@ public class Addmem extends AppCompatActivity {
                 }
                 else{
                     openalbum();
-                    if (imagerealpath != null){
-                        addimages.add(imagerealpath);
-                        Bitmap bitmap = BitmapFactory.decodeFile(imagerealpath);
-
-                    }else {
-                        Toast.makeText(Addmem.this,"请允许打开相册选择图片", LENGTH_SHORT).show();
-                    }
                 }
             }
         });
@@ -186,13 +189,28 @@ public class Addmem extends AppCompatActivity {
         imagePath = uri.getPath();
         }
         imagerealpath = imagePath;
+        useit();
     }
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
         imagerealpath = imagePath;
+        useit();
     }
+    private  void  useit(){
+        if (imagerealpath != null){
 
+            addimages.add(imagerealpath);
+            Bitmap bitmap = BitmapFactory.decodeFile(imagerealpath);
+
+            ImageView imageView = new ImageView(this);
+            imageView.setImageBitmap(bitmap);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            //contents.addView(imageView);
+        }else {
+            Toast.makeText(Addmem.this,"无法选取图片", LENGTH_SHORT).show();
+        }
+    }
     private String getImagePath(Uri uri, String selection) {
         String path = null;
         // 通过Uri和selection来获取真实的图片路径
