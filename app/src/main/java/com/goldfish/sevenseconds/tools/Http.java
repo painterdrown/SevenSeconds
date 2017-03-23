@@ -15,6 +15,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -30,15 +34,27 @@ public class Http
     private static final String CACHE_PATH = "/data/data/com.painterdrown.sevens/cache";
     private static final String API_PATH = "http://www.sysu7s.cn:3000/api";
 
-    private static OkHttpClient okHttpClient = new OkHttpClient();
+    private static final int CONNECT_TIMEOUT = 3 * 1000;
+    private static final int READ_TIMEOUT = 10 * 1000;
+    private static final int WRITE_TIMEOUT = 10 * 1000;
+
+    private static final boolean SAVE_TO_CACHE = true;
+
+    private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
+            .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
+            .build();
 
     // ====================== 私有 ======================
 
+    // GET方法
     private static Response getByJSON(String url, JSONObject jo)
     {
+        OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
-            .url(url)
-            .build();
+                .url(url)
+                .build();
         Response response = null;
         try {
             response = okHttpClient.newCall(request).execute();
@@ -48,14 +64,14 @@ public class Http
         return response;
     }
 
+    // 返回的response不止有JSON，还可以有文件流
     private static Response postJSON(String url, JSONObject jo)
     {
-        OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, jo.toString());
         Request request = new Request.Builder()
-            .url(url)
-            .post(body)
-            .build();
+                .url(url)
+                .post(body)
+                .build();
         Response response = null;
         try {
             response = okHttpClient.newCall(request).execute();
@@ -123,8 +139,7 @@ public class Http
         }
     }
 
-    private static JSONObject postForJSONObject(String action, JSONObject jo)
-    {
+    private static JSONObject postForJSONObject(String action, JSONObject jo) {
         JSONObject joToReturn = null;
         try {
             Response response = postJSON(API_PATH + action, jo);
@@ -136,11 +151,43 @@ public class Http
                 }
             } else {
                 joToReturn.put("ok", false);
+                joToReturn.put("errMsg", "啊，服务器出错了！");
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
         return joToReturn;
+    }
+
+    private static Bitmap postForBitmap(String action, JSONObject jo)
+    {
+        String url = API_PATH + action;
+        Bitmap bitmap = null;
+
+        Response response = postJSON(url, jo);
+        if (response != null && response.isSuccessful()) {
+            InputStream is = response.body().byteStream();
+            bitmap = BitmapFactory.decodeStream(is);
+        }
+
+        return bitmap;
+    }
+
+    private static ArrayList<String> postForArrayList(String action, JSONObject jo)
+    {
+        ArrayList<String> arrayList = null;
+        String str = null;
+        try {
+            Response response = postJSON(API_PATH + action, jo);
+            if (response != null && response.isSuccessful()) {
+                JSONObject joToReturn = new JSONObject(response.body().string());
+                str = joToReturn.getString("list");
+                arrayList = new ArrayList<String>(Arrays.asList(str.split("\\,")));
+            }
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
     }
 
     private static InputStream BitmapToInputStream(Bitmap bitmap)
@@ -155,10 +202,7 @@ public class Http
 
     /**
      * 【参数】
-     * JSONObject jo = new JSONObject();
-     * jo.put("account", "...");
-     * jo.put("password", "...");
-     *
+     * account, password
      * 【返回值】
      * ok属性，通过jo.getBoolean("ok")拿到，如果是false就通过jo.getString("errMsg")拿到错误信息
      */
@@ -168,7 +212,10 @@ public class Http
     }
 
     /**
-     * 参考login
+     * 【参数】
+     * account, password
+     * 【返回值】
+     * ok
      */
     public static JSONObject register(JSONObject jo)
     {
@@ -187,7 +234,10 @@ public class Http
     }
 
     /**
-     * 参考addFollow
+     * 【参数】
+     * myAccount, otherAccount
+     * 【返回值】
+     * ok
      */
     public static JSONObject deleteFollow(JSONObject jo)
     {
@@ -196,6 +246,9 @@ public class Http
 
     /**
      * 【参数】
+     * title, author, time, labels（字符串的形式，如"movies,music"）, description, content, authority
+     * 【返回值】
+     * ok
      * jo.put("title", "第一个忆单！");
      * //jo.put("author", "a");
      * //jo.put("time", "2017-03-11");
@@ -204,7 +257,7 @@ public class Http
      * jo.put("content", "这是第一段<img1>这是第二段<img2></>");
      * jo.put("authority", "0");
      */
-    public static JSONObject addMemory(JSONObject jo, String[] imageUrls)
+    public static JSONObject addMemory(JSONObject jo, List<String> imageUrls)
     {
         String url = API_PATH + "/add-memory";
 
@@ -212,24 +265,30 @@ public class Http
 
         builder.addPart(RequestBody.create(JSON, jo.toString()));
 
-        for (int i = 0; i < imageUrls.length; ++i) {
-            File file = new File(imageUrls[i]);
-            builder.addFormDataPart(i + "", file.getName(), RequestBody.create(PNG, file));
+        int count = 0;
+        for (String imageUrl : imageUrls) {
+            File file = new File(imageUrl);
+            builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(PNG, file));
         }
 
         MultipartBody requestBody = builder.build();  // 构建请求体
 
         // 构建请求
         Request request = new Request.Builder()
-            .url(url)  // 地址
-            .post(requestBody)  // 添加请求体
-            .build();
+                .url(url)  // 地址
+                .post(requestBody)  // 添加请求体
+                .build();
 
         Response response = null;
         JSONObject joToReturn = null;
         try {
             response = okHttpClient.newCall(request).execute();
-            joToReturn = new JSONObject(response.body().string());
+            if (response != null && response.isSuccessful()) {
+                joToReturn = new JSONObject(response.body().string());
+            } else {
+                joToReturn.put("ok", false);
+                joToReturn.put("errMsg", "啊，服务器出错了！");
+            }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -237,183 +296,153 @@ public class Http
         return joToReturn;
     }
 
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("memoryId", "...");
+    /**
+     * 【参数】
+     * memoryId
+     * 【返回值】
+     * ok, title, labels（字符串，如"movies,music"）, time（忆单的时间属性，不是创建忆单的时间）, content， reviewCount（评论数目）, collectCount（被收藏数目）, likeCount（被点赞/喜欢数目）
      */
     public static JSONObject getMemory(JSONObject jo)
     {
         return postForJSONObject("/get-memory", jo);
     }
 
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("memoryId", "...");
-     jo.put("i", "0");  // 0表示第0张图片，也就是忆单的封面
-     */
-    public static Bitmap getMemoryImg(final JSONObject jo)
-    {
-        String url = API_PATH + "/get-memory-img";
-
-        Response response = postJSON(url, jo);
-        InputStream is = response.body().byteStream();
-
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-
-        // 存到缓存中
-        try {
-            String[] dirs = new String[2];
-            dirs[0] = "memorys";
-            dirs[1] = jo.getString("memoryId");
-            saveBitmapToCache(bitmap, dirs, jo.getString("i") +".png");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("account", "a");
-     */
-    public static Bitmap getUserFace(final JSONObject jo)
-    {
-        String url = API_PATH + "/get-user-face";
-
-        Response response = postJSON(url, jo);
-        InputStream is = response.body().byteStream();
-
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-
-        // 存到缓存中
-        try {
-            String[] dirs = new String[2];
-            dirs[0] = "users";
-            dirs[1] = jo.getString("faces");
-            saveBitmapToCache(bitmap, dirs, jo.getString("account") + ".png");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("account", "a");
-     */
-    public static String[] getFollowingList(JSONObject jo)
-    {
-        String url = API_PATH + "/get-following-list";
-
-        String str = null;
-        JSONObject joToReturn = null;
-        try {
-            joToReturn = new JSONObject(postJSON(url, jo).body().string());
-            str = joToReturn.getString("followingList");
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return str.split("\\,");
-    }
-
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("account", "...");
-     */
-    public static String[] getMemoryList(JSONObject jo)
-    {
-        String url = API_PATH + "/get-memory-list";
-
-        String str = null;
-        JSONObject joToReturn = null;
-        try {
-            joToReturn = new JSONObject(postJSON(url, jo).body().string());
-            str = joToReturn.getString("memoryList");
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return str.split("\\,");
-    }
-
-    /*
-     【需要的参数】
-     account
-
-     【返回的属性】
-     ok:           Boolean
-     account:      String
-     username:     String
-     introduction: String
-     birthday:     String
-     sex:          String
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ok, account, username, introduction, birthday, sex
      */
     public static JSONObject getUserInfo(JSONObject jo)
     {
         return postForJSONObject("/get-user-info", jo);
     }
 
-    /*
-     【需要的参数】
-     memoryId
-
-     【返回的属性】
-     ok
+    /**
+     * 【参数】
+     * memoryId
+     * 【返回值】
+     * ok
      */
     public static JSONObject likeMemory(JSONObject jo)
     {
         return postForJSONObject("/like-memory", jo);
     }
 
-    /*
-     【需要的参数】
-     account:      String
-     username:     String
-     introduction: String
-     birthday:     String
-     sex:          String("男"/"女")
-
-     【返回的属性】
-     ok
+    /**
+     * 【参数】
+     * account:      String
+     * username:     String
+     * introduction: String
+     * birthday:     String
+     * sex:          String("男"/"女")
+     * 【返回值】
+     * ok
      */
     public static JSONObject modifyUserInfo(JSONObject jo)
     {
         return postForJSONObject("/modify-user-info", jo);
     }
 
-    /*
-     【需要的参数】
-     account
-     memoryId
-
-     【返回的属性】
-     ok
+    /**
+     * 【参数】
+     * account
+     * memoryId
+     * 【返回值】
+     * ok
      */
     public static JSONObject collectMemory(JSONObject jo)
     {
         return postForJSONObject("/collect-memory", jo);
     }
 
-    /*
-     【需要的参数】
-     account
-
-     【返回的属性】
-     ok
-     username
-
-     【用法】 记得要在新开的线程里调用这个函数
-     JSONObject jo = new JSONObject();
-     jo.put("account", "...");
-     JSONObject result = Http.getUsername(jo);
-     if (result.getBoolean("ok")) {
-        // 成功取到用户名
-        String username = result.getString("username");
-     }
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ok, username
      */
     public static JSONObject getUsername(JSONObject jo)
     {
         return postForJSONObject("/get-username", jo);
+    }
+
+    /**
+     * 【参数】
+     * memoryId, i（该忆单的第几张图片，0表示封面，1表示正文的第一张图片）
+     * 【返回值】
+     * Bitmap（可能为null！！！）
+     */
+    public static Bitmap getMemoryImg(final JSONObject jo)
+    {
+        Bitmap bitmap = postForBitmap("/get-memory-img", jo);
+        // 存到缓存中
+        if (SAVE_TO_CACHE) {
+            try {
+                String[] dirs = new String[2];
+                dirs[0] = "memorys";
+                dirs[1] = jo.getString("memoryId");
+                saveBitmapToCache(bitmap, dirs, jo.getString("i") +".png");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
+    }
+
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * Bitmap
+     */
+    public static Bitmap getUserFace(final JSONObject jo)
+    {
+        Bitmap bitmap = postForBitmap("/get-user-face", jo);
+        // 存到缓存中
+        if (SAVE_TO_CACHE) {
+            try {
+                String[] dirs = new String[2];
+                dirs[0] = "users";
+                dirs[1] = jo.getString("faces");
+                saveBitmapToCache(bitmap, dirs, jo.getString("account") + ".png");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
+    }
+
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getFollowingList(JSONObject jo)
+    {
+        return postForArrayList("/get-following-list", jo);
+    }
+
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getMemoryList(JSONObject jo)
+    {
+        return postForArrayList("/get-memory-list", jo);
+    }
+
+    /**
+     * 【参数】
+     * account, memoryId
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getRestMemoryIds(JSONObject jo)
+    {
+        return postForArrayList("/get-rest-memory", jo);
     }
 }
