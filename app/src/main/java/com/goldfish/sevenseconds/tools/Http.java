@@ -15,6 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -246,96 +249,6 @@ public class Http
         return postForJSONObject("/get-memory", jo);
     }
 
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("memoryId", "...");
-     jo.put("i", "0");  // 0表示第0张图片，也就是忆单的封面
-     */
-    public static Bitmap getMemoryImg(final JSONObject jo)
-    {
-        String url = API_PATH + "/get-memory-img";
-
-        Response response = postJSON(url, jo);
-        InputStream is = response.body().byteStream();
-
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-
-        // 存到缓存中
-        try {
-            String[] dirs = new String[2];
-            dirs[0] = "memorys";
-            dirs[1] = jo.getString("memoryId");
-            saveBitmapToCache(bitmap, dirs, jo.getString("i") +".png");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("account", "a");
-     */
-    public static Bitmap getUserFace(final JSONObject jo)
-    {
-        String url = API_PATH + "/get-user-face";
-
-        Response response = postJSON(url, jo);
-        InputStream is = response.body().byteStream();
-
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-
-        // 存到缓存中
-        try {
-            String[] dirs = new String[2];
-            dirs[0] = "users";
-            dirs[1] = jo.getString("faces");
-            saveBitmapToCache(bitmap, dirs, jo.getString("account") + ".png");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("account", "a");
-     */
-    public static String[] getFollowingList(JSONObject jo)
-    {
-        String url = API_PATH + "/get-following-list";
-
-        String str = null;
-        JSONObject joToReturn = null;
-        try {
-            joToReturn = new JSONObject(postJSON(url, jo).body().string());
-            str = joToReturn.getString("followingList");
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return str.split("\\,");
-    }
-
-    /*
-     JSONObject jo = new JSONObject();
-     jo.put("account", "...");
-     */
-    public static String[] getMemoryList(JSONObject jo)
-    {
-        String url = API_PATH + "/get-memory-list";
-
-        String str = null;
-        JSONObject joToReturn = null;
-        try {
-            joToReturn = new JSONObject(postJSON(url, jo).body().string());
-            str = joToReturn.getString("memoryList");
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return str.split("\\,");
-    }
 
     /*
      【需要的参数】
@@ -416,4 +329,96 @@ public class Http
     {
         return postForJSONObject("/get-username", jo);
     }
+
+    /*
+     JSONObject jo = new JSONObject();
+     jo.put("memoryId", "...");
+     jo.put("i", "0");  // 0表示第0张图片，也就是忆单的封面
+     */
+    public static Bitmap getMemoryImg(final JSONObject jo)
+    {
+        String url = API_PATH + "/get-memory-img";
+
+        Response response = postJSON(url, jo);
+        InputStream is = response.body().byteStream();
+
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+        // 存到缓存中
+        try {
+            String[] dirs = new String[2];
+            dirs[0] = "memorys";
+            dirs[1] = jo.getString("memoryId");
+            saveBitmapToCache(bitmap, dirs, jo.getString("i") +".png");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    /*
+     JSONObject jo = new JSONObject();
+     jo.put("account", "a");
+     */
+    public static Bitmap getUserFace(final JSONObject jo)
+    {
+        String url = API_PATH + "/get-user-face";
+
+        Response response = postJSON(url, jo);
+        InputStream is = response.body().byteStream();
+
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+        // 存到缓存中
+        try {
+            String[] dirs = new String[2];
+            dirs[0] = "users";
+            dirs[1] = jo.getString("faces");
+            saveBitmapToCache(bitmap, dirs, jo.getString("account") + ".png");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    /*
+     JSONObject jo = new JSONObject();
+     jo.put("account", "a");
+     */
+    public static String[] getFollowingList(JSONObject jo)
+    {
+        String url = API_PATH + "/get-following-list";
+
+        String str = null;
+        JSONObject joToReturn = null;
+        try {
+            joToReturn = new JSONObject(postJSON(url, jo).body().string());
+            str = joToReturn.getString("followingList");
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        return str.split("\\,");
+    }
+
+    /*
+     JSONObject jo = new JSONObject();
+     jo.put("account", "...");
+     */
+    public static List<String> getMemoryList(JSONObject jo)
+    {
+        String url = API_PATH + "/get-memory-list";
+
+        String str = null;
+        JSONObject joToReturn = null;
+        try {
+            joToReturn = postForJSONObject(url, jo);
+            str = joToReturn.getString("list");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<String>(Arrays.asList(str.split("\\,")));
+    }
+
 }
