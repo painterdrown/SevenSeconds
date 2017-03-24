@@ -80,6 +80,80 @@ public class Http
         return response;
     }
 
+    private static JSONObject postForJSONObject(String action, JSONObject jo) {
+        JSONObject joToReturn = null;
+        try {
+            Response response = postJSON(API_PATH + action, jo);
+            if (response != null) {
+                if (response.isSuccessful()) {
+                    joToReturn = new JSONObject(response.body().string());
+                } else {
+                    joToReturn.put("ok", false);
+                }
+            } else {
+                joToReturn.put("ok", false);
+                joToReturn.put("errMsg", "啊，服务器出错了！");
+            }
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+        return joToReturn;
+    }
+
+    private static Bitmap postForBitmap(String action, JSONObject jo)
+    {
+        String url = API_PATH + action;
+        Bitmap bitmap = null;
+
+        Response response = postJSON(url, jo);
+        if (response != null && response.isSuccessful()) {
+            InputStream is = response.body().byteStream();
+            bitmap = BitmapFactory.decodeStream(is);
+        }
+
+        return bitmap;
+    }
+
+    private static JSONObject postImages(String action, JSONObject jo, List<String> imageUrls)
+    {
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+
+        builder.addPart(RequestBody.create(JSON, jo.toString()));
+
+        int count = 0;
+        for (String imageUrl : imageUrls) {
+            File file = new File(imageUrl);
+            builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(PNG, file));
+        }
+
+        MultipartBody requestBody = builder.build();  // 构建请求体
+
+        // 构建请求
+        Request request = new Request.Builder()
+                .url(API_PATH + action)  // 地址
+                .post(requestBody)  // 添加请求体
+                .build();
+
+        Response response = null;
+        JSONObject joToReturn = null;
+        try {
+            response = okHttpClient.newCall(request).execute();
+            if (response != null && response.isSuccessful()) {
+                joToReturn = new JSONObject(response.body().string());
+            } else {
+                joToReturn = new JSONObject();
+                joToReturn.put("ok", false);
+                joToReturn.put("errMsg", "服务器出错");
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return joToReturn;
+    }
+
     private static void saveInputStreamToCache(InputStream is, String[] dirs, String fileName)
     {
         // 一层一层创建文件夹
@@ -136,40 +210,6 @@ public class Http
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static JSONObject postForJSONObject(String action, JSONObject jo) {
-        JSONObject joToReturn = null;
-        try {
-            Response response = postJSON(API_PATH + action, jo);
-            if (response != null) {
-                if (response.isSuccessful()) {
-                    joToReturn = new JSONObject(response.body().string());
-                } else {
-                    joToReturn.put("ok", false);
-                }
-            } else {
-                joToReturn.put("ok", false);
-                joToReturn.put("errMsg", "啊，服务器出错了！");
-            }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        return joToReturn;
-    }
-
-    private static Bitmap postForBitmap(String action, JSONObject jo)
-    {
-        String url = API_PATH + action;
-        Bitmap bitmap = null;
-
-        Response response = postJSON(url, jo);
-        if (response != null && response.isSuccessful()) {
-            InputStream is = response.body().byteStream();
-            bitmap = BitmapFactory.decodeStream(is);
-        }
-
-        return bitmap;
     }
 
     private static ArrayList<String> postForArrayList(String action, JSONObject jo)
@@ -251,41 +291,7 @@ public class Http
      */
     public static JSONObject addMemory(JSONObject jo, List<String> imageUrls)
     {
-        String url = API_PATH + "/add-memory";
-
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-
-        builder.addPart(RequestBody.create(JSON, jo.toString()));
-
-        int count = 0;
-        for (String imageUrl : imageUrls) {
-            File file = new File(imageUrl);
-            builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(PNG, file));
-        }
-
-        MultipartBody requestBody = builder.build();  // 构建请求体
-
-        // 构建请求
-        Request request = new Request.Builder()
-                .url(url)  // 地址
-                .post(requestBody)  // 添加请求体
-                .build();
-
-        Response response = null;
-        JSONObject joToReturn = null;
-        try {
-            response = okHttpClient.newCall(request).execute();
-            if (response != null && response.isSuccessful()) {
-                joToReturn = new JSONObject(response.body().string());
-            } else {
-                joToReturn.put("ok", false);
-                joToReturn.put("errMsg", "服务器出错");
-            }
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
-        return joToReturn;
+        return postImages("/add-memory", jo, imageUrls);
     }
 
     /**
@@ -404,6 +410,19 @@ public class Http
         }
 
         return bitmap;
+    }
+
+    /**
+     * 【参数】
+     * account, 图片的Url
+     * 【返回值】
+     * ok
+     */
+    public static JSONObject setUserFace(JSONObject jo, String imageUrl)
+    {
+        List<String> list = new ArrayList<String>();
+        list.add(imageUrl);
+        return postImages("/set-user-face", jo, list);
     }
 
     /**
