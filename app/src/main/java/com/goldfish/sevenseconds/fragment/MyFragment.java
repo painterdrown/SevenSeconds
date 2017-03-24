@@ -2,6 +2,8 @@ package com.goldfish.sevenseconds.fragment;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
@@ -17,7 +20,11 @@ import com.goldfish.sevenseconds.activities.MessageActivity;
 import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.activities.SettingActivity;
 import com.goldfish.sevenseconds.activities.BarActivity;
+import com.goldfish.sevenseconds.tools.Http;
 import com.goldfish.sevenseconds.view.TurnCardListView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -27,13 +34,26 @@ public class MyFragment extends Fragment {
 
     private String name;
     private SQLiteOpenHelper dbChattingDatabaseHelper;
+    private String currentUser;
+    private Bitmap face;
+    private ImageView headPortrait;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
+        // 成功登陆的账号
+        currentUser = "a";
+
+
         View view = inflater.inflate(R.layout.fragment_my_page,container,false);
         Button myMessage = (Button) view.findViewById(R.id.myMessage);
         Button myInformation = (Button) view.findViewById(R.id.myInformation);
         Button mySetting = (Button) view.findViewById(R.id.mySetting);
         Button myFollow = (Button) view.findViewById(R.id.myFollow);
+        headPortrait = (ImageView) view.findViewById(R.id.headPortrait);
+
+        DownTask downTask = new DownTask();
+        downTask.execute("getImage");
+
 
         mySetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,12 +121,50 @@ public class MyFragment extends Fragment {
                 if (child == null) {
                     child = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_memory_item, parent, false);
                 }
-
-                //child.findViewById(R.id.image).setBackgroundColor(colors[position]);
                 return child;
             }
         });
         return view;
+    }
+
+    private String getImage() {
+        String result;
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", currentUser);
+            face = Http.getUserFace(jo);
+            if (face != null) {
+                result = "Succeed in getting face";
+            } else {
+                result = "服务器故障啦~";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "服务器故障啦~";
+        }
+        return result;
+    }
+
+
+    class DownTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result;
+            if (params[0].equals("getImage")) {
+                result = getImage();
+            } else {
+                result = params[0];
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.equals("Succeed in getting face")) {
+                headPortrait.setImageBitmap(face);
+            }
+        }
     }
 
     @Override

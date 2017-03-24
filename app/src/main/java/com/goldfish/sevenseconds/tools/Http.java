@@ -81,7 +81,7 @@ public class Http
     }
 
     private static JSONObject postForJSONObject(String action, JSONObject jo) {
-        JSONObject joToReturn = null;
+        JSONObject joToReturn = new JSONObject();
         try {
             Response response = postJSON(API_PATH + action, jo);
             if (response != null) {

@@ -91,6 +91,7 @@ public class InformationActivity extends AppCompatActivity {
     private Information information;  // 作者信息
     private Bitmap face;
     private Uri uri;
+    private String uri_str;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,16 +223,16 @@ public class InformationActivity extends AppCompatActivity {
             JSONObject jo_return = Http.modifyUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in posting information";
-                /*if (uri != null) {
+                if (uri != null) {
                     jo = new JSONObject();
                     jo.put("account", currentUser);
-                    JSONObject image_return = Http.setUserFace(jo, uri.toString());
+                    JSONObject image_return = Http.setUserFace(jo, uri_str);
                     if (image_return.getBoolean("ok")) {
                         result = "Succeed in posting information";
                     } else {
                         result = "头像设置出错！";
                     }
-                }*/
+                }
             } else{
                 result = jo_return.getString("errMsg");
             }
@@ -387,6 +388,7 @@ public class InformationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             List<String> pathList = data.getStringArrayListExtra(ImgSelActivity.INTENT_RESULT);
+            uri_str = pathList.get(0);
             uri = Uri.parse("file://"+ pathList.get(0));
             DownTask getImage = new DownTask();
             getImage.execute("getImage");
