@@ -2,7 +2,6 @@ package com.goldfish.sevenseconds.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,15 +113,15 @@ public class Http
         return bitmap;
     }
 
-    private static JSONObject postImages(String action, JSONObject jo, List<URI> imageUris)
+    private static JSONObject postImages(String action, JSONObject jo, List<String> imageUrls)
     {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         builder.addPart(RequestBody.create(JSON, jo.toString()));
 
         int count = 0;
-        for (URI imageUri : imageUris) {
-            File file = new File(imageUri);
+        for (String imageUrl : imageUrls) {
+            File file = new File(imageUrl);
             builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(PNG, file));
         }
 
@@ -288,9 +286,9 @@ public class Http
      * 【返回值】
      * ok
      */
-    public static JSONObject addMemory(JSONObject jo, List<URI> imageUris)
+    public static JSONObject addMemory(JSONObject jo, List<String> imageUrls)
     {
-        return postImages("/add-memory", jo, imageUris);
+        return postImages("/add-memory", jo, imageUrls);
     }
 
     /**
@@ -417,10 +415,10 @@ public class Http
      * 【返回值】
      * ok
      */
-    public static JSONObject setUserFace(JSONObject jo, URI imageUri)
+    public static JSONObject setUserFace(JSONObject jo, String url)
     {
-        List<URI> list = new ArrayList<URI>();
-        list.add(imageUri);
+        List<String> list = new ArrayList<String>();
+        list.add(url);
         return postImages("/set-user-face", jo, list);
     }
 
