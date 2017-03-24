@@ -206,6 +206,7 @@ public class Addmem extends AppCompatActivity {
             ImageView imageView = new ImageView(this);
             imageView.setImageBitmap(bitmap);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
             //contents.addView(imageView);
         }else {
             Toast.makeText(Addmem.this,"无法选取图片", LENGTH_SHORT).show();
