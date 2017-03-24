@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,10 +104,9 @@ public class Http
 
     private static Bitmap postForBitmap(String action, JSONObject jo)
     {
-        String url = API_PATH + action;
         Bitmap bitmap = null;
 
-        Response response = postJSON(url, jo);
+        Response response = postJSON(API_PATH + action, jo);
         if (response != null && response.isSuccessful()) {
             InputStream is = response.body().byteStream();
             bitmap = BitmapFactory.decodeStream(is);
@@ -114,17 +115,15 @@ public class Http
         return bitmap;
     }
 
-    private static JSONObject postImages(String action, JSONObject jo, List<String> imageUrls)
+    private static JSONObject postImages(String action, JSONObject jo, List<URI> imageUris)
     {
-        OkHttpClient okHttpClient = new OkHttpClient();
-
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         builder.addPart(RequestBody.create(JSON, jo.toString()));
 
         int count = 0;
-        for (String imageUrl : imageUrls) {
-            File file = new File(imageUrl);
+        for (URI imageUri : imageUris) {
+            File file = new File(imageUri);
             builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(PNG, file));
         }
 
@@ -289,9 +288,9 @@ public class Http
      * 【返回值】
      * ok
      */
-    public static JSONObject addMemory(JSONObject jo, List<String> imageUrls)
+    public static JSONObject addMemory(JSONObject jo, List<URI> imageUris)
     {
-        return postImages("/add-memory", jo, imageUrls);
+        return postImages("/add-memory", jo, imageUris);
     }
 
     /**
@@ -414,14 +413,14 @@ public class Http
 
     /**
      * 【参数】
-     * account, 图片的Url
+     * account, 图片的URI
      * 【返回值】
      * ok
      */
-    public static JSONObject setUserFace(JSONObject jo, String imageUrl)
+    public static JSONObject setUserFace(JSONObject jo, URI imageUri)
     {
-        List<String> list = new ArrayList<String>();
-        list.add(imageUrl);
+        List<URI> list = new ArrayList<URI>();
+        list.add(imageUri);
         return postImages("/set-user-face", jo, list);
     }
 
