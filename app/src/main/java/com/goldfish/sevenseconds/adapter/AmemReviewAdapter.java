@@ -8,12 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.activities.MemorySheetActivity;
-import com.goldfish.sevenseconds.activities.MemorySheetOthersActivity;
-import com.goldfish.sevenseconds.activities.MemorySheetReviewActivity;
 import com.goldfish.sevenseconds.item.AmemReviewItem;
 
 import java.io.ByteArrayInputStream;

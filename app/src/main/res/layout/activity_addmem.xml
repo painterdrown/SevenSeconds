@@ -21,25 +21,20 @@
         android:layout_below="@+id/admem_title"
         app:tag_layout="@layout/view_sample_tag"
         app:input_layout="@layout/view_sample_input_tag"/>
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/add_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/admem_edit_tag"
+        android:layout_above="@+id/add_pic">
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/admem_edit_tag"
-            android:layout_above="@+id/add_pic"
-            android:id="@+id/add_contents">
-        <LinearLayout
-            android:id="@+id/ll_channel_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/content_1"
-                android:hint="添加你的回忆..."/>
-        </LinearLayout>
+            android:hint="添加回忆内容..."
+            android:id="@+id/addtext1"
+            />
+    </LinearLayout>
 
-    </ScrollView>
 
     <Button
         android:id="@+id/add_pic"

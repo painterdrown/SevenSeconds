@@ -20,10 +20,10 @@ import java.util.List;
  * Created by lenovo on 2017/3/5.
  */
 
-public class MemorySheetReviewActivity extends AppCompatActivity {
+public class MemoryReviewActivity extends AppCompatActivity {
 
     private List<AmemReviewItem> reviewItemList = new ArrayList<>();
-    public static MemorySheetReviewActivity memorySheetReviewActivity;
+    public static MemoryReviewActivity memoryReviewActivity;
     private RecyclerView recyclerView;
 
     protected void onCreate(Bundle saveInstanceState) {
@@ -31,7 +31,7 @@ public class MemorySheetReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_amem_review);
         initReview();
         recyclerView = (RecyclerView) findViewById(R.id.amem_review_layout);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MemorySheetReviewActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MemoryReviewActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         AmemReviewAdapter adapter = new AmemReviewAdapter(reviewItemList);
         recyclerView.setAdapter(adapter);

@@ -37,22 +37,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.BarActivity" />
-        <activity android:name=".activities.MemorySheetActivity" />
+        <activity android:name=".activities.MemoryActivity" />
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.SettingActivity" />
-        <activity android:name=".activities.InformationActivity" />
         <activity android:name=".activities.MessageActivity" />
         <activity android:name=".activities.MyFollowActicity" />
-        <activity
-            android:name=".activities.PhotographActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
-        <activity android:name=".activities.SelectPhotoActivity" />
         <activity android:name=".activities.UserHomePageActivity" />
-        <activity android:name=".activities.MemorySheetReviewActivity" />
-        <activity android:name=".activities.MemorySheetOthersActivity" />
-        <activity android:name="com.yuyh.library.imgsel.ImgSelActivity" />
-        <activity android:name=".activities.Addmem"></activity>
+        <activity android:name=".activities.MemoryReviewActivity" />
+        <activity android:name=".activities.Addmem" />
+        <activity android:name=".activities.InformationActivity" />
     </application>
 
 </manifest>

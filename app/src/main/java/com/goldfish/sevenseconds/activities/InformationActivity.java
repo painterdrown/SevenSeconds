@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,21 +74,29 @@ public class InformationActivity extends AppCompatActivity {
     private SQLiteDatabase db;            // 数据库
     private DownTask downTask;
 
+    private RelativeLayout setNameLayout;
+    private RelativeLayout setSexLayout;
+    private RelativeLayout setFaceLayout;
+    private RelativeLayout setDateLayout;
+    private ImageView back;
+
     private TextView setName;           // 设置昵称
     private TextView setSex;            // 设置性别
     private TextView setDate;           // 设置生日
     private ImageView setUserFace;      // 头像
     private EditText setIntroduction;  // 设置个人简介
     private Button confirm;             // 确认修改
+    private TextView setAccount;
 
     private Information information;  // 作者信息
     private Bitmap face;
     private Uri uri;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
-        setContentView(R.layout.activity_information);
+        setContentView(R.layout.activity_set_information);
 
         // 得到MyPage操作的当前用户账号
         Intent getCurrentUser = getIntent();
@@ -97,44 +108,53 @@ public class InformationActivity extends AppCompatActivity {
         information.setAccount(currentUser);
 
         // 获得各种按钮
-        confirm = (Button) findViewById(R.id.confirm);
-        setName = (TextView) findViewById(R.id.username);
-        setSex = (TextView) findViewById(R.id.select_sex);
-        setUserFace = (ImageView) findViewById(R.id.user_face);
-        setDate = (TextView) findViewById(R.id.select_birthday);
-        setIntroduction = (EditText) findViewById(R.id.introduction);
+        confirm = (Button) findViewById(R.id.set_info_save);
+        setName = (TextView) findViewById(R.id.set_name);
+        setSex = (TextView) findViewById(R.id.set_sex);
+        setUserFace = (ImageView) findViewById(R.id.set_face);
+        setDate = (TextView) findViewById(R.id.set_birthday);
+        setIntroduction = (EditText) findViewById(R.id.set_introduction);
+        setNameLayout = (RelativeLayout) findViewById(R.id.set_name_layout);
+        setSexLayout = (RelativeLayout) findViewById(R.id.set_sex_layout);
+        setDateLayout = (RelativeLayout) findViewById(R.id.set_birthday_layout);
+        setFaceLayout = (RelativeLayout) findViewById(R.id.set_face_layout);
+        back = (ImageView) findViewById(R.id.set_info_back);
+        setAccount = (TextView) findViewById(R.id.user_account);
 
         downTask = new DownTask();
         downTask.execute("getUserInfo");
 
-        setName.setOnClickListener(new View.OnClickListener() {
+        setNameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeNickname(); }
         });
-
-        setUserFace.setOnClickListener(new View.OnClickListener() {
+        setFaceLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeFace(); }
         });
-
-        setSex.setOnClickListener(new View.OnClickListener() {
+        setSexLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { changeSex(); }
         });
-
-        setDate.setOnClickListener(new View.OnClickListener() {
+        setDateLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onYearMonthDayPicker(v);
             }
         });
-
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmInformationChanged();
             }
         });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        setAccount.setText(currentUser);
     }
 
     // 对界面进行初始化
@@ -174,15 +194,10 @@ public class InformationActivity extends AppCompatActivity {
             JSONObject jo_return = Http.getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 information.setName(jo_return.getString("username"));
-                information.setIntroduction("1234");
-                information.setBirthday("1997-01-02");
-                //information.setIntroduction(jo_return.getString("introduction"));
-                //information.setBirthday(jo_return.getString("birthday"));
+                information.setIntroduction(jo_return.getString("introduction"));
+                information.setBirthday(jo_return.getString("birthday"));
                 information.setSex(jo_return.getString("sex"));
-                Resources res = getResources();
-                Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-                face = bmp;
-                //face = Http.getUserFace(jo);
+                face = Http.getUserFace(jo);
                 result = "Succeed in getting information";
             } else{
                 result = "获取用户信息失败 TAT";
@@ -207,8 +222,18 @@ public class InformationActivity extends AppCompatActivity {
             JSONObject jo_return = Http.modifyUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in posting information";
+                /*if (uri != null) {
+                    jo = new JSONObject();
+                    jo.put("account", currentUser);
+                    JSONObject image_return = Http.setUserFace(jo, uri.toString());
+                    if (image_return.getBoolean("ok")) {
+                        result = "Succeed in posting information";
+                    } else {
+                        result = "头像设置出错！";
+                    }
+                }*/
             } else{
-                result = "设置用户信息失败 TAT";
+                result = jo_return.getString("errMsg");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -267,17 +292,18 @@ public class InformationActivity extends AppCompatActivity {
             if (s.equals("Succeed in getting information")) {
                 DownTask store = new DownTask();
                 store.execute("storeInLocal");
-                initializeInfo();
             }
             else if (s.equals("Succeed in posting information")) {
-                DownTask store = new DownTask();
-                store.execute("storeInLocal");
+                Toast.makeText(InformationActivity.this, s, Toast.LENGTH_SHORT).show();
             }
             else if (s.equals("Succeed in getting image")){
                 setUserFace.setImageBitmap(face);
                 if (face.isRecycled()) {
                     face.recycle();
                 }
+            }
+            else if (s.equals("Succeed in storing")) {
+                initializeInfo();
             }
             else {
                 Toast.makeText(InformationActivity.this, s, Toast.LENGTH_SHORT).show();
@@ -455,10 +481,10 @@ public class InformationActivity extends AppCompatActivity {
         information.setIntroduction(setIntroduction.getText().toString());
         information.setFace(os.toByteArray());
 
+        db.close();
+
         downTask = new DownTask();
         downTask.execute("setUserInfo");
-
-        db.close();
         finish();
     }
 

@@ -15,7 +15,7 @@ import com.andview.refreshview.recyclerview.BaseRecyclerAdapter;
 import com.goldfish.sevenseconds.tools.DensityUtil;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.BarActivity;
-import com.goldfish.sevenseconds.activities.MemorySheetActivity;
+import com.goldfish.sevenseconds.activities.MemoryActivity;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             @Override
             public void onClick(View view) {
                 MemorySheetPreview now = list.get(position);
-                Intent intent = new Intent(BarActivity.barActivity,MemorySheetActivity.class);
+                Intent intent = new Intent(BarActivity.barActivity,MemoryActivity.class);
                 intent.putExtra("images",now.getImageid());
                 intent.putExtra("name",now.getName());
                 intent.putExtra("contents",now.getContents());

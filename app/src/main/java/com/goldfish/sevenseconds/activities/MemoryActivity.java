@@ -2,35 +2,27 @@ package com.goldfish.sevenseconds.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.MemoryContext;
-import com.goldfish.sevenseconds.bean.MemorySheet;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
 import com.goldfish.sevenseconds.service.NetWorkUtils;
 import com.goldfish.sevenseconds.tools.Http;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.ResponseCache;
 import java.util.ArrayList;
 
 import okhttp3.FormBody;
@@ -39,7 +31,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MemorySheetActivity extends AppCompatActivity {
+public class MemoryActivity extends AppCompatActivity {
 
     /**
      *  TitleBar
@@ -128,12 +120,12 @@ public class MemorySheetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && titleBarFinished) {
-                    Intent intent = new Intent(MemorySheetActivity.this,
+                    Intent intent = new Intent(MemoryActivity.this,
                             UserHomePageActivity.class);
                     startActivity(intent);
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -149,7 +141,7 @@ public class MemorySheetActivity extends AppCompatActivity {
                     downTask.execute("Follow");
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -165,7 +157,7 @@ public class MemorySheetActivity extends AppCompatActivity {
                     downTask.execute("Unfollow");
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -190,11 +182,11 @@ public class MemorySheetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    Intent intent = new Intent(MemorySheetActivity.this, MemorySheetReviewActivity.class);
+                    Intent intent = new Intent(MemoryActivity.this, MemoryReviewActivity.class);
                     startActivity(intent);
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -210,7 +202,7 @@ public class MemorySheetActivity extends AppCompatActivity {
                     downTask.execute("Show in my favorites");
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -222,10 +214,10 @@ public class MemorySheetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    Toast.makeText(MemorySheetActivity.this, "该功能敬请期待！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MemoryActivity.this, "该功能敬请期待！", Toast.LENGTH_SHORT).show();
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -266,7 +258,7 @@ public class MemorySheetActivity extends AppCompatActivity {
                     downTask.execute("Like the memory");
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemorySheetActivity.this,
+                    Toast.makeText(MemoryActivity.this,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -518,7 +510,7 @@ public class MemorySheetActivity extends AppCompatActivity {
             else if (result.equals("Succeed in following")) { refreshFollowButton(); }
             else if (result.equals("Succeed in unfollowing")) { refreshUnfollowButton(); }
             else {
-                Toast.makeText(MemorySheetActivity.this, result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MemoryActivity.this, result, Toast.LENGTH_SHORT).show();
             }
         }
 
