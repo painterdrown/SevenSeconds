@@ -12,28 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/admem_toolbar"
-        android:id="@+id/admem_title"
+        android:id="@+id/a_mem_title"
         android:hint="回忆标题..."/>
     <me.originqiu.library.EditTag
         android:id="@+id/admem_edit_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/admem_title"
+        android:layout_below="@+id/a_mem_title"
         app:tag_layout="@layout/view_sample_tag"
         app:input_layout="@layout/view_sample_input_tag"/>
-    <LinearLayout
-        android:id="@+id/add_contents"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/admem_edit_tag"
-        android:layout_above="@+id/add_pic">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="添加回忆内容..."
-            android:id="@+id/addtext1"
-            />
-    </LinearLayout>
 
 
     <Button
@@ -62,5 +49,19 @@
             android:text="添加忆单"
             android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/add_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/admem_edit_tag"
+        android:layout_above="@+id/add_pic"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <com.sendtion.xrichtext.RichTextEditor
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/admem_content"/>
+    </LinearLayout>
 
 </RelativeLayout>

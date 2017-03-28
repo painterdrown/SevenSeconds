@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_tag">#E0E0E0</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="dark_clr">#333333</color>
+    <declare-styleable name="EditTag"><attr format="reference" name="tag_layout"/><attr format="reference" name="input_layout"/><attr format="reference" name="delete_mode_bg"/></declare-styleable>
+    <string name="app_name">library</string>
+</resources>

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/amem_add"
+        android:id="@+id/a_mem_add"
         android:title="发布"
         app:showAsAction="always"
         tools:ignore="AppCompatResource" />

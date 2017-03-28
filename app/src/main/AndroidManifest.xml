@@ -36,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.Addmem" />
         <activity android:name=".activities.BarActivity" />
         <activity android:name=".activities.MemoryActivity" />
         <activity android:name=".activities.RegisterActivity" />
@@ -44,7 +45,6 @@
         <activity android:name=".activities.MyFollowActicity" />
         <activity android:name=".activities.UserHomePageActivity" />
         <activity android:name=".activities.MemoryReviewActivity" />
-        <activity android:name=".activities.Addmem" />
         <activity android:name=".activities.InformationActivity" />
     </application>
 
