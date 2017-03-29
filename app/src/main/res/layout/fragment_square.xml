@@ -1,8 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0000"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/container">
 
     <com.andview.refreshview.XRefreshView
         android:layout_width="match_parent"
@@ -14,4 +15,4 @@
             android:layout_height="match_parent"
             android:id="@+id/mem_list"></android.support.v7.widget.RecyclerView>
     </com.andview.refreshview.XRefreshView>
-</LinearLayout>
+</RelativeLayout>
