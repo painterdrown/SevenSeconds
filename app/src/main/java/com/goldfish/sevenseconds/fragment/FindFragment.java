@@ -50,7 +50,7 @@ public class FindFragment extends Fragment {
         }*/
 
         /* creat the timeline view */
-        mOrientation = Orientation.vertical;
+        mOrientation = Orientation.horizontal;
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(getLinearLayoutManager());
         mRecyclerView.setHasFixedSize(true);

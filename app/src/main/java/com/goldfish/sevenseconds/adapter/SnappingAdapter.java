@@ -18,10 +18,10 @@ import java.util.StringTokenizer;
 
 public class SnappingAdapter extends RecyclerView.Adapter<SnappingAdapter.SimpleItemViewHolder>{
     // id in list
-    private final List<String> memids;
+    private final List<String> items;
 
     public SnappingAdapter(List<String> ids) {
-        memids = ids;
+        items = ids;
     }
     @Override
     public SimpleItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -1,6 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:padding="5dp"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="35dp"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@drawable/memory_test"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/memory_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="第一次因为动漫哭泣"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:maxLines="1"/>
+        <TextView
+            android:id="@+id/memory_context"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:gravity="left"
+            android:text="第一次看one piece泪牛满面，是因为感动。没错没错，最坏的时代，才有最好的感情。可即使流泪，有会随伙伴们胜率的喜悦又哭又笑..."
+            android:textColor="#333333"
+            android:textSize="17dp"
+            android:maxLines="2"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_gravity="right|bottom"
+        android:layout_height="50dp"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/lightgray"
+            android:text="#动漫 #海贼王"
+            android:layout_marginRight="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/app_icon"
+                android:layout_gravity="right"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/textView4"
+                android:layout_toStartOf="@+id/textView4" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/app_icon"
+                    />
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:text="99+" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/app_icon"
+                    android:layout_gravity="right" />
+
+
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:textSize="15dp"
+                    android:text="99+" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
