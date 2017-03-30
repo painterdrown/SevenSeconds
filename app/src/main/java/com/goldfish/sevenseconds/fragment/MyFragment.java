@@ -172,6 +172,13 @@ public class MyFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        DownTask downTask = new DownTask();
+        downTask.execute("getImage");
+    }
+
     public static MyFragment newInstance(String libargument) {
         Bundle bundle = new Bundle();
         MyFragment mm = new MyFragment();

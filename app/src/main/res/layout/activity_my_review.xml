@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#d8e0e8"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:background="#FFFEF4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/square_toolbar"
@@ -13,15 +13,15 @@
         android:background="@color/khaki"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
         <ImageView
-            android:id="@+id/my_follow_back"
+            android:id="@+id/my_review_back"
             android:layout_marginLeft="20dp"
             android:src="@drawable/ic_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/my_follow_title"
-            android:text="我的关注"
+            android:id="@+id/my_review_title"
+            android:text="我的评论"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,8 +30,10 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_follow"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:id="@+id/my_review_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

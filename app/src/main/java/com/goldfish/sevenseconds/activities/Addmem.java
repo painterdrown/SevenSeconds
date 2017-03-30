@@ -117,10 +117,10 @@ public class Addmem extends AppCompatActivity {
                 jsonObject.put("title",up_title);
                 List<LastUser> lastUsers = DataSupport.findAll(LastUser.class);
                 LastUser user = lastUsers.get(0);
-                JSONObject jsonObjectinfo = new JSONObject();
+                /*JSONObject jsonObjectinfo = new JSONObject();
                 jsonObjectinfo.put("account",user.getName());
-                JSONObject userinfo = getUserInfo(jsonObjectinfo);
-                jsonObject.put("author",userinfo.getString("username"));
+                JSONObject userinfo = getUserInfo(jsonObjectinfo);*/
+                jsonObject.put("author",user.getName());
                 SimpleDateFormat    formatter    =   new SimpleDateFormat("yyyy年MM月dd日    HH:mm:ss     ");
                 Date    curDate    =   new Date(System.currentTimeMillis());//获取当前时间
                 String    str    =    formatter.format(curDate);
@@ -128,7 +128,7 @@ public class Addmem extends AppCompatActivity {
                 jsonObject.put("description",up_contents.substring(0,(up_contents.length()<1000)?up_contents.length():200));
                 jsonObject.put("content",up_contents);
                 jsonObject.put("labels",up_tags);
-                jsonObject.put("authority",userinfo.getString("username"));
+                jsonObject.put("authority", 1);
                 JSONObject retob;
                 retob = addMemory(jsonObject,addimages);
                 re = retob.getBoolean("ok");

@@ -196,7 +196,7 @@ public class InformationActivity extends AppCompatActivity {
             if (jo_return.getBoolean("ok")) {
                 information.setName(jo_return.getString("username"));
                 information.setIntroduction(jo_return.getString("introduction"));
-                information.setBirthday(jo_return.getString("birthday"));
+                information.setBirthday(jo_return.getString("birthday").substring(0, 10));
                 information.setSex(jo_return.getString("sex"));
                 face = Http.getUserFace(jo);
                 result = "Succeed in getting information";

@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.bean.Information;
@@ -49,6 +51,14 @@ public class MyFollowActicity extends AppCompatActivity {
 
         // test
         myAccount = "a";
+
+        ImageView back = (ImageView) findViewById(R.id.my_follow_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         initMyFollowItem();
     }
@@ -92,37 +102,37 @@ public class MyFollowActicity extends AppCompatActivity {
         String result = "获取关注列表失败TAT";
         for (int i = 0; i < myFollow.size(); i++) {
             try {
-                JSONObject jo = new JSONObject();
-                jo.put("account", myFollow.get(i));
-                JSONObject jo_return = Http.getUserInfo(jo);
-                if (!jo_return.getBoolean("ok")) {
-                    result = "获取关注列表失败TAT";
-                    break;
-                } else {
-                    MyFollowItem myFollowItem = new MyFollowItem();
-                    myFollowItem.setName(jo_return.getString("username"));
-                    myFollowItem.setAccount(jo_return.getString("account"));
+                if (!myFollow.get(i).equals("")) {
+                    JSONObject jo = new JSONObject();
+                    jo.put("account", myFollow.get(i));
+                    JSONObject jo_return = Http.getUserInfo(jo);
+                    if (!jo_return.getBoolean("ok")) {
+                        result = "获取关注列表失败TAT";
+                        break;
+                    } else {
+                        MyFollowItem myFollowItem = new MyFollowItem();
+                        myFollowItem.setName(jo_return.getString("username"));
+                        myFollowItem.setAccount(jo_return.getString("account"));
 
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();//初始化一个流对象
-                    /*myFollowItem.setIntroduction(jo_return.getString("introduction"));
-                    Bitmap userface = Http.getUserFace(jo);
+                        ByteArrayOutputStream output = new ByteArrayOutputStream();//初始化一个流对象
+                        myFollowItem.setIntroduction(jo_return.getString("introduction"));
+                        Bitmap userface = Http.getUserFace(jo);
+                        userface.compress(Bitmap.CompressFormat.PNG, 100, output);//把bitmap100%高质量压缩 到 output对象里
+                        userface.recycle(); //自由选择是否进行回收
+                        myFollowItem.setFace(output.toByteArray()); //转换成功了
 
+                        /*myFollowItem.setIntroduction("test");
+                        Resources res = getResources();
+                        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
+                        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+                        myFollowItem.setFace(output.toByteArray());*/
 
-                    userface.compress(Bitmap.CompressFormat.PNG, 100, output);//把bitmap100%高质量压缩 到 output对象里
-                    userface.recycle(); //自由选择是否进行回收
-                    myFollowItem.setFace(output.toByteArray()); //转换成功了*/
-
-                    myFollowItem.setIntroduction("test");
-                    Resources res = getResources();
-                    Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
-                    myFollowItem.setFace(output.toByteArray());
-
-                    followItemList.add(myFollowItem);
-                    try {
-                        output.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        followItemList.add(myFollowItem);
+                        try {
+                            output.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 result = "Succeed in getting follows";
