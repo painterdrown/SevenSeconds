@@ -50,26 +50,8 @@ public class FindFragment extends Fragment {
         }*/
 
         /* creat the timeline view */
-        mOrientation = Orientation.horizontal;
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(getLinearLayoutManager());
-        mRecyclerView.setHasFixedSize(true);
-        initTimeLineView();
 
-        RecyclerViewInSideBar = (RecyclerView) view.findViewById(R.id.recyclerViewInSideBar);
-        RecyclerViewInSideBar.setLayoutManager(getLinearLayoutManager());
-        RecyclerViewInSideBar.setHasFixedSize(true);
-        initTimeLineViewInSideBar();
-        /*drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
-                    //indicator.setProgress(slideOffset);
-                }
-            }
-        });*/
+
         return view;
     }
     @Override
@@ -82,40 +64,6 @@ public class FindFragment extends Fragment {
         Bundle bundle = new Bundle();
         FindFragment mm = new FindFragment();
         return mm;
-    }
-    private LinearLayoutManager getLinearLayoutManager() {
-
-        if (mOrientation == Orientation.horizontal) {
-
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            return linearLayoutManager;
-        } else {
-
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
-            return linearLayoutManager;
-        }
-
-    }
-    private void initTimeLineView() {
-
-        for(int i = 0;i <20;i++) {
-            TimeLineModel model = new TimeLineModel();
-            model.setName("Random"+i);
-            model.setAge(i);
-            mDataList.add(model);
-        }
-        mTimeLineAdapter = new TimeLineAdapter(mDataList, mOrientation);
-        mRecyclerView.setAdapter(mTimeLineAdapter);
-    }
-    private void initTimeLineViewInSideBar(){
-        for(int i = 0;i <20;i++) {
-            TimeLineModel model = new TimeLineModel();
-            model.setName("Random"+i);
-            model.setAge(i);
-            mDataList.add(model);
-        }
-        mTimeLineSideBarAdapter = new TimeLineSideBarAdapter(mDataList, mOrientation);
-        RecyclerViewInSideBar.setAdapter(mTimeLineSideBarAdapter);
     }
 }
 

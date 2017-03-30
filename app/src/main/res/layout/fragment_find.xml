@@ -1,133 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:id="@+id/activity_main"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:paddingBottom="@dimen/activity_vertical_margin"
-android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
->
-
-
-    <com.github.mzule.fantasyslide.FantasyDrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawerLayout"
+    android:orientation="vertical"
+    android:weightSum="1">
+    <android.support.v7.widget.CardView
+    android:id="@+id/search_box_collapsed"
+    app:cardBackgroundColor="#EEEEEE"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top"
+    android:layout_marginTop="15dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    android:layout_marginLeft="50dp"
+    android:layout_marginRight="50dp">
+        <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:orientation="horizontal" >
+            <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search"/>
+            <EditText
+            android:id="@+id/search_expanded_edit_text"
+            android:layout_width="300dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:background="@null"
+            android:hint="大头"
+            android:textColorHint="@color/black"
+            android:inputType="textFilter"
+            android:maxLines="1"
+            android:imeOptions="actionSearch" />
+        </LinearLayout>
 
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="年代"
+            android:textSize="30dp"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="输入你要搜索的"
-                android:ems="10"
-                android:id="@+id/SearcheditText"
-                android:layout_below="@+id/SearchtextView"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:text="搜索："
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/SearchtextView"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/SearcheditText"
-                android:layout_toLeftOf="@+id/SearcheditText" />
-
+            android:layout_height="wrap_content">
             <Button
-                android:text="精选"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/Chosen"
-                android:layout_marginLeft="29dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="14dp"
-                android:layout_below="@+id/SearcheditText"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true" />
-
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"/>
             <Button
-                android:text="热门"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="34dp"
-                android:id="@+id/HotTopic"
-                android:layout_marginEnd="46dp"
-                android:layout_alignBaseline="@+id/Chosen"
-                android:layout_alignBottom="@+id/Chosen"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="46dp"
-                android:layout_alignParentRight="true" />
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:clipToPadding="false"
-                android:layout_marginTop="57dp"
-                android:layout_below="@+id/Chosen"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
-
-        <com.github.mzule.fantasyslide.SideBar
-            android:id="@+id/leftSideBar"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/color_white"
-            app:maxTranslationX="66dp">
-
-            <!-- 这里是 SideBar 的子视图-->
-            <LinearLayout
-                android:id="@+id/userInfo"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="年代"
+            android:textSize="30dp"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00年代"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </LinearLayout>
 
-                <com.goldfish.sevenseconds.view.CircleImageView
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/icon"
-                    app:civ_border_color="@color/colorPrimary"
-                    app:civ_border_width="2dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="mzule"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerViewInSideBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:clipToPadding="false"
-                    android:layout_marginTop="57dp"
-                    android:layout_below="@+id/Chosen"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
-
-            </LinearLayout>
-
-
-        </com.github.mzule.fantasyslide.SideBar>
-        <!-- 如果需要的话，可以添加右侧边栏-->
-    </com.github.mzule.fantasyslide.FantasyDrawerLayout>
-</RelativeLayout>
+</LinearLayout>
 
 
 
