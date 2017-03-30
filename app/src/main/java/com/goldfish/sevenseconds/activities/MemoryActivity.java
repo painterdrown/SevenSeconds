@@ -42,7 +42,6 @@ public class MemoryActivity extends AppCompatActivity {
     private Button unFollowIt;
     private ImageView userFace;
     private TextView userName;
-    private TextView userIntroduction;
 
     // 数据
     private TitleBarInfo titleBarInfo;
@@ -62,8 +61,8 @@ public class MemoryActivity extends AppCompatActivity {
      *  Context
      */
     // 控件
-    private RelativeLayout contextCover;
-    private RelativeLayout contextLabel;
+    private ImageView contextCover;
+    private TextView contextLabel;
     private TextView contextTitle;
     private TextView contextTime;
     private ImageView likeMemory;
@@ -104,7 +103,6 @@ public class MemoryActivity extends AppCompatActivity {
         userInfo = (RelativeLayout) findViewById(R.id.amem_title_info);
         userFace = (ImageView) findViewById(R.id.amem_title_face);
         userName = (TextView) findViewById(R.id.amem_title_name);
-        userIntroduction = (TextView) findViewById(R.id.amem_title_intro);
 
         // 数据
         titleBarFinished = false;
@@ -168,8 +166,8 @@ public class MemoryActivity extends AppCompatActivity {
          *  底部导航栏
          */
         barEdit = (TextView) findViewById(R.id.nav_bar_edit);
-        barMsg = (ImageView) findViewById(R.id.nav_bar_msg);
-        barShare = (ImageView) findViewById(R.id.nav_bar_share);
+        barMsg = (ImageView) findViewById(R.id.nav_bar_review);
+        barShare = (ImageView) findViewById(R.id.nav_bar_add);
         barLike = (ImageView) findViewById(R.id.nav_bar_like);
         navBarFinished = false;
 
@@ -235,11 +233,10 @@ public class MemoryActivity extends AppCompatActivity {
         /**
          * 忆单主体内容
          */
-        contextCover = (RelativeLayout) findViewById(R.id.amem_cover);
-        contextLabel = (RelativeLayout) findViewById(R.id.amem_label_layout);
-        contextTitle = (TextView) findViewById(R.id.memorysheet_title);
-        contextTime = (TextView) findViewById(R.id.memorysheet_time);
-        likeMemory = (ImageView) findViewById(R.id.amem_like_image_icon);
+        contextCover = (ImageView) findViewById(R.id.amem_cover);
+        contextLabel = (TextView) findViewById(R.id.amem_label);
+        contextTitle = (TextView) findViewById(R.id.amem_title);
+        contextTime = (TextView) findViewById(R.id.amem_time);
 
         // 数据
         memoryContext = new MemoryContext();
@@ -439,7 +436,6 @@ public class MemoryActivity extends AppCompatActivity {
     // 更新标题栏的UI
     private void refreshTitleBarUI() {
         userName.setText(titleBarInfo.getName());
-        userIntroduction.setText(titleBarInfo.getIntroduction());
         userFace.setImageBitmap(titleBarInfo.getFace());
         titleBarFinished = true;
         if (hadFollowed) {

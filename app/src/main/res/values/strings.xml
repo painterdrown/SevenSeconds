@@ -13,7 +13,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-
     <string name="app_name">SevenSeconds</string>
     <string name="user_face">userFace</string>
     <string name="sex">性别：</string>
@@ -40,4 +39,5 @@
     <string name="open_camera_failure">打开相机失败</string>
     <string name="permission_storage_denied">请打开存储空间权限</string>
     <string name="permission_camera_denied">请打开相机权限</string>
+
 </resources>

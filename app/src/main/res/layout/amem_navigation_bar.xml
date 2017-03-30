@@ -2,7 +2,8 @@
 <com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="50dp"
+    android:background="@color/shellowyellow">
 
     <TextView
         android:id="@+id/nav_bar_edit"
@@ -13,7 +14,7 @@
         android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="写点评论吧..."
+        android:text="留下你的足迹"
         android:background="@drawable/nav_bar_edit_bg"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -29,32 +30,35 @@
         android:layout_margin="10dp">
 
         <ImageView
-            android:id="@+id/nav_bar_msg"
-            android:src="@drawable/navigation_message"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:id="@+id/nav_bar_add"
+            android:src="@drawable/ic_add_box_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
+            android:alpha="0.4"
             android:layout_alignParentBottom="true"/>
 
         <ImageView
             android:id="@+id/nav_bar_like"
-            android:layout_toRightOf="@id/nav_bar_msg"
-            android:src="@drawable/navigation_star"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_toRightOf="@+id/nav_bar_add"
+            android:src="@drawable/ic_sentiment_very_satisfied_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
+            android:alpha="0.4"
             android:layout_alignParentBottom="true"/>
 
         <ImageView
-            android:id="@+id/nav_bar_share"
-            android:src="@drawable/navigation_share"
-            android:layout_toRightOf="@id/nav_bar_like"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="20dp"
+            android:id="@+id/nav_bar_review"
+            android:src="@drawable/ic_comment_black_24dp"
+            android:layout_toRightOf="@+id/nav_bar_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:layout_marginLeft="15dp"
+            android:alpha="0.4"
             android:layout_alignParentBottom="true"/>
 
     </com.zhy.android.percent.support.PercentRelativeLayout>

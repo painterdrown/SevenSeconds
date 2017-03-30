@@ -9,6 +9,7 @@
     <color name="lemonchiffon">#fffacd</color><!--柠檬绸色 -->
     <color name="cornsilk">#fff8dc</color><!--米绸色 -->
     <color name="seaShell">#fff5ee</color><!--海贝色 -->
+    <color name="shellowyellow">#FFF573</color><!--浅黄色-->
     <color name="lavenderblush">#fff0f5</color><!--淡紫红 -->
     <color name="papayawhip">#ffefd5</color><!--番木色 -->
     <color name="blanchedalmond">#ffebcd</color><!--白杏色 -->
@@ -23,6 +24,7 @@
     <color name="orange">#ffa500</color><!--橙色 -->
     <color name="lightsalmon">#ffa07a</color><!--亮肉色 -->
     <color name="darkorange">#ff8c00</color><!--暗桔黄色 -->
+    <color name="lightorange">#ff8900</color>
     <color name="coral">#ff7f50</color><!--珊瑚色 -->
     <color name="hotpink">#ff69b4</color><!--热粉红色 -->
     <color name="tomato">#ff6347</color><!--西红柿色 -->
@@ -46,6 +48,7 @@
     <color name="honeydew">#f0fff0</color><!--蜜色 -->
     <color name="aliceblue">#f0f8ff</color><!--艾利斯兰 -->
     <color name="khaki">#f0e68c</color><!--黄褐色 -->
+    <color name="darkyellow">#EDE03B</color>
     <color name="lightcoral">#f08080</color><!--亮珊瑚色 -->
     <color name="palegoldenrod">#eee8aa</color><!--苍麒麟色 -->
     <color name="violet">#ee82ee</color><!--紫罗兰色 -->

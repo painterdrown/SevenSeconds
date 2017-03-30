@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="50dp">
 
     <RelativeLayout
         android:id="@+id/amem_title_info"
@@ -13,11 +13,11 @@
             android:id="@+id/amem_title_face"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/app_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
         <RelativeLayout
             android:layout_centerVertical="true"
@@ -27,23 +27,11 @@
 
             <TextView
                 android:id="@+id/amem_title_name"
-                android:layout_marginTop="3dp"
                 android:text="穿睡服的金鱼"
-                android:textSize="10.5sp"
+                android:textSize="13sp"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/amem_title_intro"
-                android:layout_below="@+id/amem_title_name"
-                android:layout_marginTop="3dp"
-                android:ellipsize="end"
-                android:textSize="10.5sp"
-                android:text="中山大学/深圳高级中学啊啊啊啊啊啊啊啊"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:maxEms="15"/>
 
         </RelativeLayout>
 
@@ -56,9 +44,9 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:text=" + 关注"
+        android:text="关注"
         android:layout_width="55dp"
-        android:layout_height="30dp"
+        android:layout_height="24dp"
         android:visibility="visible"/>
 
     <Button
@@ -70,7 +58,7 @@
         android:layout_marginRight="20dp"
         android:text="已关注"
         android:layout_width="55dp"
-        android:layout_height="30dp"
+        android:layout_height="24dp"
         android:visibility="gone"/>
 
 </RelativeLayout>
