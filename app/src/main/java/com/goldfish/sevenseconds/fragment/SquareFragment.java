@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshViewFooter;
@@ -112,11 +113,13 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
                 }, 1000);
             }
         });
+
         RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.container);
         ArrayList<String> strings = new ArrayList<>();
         Collections.addAll(strings, TEST_STRINGS);
         mAdapter = new SimpleAdapter(strings);
-        RecyclerView SnappingSwipingrecyclerView = new SnappingSwipingViewBuilder(view.getContext())
+        //recyclerView
+        recyclerView= new SnappingSwipingViewBuilder(view.getContext())
                 .setAdapter(mAdapter)
                 .setHeadTailExtraMarginDp(17F)
                 .setItemMarginDp(8F, 20F, 8F, 20F)
@@ -124,9 +127,9 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
                 .setSnapMethod(SnappyLinearLayoutManager.SnappyLinearSmoothScroller.SNAP_CENTER)
                 .build();
         if (rl != null) {
-            SnappingSwipingrecyclerView.setLayoutParams(new ViewGroup.MarginLayoutParams(
+            recyclerView.setLayoutParams(new ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            rl.addView(SnappingSwipingrecyclerView);
+            rl.addView(recyclerView);
         }
         return view;
     }
@@ -155,9 +158,12 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
     }
     @Override
     public void onSwipe(RecyclerView rv, int adapterPosition, float dy) {
+        Toast.makeText(this.getContext(), "xxx", Toast.LENGTH_LONG);
         mAdapter.removeItem(adapterPosition);
         rv.invalidateItemDecorations();
     }
+
+    //SimpleViewHolder
     class SimpleViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView mTextView;
@@ -167,6 +173,7 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
             mTextView = itemView;
         }
     }
+    //SimpleAdapter
     class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
         private final List<String> mDataSet;
 
