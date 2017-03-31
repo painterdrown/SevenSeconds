@@ -304,6 +304,28 @@ public class Http
 
     /**
      * 【参数】
+     * memoryId, account, content
+     * 【返回值】
+     * ok
+     */
+    public static JSONObject addComment(JSONObject jo)
+    {
+        return postForJSONObject("/add-comment", jo);
+    }
+
+    /**
+     * 【参数】
+     * commentId
+     * 【返回值】
+     * ok, account, time（字符串）, content
+     */
+    public static JSONObject getComment(JSONObject jo)
+    {
+        return postForJSONObject("/get-comment", jo);
+    }
+
+    /**
+     * 【参数】
      * account
      * 【返回值】
      * ok, account, username, introduction, birthday, sex
@@ -453,5 +475,16 @@ public class Http
     public static ArrayList<String> getRestMemoryIds(JSONObject jo)
     {
         return postForArrayList("/get-rest-memory-list", jo);
+    }
+
+    /**
+     * 【参数】
+     * memoryId
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getCommentList(JSONObject jo)
+    {
+        return postForArrayList("/get-comment-list", jo);
     }
 }
