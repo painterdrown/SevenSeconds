@@ -5,19 +5,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp">
+    android:layout_margin="10dp">
 
     <com.goldfish.sevenseconds.view.CircleImageView
         android:id="@+id/amem_review_face"
         android:src="@drawable/app_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginRight="10dp"/>
 
     <RelativeLayout
         android:id="@+id/amem_review_info"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_toRightOf="@+id/amem_review_face">
 
         <TextView
@@ -44,11 +44,12 @@
             android:layout_toLeftOf="@+id/amem_review_like_text"
             android:textSize="15sp"
             android:layout_alignParentBottom="true"/>
-        <TextView
+        <ImageView
             android:id="@+id/amem_review_like_text"
             android:layout_alignParentRight="true"
-            android:text="赞"
+            android:src="@drawable/ic_sentiment_very_satisfied_black_24dp"
             android:textSize="15sp"
+            android:alpha="0.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

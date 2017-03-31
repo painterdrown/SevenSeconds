@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
 import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
+import com.goldfish.sevenseconds.item.AmemReviewItem;
 import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.service.NetWorkUtils;
@@ -66,7 +69,7 @@ public class MemoryActivity extends AppCompatActivity {
     private TextView barEdit;
     private ImageView barMsg;
     private ImageView barLike;
-    private ImageView barShare;
+    private ImageView barAdd;
 
     /**
      *  Context
@@ -77,7 +80,10 @@ public class MemoryActivity extends AppCompatActivity {
     private TextView contextTitle;
     private TextView contextTime;
     private ImageView likeMemory;
-    private RelativeLayout contextMain;
+    private LinearLayout contextMain;
+    private ArrayList<Integer> image;
+    private ArrayList<Integer> imagePosition;
+    private Bitmap[] bitImages;
 
     // 数据
     private MemoryContext memoryContext;
@@ -105,6 +111,12 @@ public class MemoryActivity extends AppCompatActivity {
     private int currentVisibleItem;
     private String[] months = { "Nov" ,"Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec", "Jan", "Feb" };
 
+    /*
+    ** 评论区
+     */
+    private List<AmemReviewItem> reviewItemList = new ArrayList<>();
+    private RecyclerView recyclerViewReview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +129,7 @@ public class MemoryActivity extends AppCompatActivity {
         // 测试临时个人账户和忆单的作者账户
         myAccount = "a";
         memAccount = "b";
-        memID = "1490948766965";
+        memID = "1490970285323";
 
         /*
         ** 时间轴
@@ -247,7 +259,7 @@ public class MemoryActivity extends AppCompatActivity {
          */
         barEdit = (TextView) findViewById(R.id.nav_bar_edit);
         barMsg = (ImageView) findViewById(R.id.nav_bar_review);
-        barShare = (ImageView) findViewById(R.id.nav_bar_add);
+        barAdd = (ImageView) findViewById(R.id.nav_bar_add);
         barLike = (ImageView) findViewById(R.id.nav_bar_like);
         navBarFinished = false;
 
@@ -259,9 +271,22 @@ public class MemoryActivity extends AppCompatActivity {
         barMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (navBarFinished) {
+                    TextView textView = (TextView) findViewById(R.id.amem_review_title1);
+                    textView.setFocusableInTouchMode(false);
+                    textView.setFocusableInTouchMode(true);
+                    textView.requestFocus();
+                }
+            }
+        });
+
+        // 点赞
+        barLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    Intent intent = new Intent(MemoryActivity.this, MemoryReviewActivity.class);
-                    startActivity(intent);
+                    downTask = new DownTask();
+                    downTask.execute("Like the memory");
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
                     Toast.makeText(MemoryActivity.this,
@@ -272,27 +297,12 @@ public class MemoryActivity extends AppCompatActivity {
         });
 
         // 添加到我的收藏
-        barLike.setOnClickListener(new View.OnClickListener() {
+        barAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
                     downTask = new DownTask();
                     downTask.execute("Show in my favorites");
-                }
-                else if (NetWorkUtils.getAPNType(context) == 0) {
-                    Toast.makeText(MemoryActivity.this,
-                            "哎呀~网络连接有问题！",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // 分享
-        barShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    Toast.makeText(MemoryActivity.this, "该功能敬请期待！", Toast.LENGTH_SHORT).show();
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
                     Toast.makeText(MemoryActivity.this,
@@ -317,7 +327,7 @@ public class MemoryActivity extends AppCompatActivity {
         contextLabel = (TextView) findViewById(R.id.amem_label);
         contextTitle = (TextView) findViewById(R.id.amem_title);
         contextTime = (TextView) findViewById(R.id.amem_time);
-        contextMain = (RelativeLayout) findViewById(R.id.amem_main_context);
+        contextMain = (LinearLayout) findViewById(R.id.amem_main_context);
 
         // 数据
         memoryContext = new MemoryContext();
@@ -358,30 +368,17 @@ public class MemoryActivity extends AppCompatActivity {
     private String likeTheMemory() {
         String result;
         try {
-            RequestBody requestBody = new FormBody.Builder()
-                    .add("myUsername", myAccount)
-                    .add("otherUsername", memAccount)
-                    .add("memoryId", memID).build();
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request
-                    .Builder()
-                    .url("http://139.199.158.84:3000/api/likeMemSheet")
-                    .post(requestBody).build();
-            Response response = null;
-            response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                String responseData = response.body().string();
-                JSONObject jsonObject = new JSONObject(responseData);
-                if (jsonObject.getBoolean("ok")) {
-                    result = "点赞成功！";
-                } else {
-                    result = jsonObject.getString("errMsg");
-                }
-            } else {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            JSONObject jo_return = Http.likeMemory(jo);
+            if (jo_return.getBoolean("ok")) {
+                result = "Succeed in like memory";
+            }
+            else {
                 result = "failed";
             }
         }
-        catch (IOException | JSONException e) {
+        catch (JSONException e) {
             e.printStackTrace();
             result = "failed";
         }
@@ -526,7 +523,7 @@ public class MemoryActivity extends AppCompatActivity {
                 memoryContext.setCover(Http.getMemoryImg(jo));
                 result = "Succeed in context";
             } else {
-                result = "加载忆单出错";
+                result = jo_return.getString("errMsg");
             }
         }
         catch (JSONException e) {
@@ -571,7 +568,7 @@ public class MemoryActivity extends AppCompatActivity {
         String mainContext = memoryContext.getContext();
         String[] text = new String[100];
         int textCount = 0;
-        ArrayList<Integer> image = new ArrayList<Integer>();
+        image = new ArrayList<Integer>();
         int imageCount = 0;
         String temp;
         String tempImage;
@@ -617,17 +614,61 @@ public class MemoryActivity extends AppCompatActivity {
             }
             pos1 = pos2 + 1;
         }
-        /*int imageViewCount = 0;
-        int textViewCount = 0;
-        for (int i = 0; i < text.length; i++) {
+        imagePosition = new ArrayList<>();
+        for (int i = 0; i < textCount; i++) {
             if (text[i].equals("<img>")) {
                 ImageView img = new ImageView(this);
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, 200);
-                img.setId(imageViewCount + 100);
-                img.setImageResource(R.drawable.memory_test);
-
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.bottomMargin = 10;
+                imagePosition.add(i);
+                img.setId(i);
+                img.setImageResource(R.drawable.app_icon);
+                img.setLayoutParams(lp);
+                img.setAdjustViewBounds(true);
+                img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                contextMain.addView(img);
+            } else {
+                TextView textView = new TextView(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.bottomMargin = 10;
+                textView.setId(i);
+                textView.setText(text[i]);
+                textView.setLayoutParams(lp);
+                contextMain.addView(textView);
             }
-        }*/
+        }
+        downTask = new DownTask();
+        downTask.execute("getMemoryImg");
+    }
+
+    private String getMemoryImg() {
+        String result = "获取图片失败";
+        bitImages = new Bitmap[image.size()];
+        for (int i = 0; i < image.size(); i++) {
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("memoryId", memID);
+                jo.put("i", image.get(i));
+                Bitmap temp = Http.getMemoryImg(jo);
+                if (temp != null) {
+                    bitImages[i] = temp;
+                    result = "Succeed in getting memory images";
+                } else {
+                    result = "获取图片失败";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                result = "获取图片失败";
+            }
+        }
+        return result;
+    }
+
+    private void refreshMemoryImages() {
+        for (int i = 0; i < imagePosition.size(); i++) {
+            ImageView imageView = (ImageView) contextMain.findViewById(imagePosition.get(i));
+            imageView.setImageBitmap(bitImages[i]);
+        }
     }
 
     // 更新关注按钮
@@ -663,6 +704,7 @@ public class MemoryActivity extends AppCompatActivity {
             else if (params[0].equals("titleBar")) { result = titleBar(); }
             else if (params[0].equals("navBar")) { result = navBar(); }
             else if (params[0].equals("getContext")) { result = getMemoryContext(); }
+            else if (params[0].equals("getMemoryImg")) { result = getMemoryImg(); }
             return result;
         }
 
@@ -678,6 +720,7 @@ public class MemoryActivity extends AppCompatActivity {
             else if (result.equals("Succeed in context")) { refreshContext(); }
             else if (result.equals("Succeed in following")) { refreshFollowButton(); }
             else if (result.equals("Succeed in unfollowing")) { refreshUnfollowButton(); }
+            else if (result.equals("Succeed in getting memory images")) { refreshMemoryImages();}
             else {
                 Toast.makeText(MemoryActivity.this, result, Toast.LENGTH_SHORT).show();
             }
