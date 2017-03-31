@@ -487,4 +487,15 @@ public class Http
     {
         return postForArrayList("/get-comment-list", jo);
     }
+
+    /**
+     * 【参数】
+     * query（要查询的字符串）
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> searchMemorys(JSONObject jo)
+    {
+        return postForArrayList("/search-memorys", jo);
+    }
 }
