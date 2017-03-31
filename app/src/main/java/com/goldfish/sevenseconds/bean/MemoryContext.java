@@ -17,6 +17,15 @@ public class MemoryContext {
     private int likeCount;
     private boolean ok;
     private String errMsg;
+    private String context;
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
 
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;

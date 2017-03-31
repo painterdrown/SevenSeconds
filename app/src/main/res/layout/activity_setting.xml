@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/square_toolbar"
+        android:id="@+id/setting_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/khaki"
@@ -30,6 +30,7 @@
 
     <ListView
         android:id="@+id/mySetting"
+        android:layout_below="@+id/setting_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </ListView>

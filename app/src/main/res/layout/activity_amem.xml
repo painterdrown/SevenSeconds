@@ -45,8 +45,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/next_year"
+                android:text="1999"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/last_year"
+                android:text="1997"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_timeline"
+                android:layout_below="@id/next_year"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <com.goldfish.sevenseconds.view.AmemTitle
                 android:id="@+id/amem_titlebar"
+                android:layout_below="@+id/my_timeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -122,8 +146,17 @@
                             android:layout_height="wrap_content"
                             android:visibility="visible"/>
 
-                        <TextView
+                        <RelativeLayout
                             android:id="@+id/amem_main_context"
+                            android:layout_below="@+id/amem_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp">
+                        </RelativeLayout>
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/amem_main_context1"
                             android:layout_below="@+id/amem_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -121,9 +121,9 @@ public class Addmem extends AppCompatActivity {
                 jsonObjectinfo.put("account",user.getName());
                 JSONObject userinfo = getUserInfo(jsonObjectinfo);*/
                 jsonObject.put("author",user.getName());
-                SimpleDateFormat    formatter    =   new SimpleDateFormat("yyyy年MM月dd日    HH:mm:ss     ");
-                Date    curDate    =   new Date(System.currentTimeMillis());//获取当前时间
-                String    str    =    formatter.format(curDate);
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                String str = formatter.format(curDate);
                 jsonObject.put("time",str);
                 jsonObject.put("description",up_contents.substring(0,(up_contents.length()<1000)?up_contents.length():200));
                 jsonObject.put("content",up_contents);

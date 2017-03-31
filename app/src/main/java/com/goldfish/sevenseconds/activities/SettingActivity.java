@@ -57,6 +57,12 @@ public class SettingActivity extends AppCompatActivity {
                     Intent intent = new Intent(SettingActivity.this,LogActivity.class);
                     setingActivity.startActivity(intent);
                 }
+                if (position == 0) {
+                    Intent intent = new Intent(SettingActivity.this, MemoryActivity.class);
+                    intent.putExtra("account", "a");
+                    intent.putExtra("memoryID", "b");
+                    startActivity(intent);
+                }
             }
         });
 

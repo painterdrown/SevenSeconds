@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="35dp">
+
+
+    <com.goldfish.sevenseconds.view.TimelineView
+        app:line_orientation="horizontal"
+        android:id="@+id/amem_timeline"
+        android:layout_width="110dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        app:line_size="1dp"
+        app:marker_size="11.5dp"
+        app:line="@color/lightgray"
+        app:marker="@drawable/my_timeline_marker"/>
+
+    <TextView
+        android:id="@+id/my_timeline_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sep"
+        android:layout_gravity="center"/>
+
+</LinearLayout>
