@@ -31,6 +31,8 @@ import SnappingSwipingRecyclerView.SnappingSwipingViewBuilder;
 import SnappingSwipingRecyclerView.SnappyLinearLayoutManager;
 import SnappingSwipingRecyclerView.SwipeGestureHelper;
 
+import static com.andview.refreshview.R.styleable.XRefreshView;
+
 /**
  * Created by zzz87 on 2017/2/23.
  */
@@ -45,6 +47,13 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
     private RecyclerView recyclerView;
     private Http http = new Http();
     XRefreshView xRefreshView;
+
+
+
+
+
+
+
     private int mLoadCount = 0;
 
     public void Exception(){
@@ -114,7 +123,7 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
             }
         });
 
-        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.container);
+        /*RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.container);
         ArrayList<String> strings = new ArrayList<>();
         Collections.addAll(strings, TEST_STRINGS);
         mAdapter = new SimpleAdapter(strings);
@@ -130,7 +139,7 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
             recyclerView.setLayoutParams(new ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             rl.addView(recyclerView);
-        }
+        }*/
         return view;
     }
     @Override
