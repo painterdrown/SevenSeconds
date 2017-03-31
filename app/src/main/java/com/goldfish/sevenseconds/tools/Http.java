@@ -452,6 +452,6 @@ public class Http
      */
     public static ArrayList<String> getRestMemoryIds(JSONObject jo)
     {
-        return postForArrayList("/get-rest-memory", jo);
+        return postForArrayList("/get-rest-memory-list", jo);
     }
 }
