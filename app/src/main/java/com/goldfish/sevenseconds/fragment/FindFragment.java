@@ -1,6 +1,8 @@
 package com.goldfish.sevenseconds.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,12 +10,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.BarActivity;
+import com.goldfish.sevenseconds.activities.SearchActivity;
 import com.goldfish.sevenseconds.adapter.TimeLineAdapter;
 import com.goldfish.sevenseconds.adapter.TimeLineSideBarAdapter;
 import com.goldfish.sevenseconds.item.Orientation;
@@ -34,7 +42,7 @@ public class FindFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView RecyclerViewInSideBar;
     private Orientation mOrientation;
-
+    private SearchView mSearchView;
     private List<TimeLineModel> mDataList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
@@ -50,8 +58,31 @@ public class FindFragment extends Fragment {
         }*/
 
         /* creat the timeline view */
+        mSearchView = (SearchView) view.findViewById(R.id.search);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //搜索
+                Toast.makeText(getContext(), "你搜索了" + query, Toast.LENGTH_LONG).show();
+                mSearchView.clearFocus();
+                searchfor(query);
+                return true;
+            }
 
-
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //文本改变
+                Toast.makeText(getContext(), "文本改变了" + newText, Toast.LENGTH_LONG);
+                return false;
+            }
+        });
+        Button btn1 = (Button) view.findViewById(R.id.year00);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Toast.makeText(getContext(), "xxx", Toast.LENGTH_LONG);
+            }
+        });
         return view;
     }
     @Override
@@ -65,6 +96,14 @@ public class FindFragment extends Fragment {
         FindFragment mm = new FindFragment();
         return mm;
     }
+
+    public void searchfor(String query){
+        Intent intent = new Intent(BarActivity.barActivity, SearchActivity.class);
+        intent.putExtra("querydata", query);
+        startActivity(intent);
+    }
+
+
 }
 
 

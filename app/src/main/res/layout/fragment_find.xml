@@ -1,78 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:id="@+id/activity_main"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1">
-    <android.support.v7.widget.CardView
-    android:id="@+id/search_box_collapsed"
-    app:cardBackgroundColor="#EEEEEE"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="top"
-    android:layout_marginTop="15dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    android:layout_marginLeft="50dp"
-    android:layout_marginRight="50dp">
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:orientation="horizontal" >
-            <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/search"/>
-            <EditText
-            android:id="@+id/search_expanded_edit_text"
-            android:layout_width="300dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:background="@null"
-            android:hint="大头"
-            android:textColorHint="@color/black"
-            android:inputType="textFilter"
-            android:maxLines="1"
-            android:imeOptions="actionSearch" />
-        </LinearLayout>
+    android:weightSum="1"
+    android:background="@color/white">
 
-    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="大头"
+        android:id="@+id/search"
+        android:layout_gravity="top"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:iconifiedByDefault="false"
+        android:inputType="textFilter"
+        android:maxLines="1"
+        android:imeOptions="actionSearch">
+
+    </android.support.v7.widget.SearchView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="年代"
-            android:textSize="30dp"
+            android:textSize="20dp"
+            android:textColor="#ff9519"
             />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="【00年代】"
                 android:textSize="15dp"
+                android:id="@+id/year00"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:layout_marginLeft="10dp"
+                android:text="【90年代】"
                 android:textSize="15dp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
@@ -80,45 +67,59 @@ android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:text="【80年代】"
                 android:textSize="15dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:layout_marginLeft="10dp"
+                android:text="【70年代】"
                 android:textSize="15dp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="年代"
-            android:textSize="30dp"
+            android:text="类别"
+            android:textSize="20dp"
+            android:textColor="#ff9519"
             />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:text="【游戏】"
                 android:textSize="15dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:layout_marginLeft="10dp"
+                android:text="【动漫】"
                 android:textSize="15dp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
@@ -126,15 +127,21 @@ android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:text="【影视】"
                 android:textSize="15dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:layout_marginLeft="10dp"
+                android:text="【体育】"
                 android:textSize="15dp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
@@ -142,15 +149,21 @@ android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:text="【音乐】"
                 android:textSize="15dp"
+                android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="00年代"
+                android:layout_marginLeft="10dp"
+                android:text="【童趣】"
                 android:textSize="15dp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
