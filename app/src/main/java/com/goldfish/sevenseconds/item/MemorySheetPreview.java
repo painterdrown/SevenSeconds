@@ -6,7 +6,7 @@ package com.goldfish.sevenseconds.item;
 
 public class MemorySheetPreview {
 
-    private String name;
+    private String title;
     private int imageid;
     private String contents;
     // 记录忆单成员的账号
@@ -14,14 +14,14 @@ public class MemorySheetPreview {
     // 记录忆单的ID
     private String memoryID;
 
-    public MemorySheetPreview(String name, int id, String contents, String account, String memoryID){
-        this.name = name;
+    public MemorySheetPreview(String title, int id, String contents, String account, String memoryID){
+        this.title = title;
         this.imageid = id;
         this.contents = contents;
         this.account = account;
         this.memoryID = memoryID;
     }
-    public String getName(){return this.name;}
+    public String getTitle(){return this.title;}
     public int getImageid(){return this.imageid;}
     public String getContents(){return this.contents;}
 

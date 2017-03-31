@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
 import com.goldfish.sevenseconds.tools.Http;
@@ -37,8 +39,8 @@ import static com.andview.refreshview.R.styleable.XRefreshView;
  * Created by zzz87 on 2017/2/23.
  */
 
-public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwipeListener{
-    private SimpleAdapter mAdapter;
+public class SquareFragment extends Fragment{
+    //private SimpleAdapter mAdapter;
     static final String[] TEST_STRINGS = {"ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX",
             "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE"};
 
@@ -80,8 +82,10 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
         adapter = new MemAdapter(memlist,view.getContext());
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(view.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
 
         xRefreshView.setPinnedTime(1000);
         xRefreshView.setMoveForHorizontal(true);
@@ -161,10 +165,11 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
     }
     private void initMem(){
         for (int i = 0;i < 10; i++){
-            MemorySheetPreview apple = new MemorySheetPreview("apple",R.drawable.apple_pic,"fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuck", "zhangziyang", "1");
-            memlist.add(apple);
+            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1");
+            memlist.add(memex);
         }
     }
+    /*
     @Override
     public void onSwipe(RecyclerView rv, int adapterPosition, float dy) {
         Toast.makeText(this.getContext(), "xxx", Toast.LENGTH_LONG);
@@ -182,6 +187,7 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
             mTextView = itemView;
         }
     }
+
     //SimpleAdapter
     class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
         private final List<String> mDataSet;
@@ -247,5 +253,5 @@ public class SquareFragment extends Fragment implements SwipeGestureHelper.OnSwi
         public int getItemCount() {
             return mDataSet.size();
         }
-    }
+    }*/
 }

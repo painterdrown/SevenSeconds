@@ -27,19 +27,19 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     public static class memViewHolder extends RecyclerView.ViewHolder {
 
         public View memView;
-        public TextView name;
+        public TextView title;
         public TextView contents;
-        public ImageView userhead;
+        public ImageView bkg;
         public int position;
 
         public memViewHolder(View itemView, boolean isItem) {
             super(itemView);
             if (isItem) {
-                this.name = (TextView) itemView
-                        .findViewById(R.id.name);
+                this.title = (TextView) itemView
+                        .findViewById(R.id.premem_title);
                 this.contents = (TextView) itemView
-                        .findViewById(R.id.contents);
-                this.userhead = (ImageView) itemView.findViewById(R.id.user_head);
+                        .findViewById(R.id.premem_contents);
+                this.bkg = (ImageView) itemView.findViewById(R.id.premem_bgr);
                 this.memView = itemView.findViewById(R.id.card_view);
             }
         }
@@ -62,9 +62,9 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     @Override
     public void onBindViewHolder(final memViewHolder holder, final int position, boolean isItem) {
         MemorySheetPreview now = list.get(position);
-        holder.name.setText(now.getName());
+        holder.title.setText(now.getTitle());
         holder.contents.setText(now.getContents());
-        holder.userhead.setImageResource(now.getImageid());
+        holder.bkg.setImageResource(now.getImageid());
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
             holder.memView.getLayoutParams().height = position % 2 != 0 ? largeCardHeight : smallCardHeight;
@@ -75,7 +75,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
                 MemorySheetPreview now = list.get(position);
                 Intent intent = new Intent(BarActivity.barActivity,MemoryActivity.class);
                 intent.putExtra("images",now.getImageid());
-                intent.putExtra("name",now.getName());
+                intent.putExtra("name",now.getTitle());
                 intent.putExtra("contents",now.getContents());
                 intent.putExtra("account", now.getAccount());
                 intent.putExtra("memoryID", now.getMemoryID());

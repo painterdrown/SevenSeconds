@@ -1,40 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
+<RelativeLayout android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="187dp"
+    android:layout_height="425dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.widget.CardView android:id="@+id/card_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
     android:layout_gravity="center"
+    android:layout_centerInParent="true"
     card_view:cardBackgroundColor="@android:color/white"
     card_view:cardCornerRadius="8dp"
-    android:layout_margin="5dp"
-    android:paddingBottom="5dp"
     card_view:cardElevation="4dp"
-    >
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/memlist_recyler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="15dp">
-        <ImageView
-            android:id="@+id/user_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:id="@+id/memlist_recyler"
+            android:layout_width="255dp"
+            android:layout_height="425dp"
+            android:orientation="vertical"
+            android:padding="15dp">
+            <ImageView
+                android:id="@+id/premem_bgr"
+                android:layout_width="255dp"
+                android:layout_height="150dp"/>
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            <TextView
+                android:layout_below="@+id/premem_bgr"
+                android:id="@+id/premem_title"
+                android:textAlignment="center"
+                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/contents"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:textSize="20sp" />
-    </LinearLayout>
+            <TextView
+                android:layout_below="@+id/premem_title"
+                android:id="@+id/premem_contents"
+                android:layout_width="197.5dp"
+                android:layout_height="123dp"
+                android:layout_centerInParent="true"
+                android:paddingLeft="5dp"
+                android:textSize="13sp" />
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="+"
+                android:textSize="12sp"
+                android:layout_alignParentBottom="true"/>
+            <ImageView
+                android:layout_alignParentBottom="true"
 
-</android.support.v7.widget.CardView>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/app_icon"
+                android:layout_toLeftOf="@+id/premem_like_num"
+                android:id="@+id/premem_like" />
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/premem_like_num"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/premem_com"
+                android:text="99+" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/app_icon"
+                android:id="@+id/premem_com"
+                android:layout_toLeftOf="@+id/premem_com_num"
+                android:layout_alignParentBottom="true"/>
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/premem_com_num"
+                android:textSize="15dp"
+                android:textColor="#a6a6a6"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:text="99+" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
