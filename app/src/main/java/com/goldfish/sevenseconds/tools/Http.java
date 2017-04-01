@@ -498,4 +498,48 @@ public class Http
     {
         return postForArrayList("/search-memorys", jo);
     }
+
+    /**
+     * 【参数】
+     * memoryId
+     * 【返回值】
+     * ok, count
+     */
+    public static JSONObject getCommentCount(JSONObject jo)
+    {
+        return postForJSONObject("/get-comment-count", jo);
+    }
+
+    /**
+     * 【参数】
+     * memoryId
+     * 【返回值】
+     * ok, count
+     */
+    public static JSONObject getLikeCount(JSONObject jo)
+    {
+        return postForJSONObject("/get-like-count", jo);
+    }
+
+    /**
+     * 【参数】
+     * account, memoryId
+     * 【返回值】
+     * ok
+     */
+    public static JSONObject ifLikeMemory(JSONObject jo)
+    {
+        return postForJSONObject("/if-like-memory", jo);
+    }
+
+    /**
+     * 【参数】
+     * account, memoryId
+     * 【返回值】
+     * ok
+     */
+    public static JSONObject ifCollectMemory(JSONObject jo)
+    {
+        return postForJSONObject("/if-collect-memory", jo);
+    }
 }
