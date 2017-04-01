@@ -542,4 +542,15 @@ public class Http
     {
         return postForJSONObject("/if-collect-memory", jo);
     }
+
+    /**
+     * 【参数】
+     * （不需要参数）
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> searchMemorys(JSONObject jo)
+    {
+        return postForArrayList("/get-all-memory-list", jo);
+    }
 }
