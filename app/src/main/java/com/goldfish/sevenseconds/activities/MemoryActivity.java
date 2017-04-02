@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.adapter.AmemReviewAdapter;
 import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
 import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
@@ -29,10 +32,12 @@ import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.service.NetWorkUtils;
 import com.goldfish.sevenseconds.tools.Http;
+import com.goldfish.sevenseconds.view.ReviewDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,6 +121,8 @@ public class MemoryActivity extends AppCompatActivity {
      */
     private List<AmemReviewItem> reviewItemList = new ArrayList<>();
     private RecyclerView recyclerViewReview;
+    private String editContext;
+    private ReviewDialog reviewDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -312,11 +319,23 @@ public class MemoryActivity extends AppCompatActivity {
             }
         });
 
+
+        reviewDialog = new ReviewDialog(context);
         // 编辑评论
         barEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (navBarFinished) { }
+                if (navBarFinished) {
+                    reviewDialog.show();
+                    reviewDialog.setClickListenerInterface(new ReviewDialog.ClickListenerInterface() {
+                        @Override
+                        public void doConfirm() {
+                            editContext = reviewDialog.getEdit();
+                            downTask = new DownTask();
+                            downTask.execute("deliverReview");
+                        }
+                    });
+                }
             }
         });
 
@@ -336,6 +355,33 @@ public class MemoryActivity extends AppCompatActivity {
         // 加载忆单主体内容
         downTask = new DownTask();
         downTask.execute("getContext");
+
+        // 加载评论区
+        downTask = new DownTask();
+        downTask.execute("getReview");
+    }
+
+    private void initReview() {
+        /*Resources res = getResources();
+        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+        for (int i = 0; i < 2; i++) {
+            AmemReviewItem amemReviewItem = new AmemReviewItem(os.toByteArray(),
+                    "穿睡服的金鱼", "这周APP上线啦，今晚整合",
+                    "2017-2-24", "noend22", "100");
+            reviewItemList.add(amemReviewItem);
+        }*/
+        recyclerViewReview = (RecyclerView) findViewById(R.id.amem_review_layout);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MemoryActivity.this);
+        recyclerViewReview.setLayoutManager(layoutManager);
+        AmemReviewAdapter adapter = new AmemReviewAdapter(reviewItemList);
+        recyclerViewReview.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void initView() {
@@ -549,7 +595,7 @@ public class MemoryActivity extends AppCompatActivity {
         navBarFinished = true;
     }
 
-    // 更新忆单内容UI (待完成导航栏UI)
+    // 更新忆单内容UI
     private void refreshContext() {
         contextTitle.setText(memoryContext.getTitle());
         contextTime.setText(memoryContext.getTime());
@@ -683,6 +729,90 @@ public class MemoryActivity extends AppCompatActivity {
         followIt.setVisibility(View.VISIBLE);
     }
 
+    // 发表评论
+    private String deliverReview() {
+        String result = "Failed in deliver review";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            jo.put("account", myAccount);
+            jo.put("content", editContext);
+            JSONObject jo_return = Http.addComment(jo);
+            if (jo_return.getBoolean("ok")) {
+                result = "Succeed in deliver review";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 更新评论
+    private void refreshMemoryReview() {
+        reviewDialog.setEditText("");
+        reviewDialog.dismiss();
+        reviewItemList.clear();
+        downTask = new DownTask();
+        downTask.execute("getReview");
+    }
+
+    // 更新所有评论
+    private void refreshAllReview() {
+        initReview();
+    }
+
+    // 获取评论
+    private String getReview() {
+        String result = "Failed in getting review";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            ArrayList<String> commentList = Http.getCommentList(jo);
+            if (!commentList.isEmpty()) {
+                for (int i = 0; i < commentList.size(); i++) {
+                    if (!commentList.get(i).isEmpty()) {
+                        jo = new JSONObject();
+                        jo.put("commentId", commentList.get(i));
+                        JSONObject jo_return = Http.getComment(jo);
+                        if (jo_return.getBoolean("ok")) {
+                            jo = new JSONObject();
+                            jo.put("account", jo_return.getString("account"));
+                            JSONObject user_return = Http.getUserInfo(jo);
+                            if (user_return.getBoolean("ok")) {
+                                Bitmap face = Http.getUserFace(jo);
+                                AmemReviewItem amemReviewItem = new AmemReviewItem(face,
+                                        user_return.getString("username"),
+                                        jo_return.getString("content"),
+                                        jo_return.getString("time"),
+                                        jo_return.getString("account"));
+                                reviewItemList.add(amemReviewItem);
+                                result = "Succeed in getting review";
+                            }
+                            else {
+                                result = "Failed in getting review";
+                                break;
+                            }
+                        }
+                        else {
+                            result = "Failed in getting review";
+                            break;
+                        }
+                    }
+                    else {
+                        result = "Failed in getting review";
+                        break;
+                    }
+                }
+            }
+            else {
+                result = "Failed in getting review";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "Failed in getting review";
+        }
+        return result;
+    }
 
     /**
      * 异步操作
@@ -705,6 +835,8 @@ public class MemoryActivity extends AppCompatActivity {
             else if (params[0].equals("navBar")) { result = navBar(); }
             else if (params[0].equals("getContext")) { result = getMemoryContext(); }
             else if (params[0].equals("getMemoryImg")) { result = getMemoryImg(); }
+            else if (params[0].equals("deliverReview")) { result = deliverReview(); }
+            else if (params[0].equals("getReview")) { result = getReview(); }
             return result;
         }
 
@@ -721,6 +853,8 @@ public class MemoryActivity extends AppCompatActivity {
             else if (result.equals("Succeed in following")) { refreshFollowButton(); }
             else if (result.equals("Succeed in unfollowing")) { refreshUnfollowButton(); }
             else if (result.equals("Succeed in getting memory images")) { refreshMemoryImages();}
+            else if (result.equals("Succeed in deliver review")) { refreshMemoryReview(); }
+            else if (result.equals("Succeed in getting review")) { refreshAllReview(); }
             else {
                 Toast.makeText(MemoryActivity.this, result, Toast.LENGTH_SHORT).show();
             }

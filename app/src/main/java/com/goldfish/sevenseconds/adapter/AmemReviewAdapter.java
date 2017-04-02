@@ -40,7 +40,7 @@ public class AmemReviewAdapter extends RecyclerView.Adapter<AmemReviewAdapter.Vi
             amem_message = (TextView) itemView.findViewById(R.id.amem_message);
             amem_time = (TextView) itemView.findViewById(R.id.amem_review_time);
             amem_layout = (RelativeLayout) itemView.findViewById(R.id.amem_review);
-            amem_like = (TextView) itemView.findViewById(R.id.amem_review_like_number);
+            //amem_like = (TextView) itemView.findViewById(R.id.amem_review_like_number);
         }
     }
 
@@ -59,9 +59,10 @@ public class AmemReviewAdapter extends RecyclerView.Adapter<AmemReviewAdapter.Vi
     public void onBindViewHolder(AmemReviewAdapter.ViewHolder holder, int position) {
         AmemReviewItem amemReviewItem = mAmemReviewList.get(position);
         holder.amem_name.setText(amemReviewItem.getName());
-        holder.amem_face.setImageDrawable(
+        /*holder.amem_face.setImageDrawable(
                 Drawable.createFromStream(
-                        new ByteArrayInputStream(amemReviewItem.getImage()), "Face"));
+                        new ByteArrayInputStream(amemReviewItem.getImage()), "Face"));*/
+        holder.amem_face.setImageBitmap(amemReviewItem.getImage());
         holder.amem_time.setText(amemReviewItem.getTime());
         holder.amem_message.setText(amemReviewItem.getMessage());
         holder.amem_layout.setTag(amemReviewItem.getAccount());
@@ -77,7 +78,7 @@ public class AmemReviewAdapter extends RecyclerView.Adapter<AmemReviewAdapter.Vi
                 //
             }
         });
-        holder.amem_like.setText(amemReviewItem.getLike());
+        //holder.amem_like.setText(amemReviewItem.getLike());
     }
 
     @Override

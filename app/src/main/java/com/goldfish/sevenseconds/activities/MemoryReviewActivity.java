@@ -38,15 +38,5 @@ public class MemoryReviewActivity extends AppCompatActivity {
     }
 
     private void initReview() {
-        Resources res = getResources();
-        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-        for (int i = 0; i < 2; i++) {
-            AmemReviewItem amemReviewItem = new AmemReviewItem(os.toByteArray(),
-                    "穿睡服的金鱼", "这周APP上线啦，今晚整合",
-                    "2017-2-24", "noend22", "100");
-            reviewItemList.add(amemReviewItem);
-        }
     }
 }
