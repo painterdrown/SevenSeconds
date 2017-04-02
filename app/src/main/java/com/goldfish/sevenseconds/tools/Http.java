@@ -1,4 +1,4 @@
-package com.goldfish.sevenseconds.tools;
+﻿package com.goldfish.sevenseconds.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -549,8 +549,8 @@ public class Http
      * 【返回值】
      * ArrayList<String>（可能为null！！！）
      */
-    /*public static ArrayList<String> searchMemorys(JSONObject jo)
+    public static ArrayList<String> getAllMemoryList()
     {
         return postForArrayList("/get-all-memory-list", jo);
-    }*/
+    }
 }
