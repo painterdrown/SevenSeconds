@@ -549,7 +549,7 @@ public class Http
      * 【返回值】
      * ArrayList<String>（可能为null！！！）
      */
-    public static ArrayList<String> searchMemorys(JSONObject jo)
+    public static ArrayList<String> getAllMemoryList()
     {
         return postForArrayList("/get-all-memory-list", jo);
     }
