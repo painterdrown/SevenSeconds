@@ -2,11 +2,15 @@ package com.goldfish.sevenseconds.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
+import android.support.transition.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,11 +88,13 @@ public class MemoryActivity extends AppCompatActivity {
     private TextView contextLabel;
     private TextView contextTitle;
     private TextView contextTime;
-    private ImageView likeMemory;
     private LinearLayout contextMain;
     private ArrayList<Integer> image;
     private ArrayList<Integer> imagePosition;
     private Bitmap[] bitImages;
+    private TextView countLikeTv;
+    private TextView countAddTv;
+    private TextView countReviewTv;
 
     // 数据
     private MemoryContext memoryContext;
@@ -270,10 +276,6 @@ public class MemoryActivity extends AppCompatActivity {
         barLike = (ImageView) findViewById(R.id.nav_bar_like);
         navBarFinished = false;
 
-        // 加载底部导航栏
-        downTask = new DownTask();
-        downTask.execute("navBar");
-
         // 查看评论
         barMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,6 +349,9 @@ public class MemoryActivity extends AppCompatActivity {
         contextTitle = (TextView) findViewById(R.id.amem_title);
         contextTime = (TextView) findViewById(R.id.amem_time);
         contextMain = (LinearLayout) findViewById(R.id.amem_main_context);
+        countAddTv = (TextView) findViewById(R.id.add_count);
+        countLikeTv = (TextView) findViewById(R.id.like_count);
+        countReviewTv = (TextView) findViewById(R.id.review_count);
 
         // 数据
         memoryContext = new MemoryContext();
@@ -542,8 +547,26 @@ public class MemoryActivity extends AppCompatActivity {
 
     // 导航栏的点击事件
     private String navBar() {
-        String result = "Failed";
-        result = "Succeed in navBar";
+        String result = "Failed in navBar";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            JSONObject jo_review = Http.getCommentCount(jo);
+            JSONObject jo_like = Http.getLikeCount(jo);
+
+            jo.put("account", myAccount);
+            JSONObject jo_isLike = Http.ifLikeMemory(jo);
+            JSONObject jo_isAdd = Http.ifCollectMemory(jo);
+            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok")) {
+                memoryContext.setLikeCount(jo_like.getInt("count"));
+                memoryContext.setReviewCount(jo_review.getInt("count"));
+                memoryContext.setIsAdd(jo_isAdd.getBoolean("ok"));
+                memoryContext.setIsLike(jo_isLike.getBoolean("ok"));
+                result = "Succeed in navBar";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -591,7 +614,55 @@ public class MemoryActivity extends AppCompatActivity {
     }
 
     // 更新导航栏UI
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshNavBar() {
+        if (memoryContext.getCollectCount() > 0) {
+            if (memoryContext.getCollectCount() <= 99) {
+                countAddTv.setText(String.valueOf(memoryContext.getCollectCount()));
+                countAddTv.setVisibility(View.VISIBLE);
+            }
+            else {
+                countAddTv.setText("99+");
+                countAddTv.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            countAddTv.setVisibility(View.INVISIBLE);
+        }
+        if (memoryContext.getLikeCount() > 0) {
+            if (memoryContext.getLikeCount() <= 99) {
+                countLikeTv.setText(String.valueOf(memoryContext.getLikeCount()));
+                countLikeTv.setVisibility(View.VISIBLE);
+            }
+            else {
+                countLikeTv.setText("99+");
+                countLikeTv.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            countLikeTv.setVisibility(View.INVISIBLE);
+        }
+        if (memoryContext.getReviewCount() > 0) {
+            if (memoryContext.getLikeCount() <= 99) {
+                countReviewTv.setText(String.valueOf(memoryContext.getReviewCount()));
+                countReviewTv.setVisibility(View.VISIBLE);
+            }
+            else {
+                countReviewTv.setText("99+");
+                countReviewTv.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            countReviewTv.setVisibility(View.INVISIBLE);
+        }
+        if (memoryContext.getIsLike()) {
+            barLike.setImageAlpha(1);
+            barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+        }
+        if (memoryContext.getIsAdd()) {
+            barAdd.setImageAlpha(1);
+            barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+        }
         navBarFinished = true;
     }
 
@@ -604,6 +675,8 @@ public class MemoryActivity extends AppCompatActivity {
         for (int i = 0; i < memoryContext.getLabel().length; i++) {
             labels += "#" + memoryContext.getLabel()[i] + " ";
         }
+        downTask = new DownTask();
+        downTask.execute("navBar");
         getMainContext();
         contextLabel.setText(labels);
         contextFinished = true;
@@ -752,6 +825,8 @@ public class MemoryActivity extends AppCompatActivity {
         reviewDialog.setEditText("");
         reviewDialog.dismiss();
         reviewItemList.clear();
+        DownTask navBar = new DownTask();
+        navBar.execute("navBar");
         downTask = new DownTask();
         downTask.execute("getReview");
     }
@@ -845,6 +920,7 @@ public class MemoryActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... Progress) { }
 
         //doInBackground结束后回调该方法，结束。
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in titleBar")) { refreshTitleBarUI(); }

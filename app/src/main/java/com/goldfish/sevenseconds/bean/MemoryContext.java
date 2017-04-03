@@ -18,6 +18,24 @@ public class MemoryContext {
     private boolean ok;
     private String errMsg;
     private String context;
+    private boolean isLike;
+    private boolean isAdd;
+
+    public void setIsAdd(boolean add) {
+        isAdd = add;
+    }
+
+    public void setIsLike(boolean like) {
+        isLike = like;
+    }
+
+    public boolean getIsLike() {
+        return isLike;
+    }
+
+    public boolean getIsAdd() {
+        return isAdd;
+    }
 
     public String getContext() {
         return context;

@@ -38,7 +38,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:alpha="0.4"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
 
         <TextView
             android:id="@+id/add_count"
