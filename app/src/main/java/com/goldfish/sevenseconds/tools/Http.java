@@ -80,7 +80,8 @@ public class Http
         return response;
     }
 
-    private static JSONObject postForJSONObject(String action, JSONObject jo) {
+    private static JSONObject postForJSONObject(String action, JSONObject jo)
+    {
         JSONObject joToReturn = new JSONObject();
         try {
             Response response = postJSON(API_PATH + action, jo);
@@ -523,6 +524,17 @@ public class Http
 
     /**
      * 【参数】
+     * memoryId
+     * 【返回值】
+     * ok, count
+     */
+    public static JSONObject getCollectCount(JSONObject jo)
+    {
+        return postForJSONObject("/get-collect-count", jo);
+    }
+
+    /**
+     * 【参数】
      * account, memoryId
      * 【返回值】
      * ok
@@ -541,6 +553,28 @@ public class Http
     public static JSONObject ifCollectMemory(JSONObject jo)
     {
         return postForJSONObject("/if-collect-memory", jo);
+    }
+
+    /**
+     * 【参数】
+     * account, memoryId
+     * 【返回值】
+     * ok
+     */
+    public static JSONObject unlikeMemory(JSONObject jo)
+    {
+        return postForJSONObject("/unlike-memory", jo);
+    }
+
+    /**
+     * 【参数】
+     * account, memoryId
+     * 【返回值】
+     * ok
+     */
+    public static JSONObject uncollectMemory(JSONObject jo)
+    {
+        return postForJSONObject("/uncollect-memory", jo);
     }
 
     /**
