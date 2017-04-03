@@ -143,8 +143,12 @@ public class MemoryActivity extends AppCompatActivity {
 
         // 测试临时个人账户和忆单的作者账户
         myAccount = "a";
-        memAccount = "b";
-        memID = "1491188366992";
+        if (memAccount == null) {
+            memAccount = "b";
+        }
+        if (memID == null) {
+            memID = "1491188366992";
+        }
 
         /*
         ** 时间轴
@@ -399,16 +403,6 @@ public class MemoryActivity extends AppCompatActivity {
     }
 
     private void initReview() {
-        /*Resources res = getResources();
-        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-        for (int i = 0; i < 2; i++) {
-            AmemReviewItem amemReviewItem = new AmemReviewItem(os.toByteArray(),
-                    "穿睡服的金鱼", "这周APP上线啦，今晚整合",
-                    "2017-2-24", "noend22", "100");
-            reviewItemList.add(amemReviewItem);
-        }*/
         recyclerViewReview = (RecyclerView) findViewById(R.id.amem_review_layout);
         LinearLayoutManager layoutManager = new LinearLayoutManager(MemoryActivity.this);
         recyclerViewReview.setLayoutManager(layoutManager);
