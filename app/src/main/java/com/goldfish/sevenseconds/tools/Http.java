@@ -338,7 +338,7 @@ public class Http
 
     /**
      * 【参数】
-     * memoryId
+     * account, memoryId
      * 【返回值】
      * ok
      */
