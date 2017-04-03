@@ -92,7 +92,7 @@ public class MyFragment extends Fragment {
                 startActivity(myToMessage);
             }
         });
-        TurnCardListView list = (TurnCardListView) view.findViewById(R.id.card_list);
+        /*TurnCardListView list = (TurnCardListView) view.findViewById(R.id.card_list);
 
         list.setOnTurnListener(new TurnCardListView.OnTurnListener() {
             @Override
@@ -127,7 +127,7 @@ public class MyFragment extends Fragment {
                 }
                 return child;
             }
-        });
+        });*/
         return view;
     }
 

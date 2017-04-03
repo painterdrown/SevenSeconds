@@ -20,6 +20,7 @@ import com.goldfish.sevenseconds.bean.MyFollow;
 import com.goldfish.sevenseconds.adapter.MyFollowAdapter;
 import com.goldfish.sevenseconds.item.MyFollowItem;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.tools.Http;
 
 import org.json.JSONException;
@@ -42,11 +43,13 @@ public class MyFollowActicity extends AppCompatActivity {
     private String myAccount;
     private ArrayList<String> myFollow;
     private DownTask downTask;
+    public static MyFollowActicity myFollowActicity;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_follow);
         Intent intent = getIntent();
+        myFollowActicity = this;
         myAccount = intent.getStringExtra("currentUser");
 
         // test
@@ -67,21 +70,6 @@ public class MyFollowActicity extends AppCompatActivity {
         // 本地更新异步联网加载
         downTask = new DownTask();
         downTask.execute("getFollowList");
-
-        // 本地更新
-        /*db = Connector.getDatabase();
-        List<MyFollow> myFollowList = DataSupport
-                .select("myAccount")
-                .where("myAccount = ?", myAccount)
-                .find(MyFollow.class);
-        if (myFollowList.size() > 0) {
-            for (MyFollow myFollow : myFollowList) {
-                MyFollowItem myFollowItem = new MyFollowItem(
-                        R.drawable.red_love, myFollow.getName(),
-                        myFollow.getIntroduction(), myFollow.getFace(), myFollow.getAccount());
-                followItemList.add(myFollowItem);
-            }
-        }*/
     }
 
     private String getFollowList() {
@@ -120,13 +108,7 @@ public class MyFollowActicity extends AppCompatActivity {
                         userface.compress(Bitmap.CompressFormat.PNG, 100, output);//把bitmap100%高质量压缩 到 output对象里
                         userface.recycle(); //自由选择是否进行回收
                         myFollowItem.setFace(output.toByteArray()); //转换成功了
-
-                        /*myFollowItem.setIntroduction("test");
-                        Resources res = getResources();
-                        Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-                        bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
-                        myFollowItem.setFace(output.toByteArray());*/
-
+                        myFollowItem.setImageid(R.drawable.ic_star_black_24dp);
                         followItemList.add(myFollowItem);
                         try {
                             output.close();

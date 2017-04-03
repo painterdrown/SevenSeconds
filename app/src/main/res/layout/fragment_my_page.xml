@@ -120,11 +120,11 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-    <com.goldfish.sevenseconds.view.TurnCardListView
+    <!--<com.goldfish.sevenseconds.view.TurnCardListView
+        android:layout_below="@+id/mySetting"
         android:id="@+id/card_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:layout_alignParentBottom="true">
-    </com.goldfish.sevenseconds.view.TurnCardListView>
+        android:layout_height="match_parent">
+    </com.goldfish.sevenseconds.view.TurnCardListView>-->
+
 </RelativeLayout>
