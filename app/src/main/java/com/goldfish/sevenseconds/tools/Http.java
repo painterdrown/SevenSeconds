@@ -585,6 +585,7 @@ public class Http
      */
     public static ArrayList<String> getAllMemoryList()
     {
+        JSONObject jo = null;
         return postForArrayList("/get-all-memory-list", jo);
     }
 }
