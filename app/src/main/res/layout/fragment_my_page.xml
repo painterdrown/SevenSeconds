@@ -10,70 +10,115 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <com.goldfish.sevenseconds.view.CircleImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:src="@drawable/app_icon"
         android:id="@+id/headPortrait"
         android:adjustViewBounds="false"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:text="我的消息"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+    <RelativeLayout
         android:id="@+id/myMessage"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_above="@+id/myFollow"
-        android:layout_toRightOf="@+id/headPortrait"
-        android:layout_toEndOf="@+id/headPortrait" />
-
-    <Button
-        android:text="我的关注"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/myFollow"
-        android:layout_alignBottom="@+id/headPortrait"
-        android:layout_alignLeft="@+id/myMessage"
-        android:layout_alignStart="@+id/myMessage" />
-
-    <Button
-        android:text="编辑资料"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/myInformation"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/myMessage"
-        android:layout_toEndOf="@+id/myMessage"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp" />
-
-    <Button
-        android:text="我的设置"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:id="@+id/mySetting"
-        android:layout_alignBottom="@+id/myFollow"
-        android:layout_alignLeft="@+id/myInformation"
-        android:layout_alignStart="@+id/myInformation" />
-
-    <TextView
-        android:text="我的时间轴"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/myTimelineString"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_below="@+id/headPortrait"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="27dp"
-        android:textSize="20dp"/>
+        android:layout_toRightOf="@+id/headPortrait"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:id="@+id/my_review_icon"
+            android:src="@drawable/ic_comment_black_24dp"
+            android:alpha="0.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/my_review_icon"
+            android:text="我的评论"
+            android:textSize="13sp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/myInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/myMessage"
+        android:layout_toEndOf="@+id/myMessage"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:id="@+id/my_information_icon"
+            android:src="@drawable/ic_border_color_black_24dp"
+            android:alpha="0.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/my_information_icon"
+            android:text="编辑资料"
+            android:textSize="13sp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/myFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/headPortrait"
+        android:layout_toEndOf="@+id/headPortrait"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@+id/headPortrait">
+        <ImageView
+            android:id="@+id/my_follow_icon"
+            android:src="@drawable/ic_center_focus_strong_black_24dp"
+            android:alpha="0.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/my_follow_icon"
+            android:text="我的关注"
+            android:textSize="13sp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mySetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/headPortrait"
+        android:layout_toEndOf="@+id/headPortrait"
+        android:layout_marginBottom="10dp"
+        android:layout_alignLeft="@+id/myInformation"
+        android:layout_alignStart="@+id/myInformation"
+        android:layout_alignBottom="@+id/headPortrait">
+        <ImageView
+            android:id="@+id/my_setting_icon"
+            android:src="@drawable/ic_settings_black_24dp"
+            android:alpha="0.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/my_setting_icon"
+            android:text="我的设置"
+            android:textSize="13sp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <com.goldfish.sevenseconds.view.TurnCardListView
         android:id="@+id/card_list"

@@ -103,8 +103,8 @@
                         android:id="@+id/amem_music"
                         android:visibility="visible"
                         android:src="@drawable/ic_music_note_black_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         app:civ_fill_color="@color/gainsboro"/>
 
                     <TextView

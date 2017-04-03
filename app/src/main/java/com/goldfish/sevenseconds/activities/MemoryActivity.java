@@ -65,6 +65,8 @@ public class MemoryActivity extends AppCompatActivity {
     private Button unFollowIt;
     private ImageView userFace;
     private TextView userName;
+    private ImageView editMemory;
+    private ImageView back;
 
     // 数据
     private TitleBarInfo titleBarInfo;
@@ -142,7 +144,7 @@ public class MemoryActivity extends AppCompatActivity {
         // 测试临时个人账户和忆单的作者账户
         myAccount = "a";
         memAccount = "b";
-        memID = "1490970285323";
+        memID = "1491188366992";
 
         /*
         ** 时间轴
@@ -164,6 +166,8 @@ public class MemoryActivity extends AppCompatActivity {
         userInfo = (RelativeLayout) findViewById(R.id.amem_title_info);
         userFace = (ImageView) findViewById(R.id.amem_title_face);
         userName = (TextView) findViewById(R.id.amem_title_name);
+        back = (ImageView) findViewById(R.id.amem_back);
+        editMemory = (ImageView) findViewById(R.id.amem_edit);
 
         // 数据
         titleBarFinished = false;
@@ -171,6 +175,21 @@ public class MemoryActivity extends AppCompatActivity {
         titleBarInfo = new TitleBarInfo();
 
         // 加载titleBar
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        editMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MemoryActivity.this, Addmem.class);
+                startActivity(intent);
+            }
+        });
+
         downTask = new DownTask();
         downTask.execute("titleBar");
 
@@ -294,8 +313,14 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    downTask = new DownTask();
-                    downTask.execute("Like the memory");
+                    if (memoryContext.getIsLike()) {
+                        downTask = new DownTask();
+                        downTask.execute("dislike");
+                    }
+                    else {
+                        downTask = new DownTask();
+                        downTask.execute("Like the memory");
+                    }
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
                     Toast.makeText(MemoryActivity.this,
@@ -310,8 +335,15 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    downTask = new DownTask();
-                    downTask.execute("Show in my favorites");
+                    if (memoryContext.getIsAdd()) {
+                        downTask = new DownTask();
+                        downTask.execute("Sub");
+                    }
+                    else {
+                        downTask = new DownTask();
+                        downTask.execute("Show in my favorites");
+                    }
+
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
                     Toast.makeText(MemoryActivity.this,
@@ -421,17 +453,19 @@ public class MemoryActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
+            jo.put("account", myAccount);
             JSONObject jo_return = Http.likeMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in like memory";
+                memoryContext.setIsLike(true);
             }
             else {
-                result = "failed";
+                result = "Failed in like Memory";
             }
         }
         catch (JSONException e) {
             e.printStackTrace();
-            result = "failed";
+            result = "Failed in like Memory";
         }
         return result;
     }
@@ -553,7 +587,6 @@ public class MemoryActivity extends AppCompatActivity {
             jo.put("memoryId", memID);
             JSONObject jo_review = Http.getCommentCount(jo);
             JSONObject jo_like = Http.getLikeCount(jo);
-
             jo.put("account", myAccount);
             JSONObject jo_isLike = Http.ifLikeMemory(jo);
             JSONObject jo_isAdd = Http.ifCollectMemory(jo);
@@ -656,12 +689,20 @@ public class MemoryActivity extends AppCompatActivity {
             countReviewTv.setVisibility(View.INVISIBLE);
         }
         if (memoryContext.getIsLike()) {
-            barLike.setImageAlpha(1);
+            barLike.setAlpha((float) 0.9);
             barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
         }
+        else {
+            barLike.setAlpha((float) 0.4);
+            barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
         if (memoryContext.getIsAdd()) {
-            barAdd.setImageAlpha(1);
+            barAdd.setAlpha((float) 0.9);
             barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+        }
+        else {
+            barAdd.setAlpha((float) 0.4);
+            barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
         }
         navBarFinished = true;
     }
@@ -673,7 +714,12 @@ public class MemoryActivity extends AppCompatActivity {
         contextCover.setImageBitmap(memoryContext.getCover());
         String labels = "";
         for (int i = 0; i < memoryContext.getLabel().length; i++) {
-            labels += "#" + memoryContext.getLabel()[i] + " ";
+            if (memoryContext.getLabel()[i].equals("")) {
+                labels += "#" + memoryContext.getLabel()[i] + " ";
+            }
+        }
+        if (labels.equals("# ")) {
+            labels = "";
         }
         downTask = new DownTask();
         downTask.execute("navBar");
@@ -889,6 +935,48 @@ public class MemoryActivity extends AppCompatActivity {
         return result;
     }
 
+    // 取消点赞
+    private String dislike() {
+        String result = "Failed in unlike";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", myAccount);
+            jo.put("memoryId", memID);
+            JSONObject jo_return = Http.unlikeMemory(jo);
+            if (jo_return.getBoolean("ok")) {
+                memoryContext.setIsLike(false);
+                result = "Succeed in unlike";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 取消收藏
+    private String sub() {
+        String result = "Failed in sub";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", myAccount);
+            jo.put("memoryId", memID);
+            JSONObject jo_return = Http.uncollectMemory(jo);
+            if (jo_return.getBoolean("ok")) {
+                memoryContext.setIsAdd(false);
+                result = "Succeed in sub";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 更新底部导航栏
+    private void refreshNavBarTotally() {
+        downTask = new DownTask();
+        downTask.execute("navBar");
+    }
+
     /**
      * 异步操作
      */
@@ -912,6 +1000,8 @@ public class MemoryActivity extends AppCompatActivity {
             else if (params[0].equals("getMemoryImg")) { result = getMemoryImg(); }
             else if (params[0].equals("deliverReview")) { result = deliverReview(); }
             else if (params[0].equals("getReview")) { result = getReview(); }
+            else if (params[0].equals("dislike")) { result = dislike(); }
+            else if (params[0].equals("Sub")) { result = sub(); }
             return result;
         }
 
@@ -931,6 +1021,9 @@ public class MemoryActivity extends AppCompatActivity {
             else if (result.equals("Succeed in getting memory images")) { refreshMemoryImages();}
             else if (result.equals("Succeed in deliver review")) { refreshMemoryReview(); }
             else if (result.equals("Succeed in getting review")) { refreshAllReview(); }
+            else if (result.equals("Succeed in unlike")) { refreshNavBarTotally(); }
+            else if (result.equals("Succeed in sub")) { refreshNavBarTotally(); }
+            else if (result.equals("Succeed in like memory")) { refreshNavBarTotally(); }
             else {
                 Toast.makeText(MemoryActivity.this, result, Toast.LENGTH_SHORT).show();
             }

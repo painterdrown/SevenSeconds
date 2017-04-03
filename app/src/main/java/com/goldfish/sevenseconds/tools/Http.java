@@ -1,4 +1,4 @@
-﻿package com.goldfish.sevenseconds.tools;
+package com.goldfish.sevenseconds.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -6,12 +6,15 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
@@ -37,18 +40,19 @@ public class MyFragment extends Fragment {
     private String currentUser;
     private Bitmap face;
     private ImageView headPortrait;
+    private Toolbar toolbar;
+    private TextView textView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         // 成功登陆的账号
         currentUser = "a";
 
-
         View view = inflater.inflate(R.layout.fragment_my_page,container,false);
-        Button myMessage = (Button) view.findViewById(R.id.myMessage);
-        Button myInformation = (Button) view.findViewById(R.id.myInformation);
-        Button mySetting = (Button) view.findViewById(R.id.mySetting);
-        Button myFollow = (Button) view.findViewById(R.id.myFollow);
+        RelativeLayout myMessage = (RelativeLayout) view.findViewById(R.id.myMessage);
+        RelativeLayout myInformation = (RelativeLayout) view.findViewById(R.id.myInformation);
+        RelativeLayout mySetting = (RelativeLayout) view.findViewById(R.id.mySetting);
+        RelativeLayout myFollow = (RelativeLayout) view.findViewById(R.id.myFollow);
         headPortrait = (ImageView) view.findViewById(R.id.headPortrait);
 
         DownTask downTask = new DownTask();
