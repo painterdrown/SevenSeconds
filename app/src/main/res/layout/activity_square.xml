@@ -9,7 +9,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/square_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="48dp"
         android:background="@color/shellowyellow"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
         <TextView
@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/lightorange"
             android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
 

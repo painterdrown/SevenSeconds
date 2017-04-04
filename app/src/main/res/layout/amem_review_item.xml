@@ -4,20 +4,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_height="match_parent"
+    android:layout_marginTop="40dp"
+    android:layout_marginBottom="40dp">
 
     <com.goldfish.sevenseconds.view.CircleImageView
         android:id="@+id/amem_review_face"
         android:src="@drawable/app_icon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginRight="10dp"/>
 
     <RelativeLayout
         android:id="@+id/amem_review_info"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:layout_toRightOf="@+id/amem_review_face">
 
         <TextView
@@ -25,18 +26,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="穿睡服的金鱼"
-            android:layout_marginTop="4dp"
             android:layout_marginBottom="1dp"
-            android:textSize="13sp"/>
+            android:textSize="12sp"/>
         <TextView
             android:id="@+id/amem_review_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/amem_review_name"
             android:text="2017-3-1"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:layout_marginBottom="4dp"/>
-        <TextView
+        <!--<TextView
             android:id="@+id/amem_review_like_number"
             android:text="1000"
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"/>-->
     </RelativeLayout>
 
     <TextView
@@ -62,8 +62,18 @@
         android:layout_below="@+id/amem_review_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:layout_marginBottom="5dp"/>
+
+    <View
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/amem_message"
+        android:layout_height="1px"
+        android:background="#50000000"
+        android:layout_alignLeft="@+id/amem_message"
+        android:layout_marginBottom="15dp"/>
 
 </RelativeLayout>

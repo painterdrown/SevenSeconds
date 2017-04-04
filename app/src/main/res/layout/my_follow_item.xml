@@ -3,41 +3,60 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFEF4"
     android:layout_margin="10dp">
 
     <com.goldfish.sevenseconds.view.CircleImageView
         android:id="@+id/follow_face"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:src="@color/lightorange"
         android:layout_alignParentLeft="true"
-        android:layout_margin="10dp"/>
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
+        android:id="@+id/my_follow_item_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_toRightOf="@+id/follow_face">
 
         <TextView
+            android:text="123"
             android:id="@+id/follow_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:textSize="22sp"/>
+            android:textSize="17sp"/>
 
         <TextView
+            android:text="123"
             android:id="@+id/follow_introduction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="13sp" />
+            android:layout_marginTop="2dp" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_below="@+id/my_follow_item_layout"
+        android:layout_height="1px"
+        android:layout_alignLeft="@+id/my_follow_item_layout"
+        android:layout_alignRight="@+id/my_follow_item_layout"
+        android:layout_marginTop="10dp"
+        android:background="#50000000" />
+
     <ImageView
         android:id="@+id/follow_image"
+        android:src="@drawable/ic_star_black_24dp"
+        android:tint="@color/lightorange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

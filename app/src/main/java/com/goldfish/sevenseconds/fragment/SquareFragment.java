@@ -1,21 +1,15 @@
 package com.goldfish.sevenseconds.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andview.refreshview.XRefreshView;
@@ -24,19 +18,13 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
-import com.goldfish.sevenseconds.tools.Http;
+
 import com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import SnappingSwipingRecyclerView.SnappingSwipingViewBuilder;
-import SnappingSwipingRecyclerView.SnappyLinearLayoutManager;
-import SnappingSwipingRecyclerView.SwipeGestureHelper;
-
-import static com.andview.refreshview.R.styleable.XRefreshView;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -53,7 +41,6 @@ public class SquareFragment extends Fragment{
     private String name;
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
-    private Http http = new Http();
     //XRefreshView xRefreshView;
 
 

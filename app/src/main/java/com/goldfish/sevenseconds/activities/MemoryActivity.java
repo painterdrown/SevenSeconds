@@ -2,10 +2,11 @@ package com.goldfish.sevenseconds.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.os.Handler;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,17 +19,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andview.refreshview.XRefreshView;
-import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.adapter.AmemReviewAdapter;
 import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
 import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
+import com.goldfish.sevenseconds.http.CommentHttpUtil;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.AmemReviewItem;
 import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.service.NetWorkUtils;
-import com.goldfish.sevenseconds.tools.Http;
+import com.goldfish.sevenseconds.view.ReviewDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +48,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.goldfish.sevenseconds.http.UserHttpUtil.addFollow;
+import static com.goldfish.sevenseconds.http.UserHttpUtil.deleteFollow;
+import static com.goldfish.sevenseconds.http.UserHttpUtil.getUserInfo;
+
 public class MemoryActivity extends AppCompatActivity {
 
     /**
@@ -56,6 +63,8 @@ public class MemoryActivity extends AppCompatActivity {
     private Button unFollowIt;
     private ImageView userFace;
     private TextView userName;
+    private ImageView editMemory;
+    private ImageView back;
 
     // 数据
     private TitleBarInfo titleBarInfo;
@@ -79,11 +88,13 @@ public class MemoryActivity extends AppCompatActivity {
     private TextView contextLabel;
     private TextView contextTitle;
     private TextView contextTime;
-    private ImageView likeMemory;
     private LinearLayout contextMain;
     private ArrayList<Integer> image;
     private ArrayList<Integer> imagePosition;
     private Bitmap[] bitImages;
+    private TextView countLikeTv;
+    private TextView countAddTv;
+    private TextView countReviewTv;
 
     // 数据
     private MemoryContext memoryContext;
@@ -116,6 +127,8 @@ public class MemoryActivity extends AppCompatActivity {
      */
     private List<AmemReviewItem> reviewItemList = new ArrayList<>();
     private RecyclerView recyclerViewReview;
+    private String editContext;
+    private ReviewDialog reviewDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +141,12 @@ public class MemoryActivity extends AppCompatActivity {
 
         // 测试临时个人账户和忆单的作者账户
         myAccount = "a";
-        memAccount = "b";
-        memID = "1490970285323";
+        if (memAccount == null) {
+            memAccount = "b";
+        }
+        if (memID == null) {
+            memID = "1491188366992";
+        }
 
         /*
         ** 时间轴
@@ -151,6 +168,8 @@ public class MemoryActivity extends AppCompatActivity {
         userInfo = (RelativeLayout) findViewById(R.id.amem_title_info);
         userFace = (ImageView) findViewById(R.id.amem_title_face);
         userName = (TextView) findViewById(R.id.amem_title_name);
+        back = (ImageView) findViewById(R.id.amem_back);
+        editMemory = (ImageView) findViewById(R.id.amem_edit);
 
         // 数据
         titleBarFinished = false;
@@ -158,6 +177,21 @@ public class MemoryActivity extends AppCompatActivity {
         titleBarInfo = new TitleBarInfo();
 
         // 加载titleBar
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        editMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MemoryActivity.this, Addmem.class);
+                startActivity(intent);
+            }
+        });
+
         downTask = new DownTask();
         downTask.execute("titleBar");
 
@@ -263,10 +297,6 @@ public class MemoryActivity extends AppCompatActivity {
         barLike = (ImageView) findViewById(R.id.nav_bar_like);
         navBarFinished = false;
 
-        // 加载底部导航栏
-        downTask = new DownTask();
-        downTask.execute("navBar");
-
         // 查看评论
         barMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,8 +315,14 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    downTask = new DownTask();
-                    downTask.execute("Like the memory");
+                    if (memoryContext.getIsLike()) {
+                        downTask = new DownTask();
+                        downTask.execute("dislike");
+                    }
+                    else {
+                        downTask = new DownTask();
+                        downTask.execute("Like the memory");
+                    }
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
                     Toast.makeText(MemoryActivity.this,
@@ -301,8 +337,15 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if ((NetWorkUtils.getAPNType(context) != 0) && navBarFinished) {
-                    downTask = new DownTask();
-                    downTask.execute("Show in my favorites");
+                    if (memoryContext.getIsAdd()) {
+                        downTask = new DownTask();
+                        downTask.execute("Sub");
+                    }
+                    else {
+                        downTask = new DownTask();
+                        downTask.execute("Show in my favorites");
+                    }
+
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
                     Toast.makeText(MemoryActivity.this,
@@ -312,11 +355,23 @@ public class MemoryActivity extends AppCompatActivity {
             }
         });
 
+
+        reviewDialog = new ReviewDialog(context);
         // 编辑评论
         barEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (navBarFinished) { }
+                if (navBarFinished) {
+                    reviewDialog.show();
+                    reviewDialog.setClickListenerInterface(new ReviewDialog.ClickListenerInterface() {
+                        @Override
+                        public void doConfirm() {
+                            editContext = reviewDialog.getEdit();
+                            downTask = new DownTask();
+                            downTask.execute("deliverReview");
+                        }
+                    });
+                }
             }
         });
 
@@ -328,6 +383,9 @@ public class MemoryActivity extends AppCompatActivity {
         contextTitle = (TextView) findViewById(R.id.amem_title);
         contextTime = (TextView) findViewById(R.id.amem_time);
         contextMain = (LinearLayout) findViewById(R.id.amem_main_context);
+        countAddTv = (TextView) findViewById(R.id.add_count);
+        countLikeTv = (TextView) findViewById(R.id.like_count);
+        countReviewTv = (TextView) findViewById(R.id.review_count);
 
         // 数据
         memoryContext = new MemoryContext();
@@ -336,6 +394,23 @@ public class MemoryActivity extends AppCompatActivity {
         // 加载忆单主体内容
         downTask = new DownTask();
         downTask.execute("getContext");
+
+        // 加载评论区
+        downTask = new DownTask();
+        downTask.execute("getReview");
+    }
+
+    private void initReview() {
+        recyclerViewReview = (RecyclerView) findViewById(R.id.amem_review_layout);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MemoryActivity.this);
+        recyclerViewReview.setLayoutManager(layoutManager);
+        AmemReviewAdapter adapter = new AmemReviewAdapter(reviewItemList);
+        recyclerViewReview.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void initView() {
@@ -370,20 +445,24 @@ public class MemoryActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
-            JSONObject jo_return = Http.likeMemory(jo);
+            jo.put("account", myAccount);
+            JSONObject jo_return = UserHttpUtil.likeMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in like memory";
+                memoryContext.setIsLike(true);
             }
             else {
-                result = "failed";
+                result = "Failed in like Memory";
             }
         }
         catch (JSONException e) {
             e.printStackTrace();
-            result = "failed";
+            result = "Failed in like Memory";
         }
         return result;
     }
+
+
 
     // 添加关注
     private String follow() {
@@ -392,7 +471,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", myAccount);
             jo.put("otherAccount", memAccount);
-            JSONObject jo_return = Http.addFollow(jo);
+            JSONObject jo_return = addFollow(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in following";
             } else {
@@ -413,7 +492,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", myAccount);
             jo.put("otherAccount", memAccount);
-            JSONObject jo_return = Http.deleteFollow(jo);
+            JSONObject jo_return = deleteFollow(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in unfollowing";
             } else {
@@ -467,7 +546,7 @@ public class MemoryActivity extends AppCompatActivity {
             // 查看是否已经关注过作者
             JSONObject jo = new JSONObject();
             jo.put("account", myAccount);
-            ArrayList<String> myFollowers = Http.getFollowingList(jo);
+            ArrayList<String> myFollowers = UserHttpUtil.getFollowingList(jo);
             for (int i = 0; i < myFollowers.size(); i++) {
                 if (myFollowers.get(i).equals(memAccount)) {
                     hadFollowed = true;
@@ -476,8 +555,8 @@ public class MemoryActivity extends AppCompatActivity {
             // 获取标题栏数据
             jo = new JSONObject();
             jo.put("account", memAccount);
-            titleBarInfo.setFace(Http.getUserFace(jo));
-            JSONObject jo_return = Http.getUserInfo(jo);
+            titleBarInfo.setFace(UserHttpUtil.getUserFace(jo));
+            JSONObject jo_return = getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 titleBarInfo.setName(jo_return.getString("username"));
                 result = "Succeed in titleBar";
@@ -496,8 +575,25 @@ public class MemoryActivity extends AppCompatActivity {
 
     // 导航栏的点击事件
     private String navBar() {
-        String result = "Failed";
-        result = "Succeed in navBar";
+        String result = "Failed in navBar";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
+            JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
+            jo.put("account", myAccount);
+            JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
+            JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
+            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok")) {
+                memoryContext.setLikeCount(jo_like.getInt("count"));
+                memoryContext.setReviewCount(jo_review.getInt("count"));
+                memoryContext.setIsAdd(jo_isAdd.getBoolean("ok"));
+                memoryContext.setIsLike(jo_isLike.getBoolean("ok"));
+                result = "Succeed in navBar";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -507,7 +603,7 @@ public class MemoryActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
-            JSONObject jo_return = Http.getMemory(jo);
+            JSONObject jo_return = MemoryHttpUtil.getMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 memoryContext.setTitle(jo_return.getString("title"));
                 memoryContext.setTime(jo_return.getString("time"));
@@ -520,7 +616,7 @@ public class MemoryActivity extends AppCompatActivity {
                 jo = new JSONObject();
                 jo.put("memoryId", memID);
                 jo.put("i", 0);
-                memoryContext.setCover(Http.getMemoryImg(jo));
+                memoryContext.setCover(MemoryHttpUtil.getMemoryImg(jo));
                 result = "Succeed in context";
             } else {
                 result = jo_return.getString("errMsg");
@@ -545,19 +641,82 @@ public class MemoryActivity extends AppCompatActivity {
     }
 
     // 更新导航栏UI
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshNavBar() {
+        if (memoryContext.getCollectCount() > 0) {
+            if (memoryContext.getCollectCount() <= 99) {
+                countAddTv.setText(String.valueOf(memoryContext.getCollectCount()));
+                countAddTv.setVisibility(View.VISIBLE);
+            }
+            else {
+                countAddTv.setText("99+");
+                countAddTv.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            countAddTv.setVisibility(View.INVISIBLE);
+        }
+        if (memoryContext.getLikeCount() > 0) {
+            if (memoryContext.getLikeCount() <= 99) {
+                countLikeTv.setText(String.valueOf(memoryContext.getLikeCount()));
+                countLikeTv.setVisibility(View.VISIBLE);
+            }
+            else {
+                countLikeTv.setText("99+");
+                countLikeTv.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            countLikeTv.setVisibility(View.INVISIBLE);
+        }
+        if (memoryContext.getReviewCount() > 0) {
+            if (memoryContext.getLikeCount() <= 99) {
+                countReviewTv.setText(String.valueOf(memoryContext.getReviewCount()));
+                countReviewTv.setVisibility(View.VISIBLE);
+            }
+            else {
+                countReviewTv.setText("99+");
+                countReviewTv.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            countReviewTv.setVisibility(View.INVISIBLE);
+        }
+        if (memoryContext.getIsLike()) {
+            barLike.setAlpha((float) 0.9);
+            barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+        }
+        else {
+            barLike.setAlpha((float) 0.4);
+            barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
+        if (memoryContext.getIsAdd()) {
+            barAdd.setAlpha((float) 0.9);
+            barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+        }
+        else {
+            barAdd.setAlpha((float) 0.4);
+            barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+        }
         navBarFinished = true;
     }
 
-    // 更新忆单内容UI (待完成导航栏UI)
+    // 更新忆单内容UI
     private void refreshContext() {
         contextTitle.setText(memoryContext.getTitle());
         contextTime.setText(memoryContext.getTime());
         contextCover.setImageBitmap(memoryContext.getCover());
         String labels = "";
         for (int i = 0; i < memoryContext.getLabel().length; i++) {
-            labels += "#" + memoryContext.getLabel()[i] + " ";
+            if (memoryContext.getLabel()[i].equals("")) {
+                labels += "#" + memoryContext.getLabel()[i] + " ";
+            }
         }
+        if (labels.equals("# ")) {
+            labels = "";
+        }
+        downTask = new DownTask();
+        downTask.execute("navBar");
         getMainContext();
         contextLabel.setText(labels);
         contextFinished = true;
@@ -649,7 +808,7 @@ public class MemoryActivity extends AppCompatActivity {
                 JSONObject jo = new JSONObject();
                 jo.put("memoryId", memID);
                 jo.put("i", image.get(i));
-                Bitmap temp = Http.getMemoryImg(jo);
+                Bitmap temp = MemoryHttpUtil.getMemoryImg(jo);
                 if (temp != null) {
                     bitImages[i] = temp;
                     result = "Succeed in getting memory images";
@@ -683,6 +842,134 @@ public class MemoryActivity extends AppCompatActivity {
         followIt.setVisibility(View.VISIBLE);
     }
 
+    // 发表评论
+    private String deliverReview() {
+        String result = "Failed in deliver review";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            jo.put("account", myAccount);
+            jo.put("content", editContext);
+            JSONObject jo_return = CommentHttpUtil.addComment(jo);
+            if (jo_return.getBoolean("ok")) {
+                result = "Succeed in deliver review";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 更新评论
+    private void refreshMemoryReview() {
+        reviewDialog.setEditText("");
+        reviewDialog.dismiss();
+        reviewItemList.clear();
+        DownTask navBar = new DownTask();
+        navBar.execute("navBar");
+        downTask = new DownTask();
+        downTask.execute("getReview");
+    }
+
+    // 更新所有评论
+    private void refreshAllReview() {
+        initReview();
+    }
+
+    // 获取评论
+    private String getReview() {
+        String result = "Failed in getting review";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", memID);
+            ArrayList<String> commentList = MemoryHttpUtil.getCommentList(jo);
+            if (!commentList.isEmpty()) {
+                for (int i = 0; i < commentList.size(); i++) {
+                    if (!commentList.get(i).isEmpty()) {
+                        jo = new JSONObject();
+                        jo.put("commentId", commentList.get(i));
+                        JSONObject jo_return = CommentHttpUtil.getComment(jo);
+                        if (jo_return.getBoolean("ok")) {
+                            jo = new JSONObject();
+                            jo.put("account", jo_return.getString("account"));
+                            JSONObject user_return = getUserInfo(jo);
+                            if (user_return.getBoolean("ok")) {
+                                Bitmap face = UserHttpUtil.getUserFace(jo);
+                                AmemReviewItem amemReviewItem = new AmemReviewItem(face,
+                                        user_return.getString("username"),
+                                        jo_return.getString("content"),
+                                        jo_return.getString("time"),
+                                        jo_return.getString("account"));
+                                reviewItemList.add(amemReviewItem);
+                                result = "Succeed in getting review";
+                            }
+                            else {
+                                result = "Failed in getting review";
+                                break;
+                            }
+                        }
+                        else {
+                            result = "Failed in getting review";
+                            break;
+                        }
+                    }
+                    else {
+                        result = "Failed in getting review";
+                        break;
+                    }
+                }
+            }
+            else {
+                result = "Failed in getting review";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "Failed in getting review";
+        }
+        return result;
+    }
+
+    // 取消点赞
+    private String dislike() {
+        String result = "Failed in unlike";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", myAccount);
+            jo.put("memoryId", memID);
+            JSONObject jo_return = UserHttpUtil.unlikeMemory(jo);
+            if (jo_return.getBoolean("ok")) {
+                memoryContext.setIsLike(false);
+                result = "Succeed in unlike";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 取消收藏
+    private String sub() {
+        String result = "Failed in sub";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", myAccount);
+            jo.put("memoryId", memID);
+            JSONObject jo_return = UserHttpUtil.uncollectMemory(jo);
+            if (jo_return.getBoolean("ok")) {
+                memoryContext.setIsAdd(false);
+                result = "Succeed in sub";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 更新底部导航栏
+    private void refreshNavBarTotally() {
+        downTask = new DownTask();
+        downTask.execute("navBar");
+    }
 
     /**
      * 异步操作
@@ -705,6 +992,10 @@ public class MemoryActivity extends AppCompatActivity {
             else if (params[0].equals("navBar")) { result = navBar(); }
             else if (params[0].equals("getContext")) { result = getMemoryContext(); }
             else if (params[0].equals("getMemoryImg")) { result = getMemoryImg(); }
+            else if (params[0].equals("deliverReview")) { result = deliverReview(); }
+            else if (params[0].equals("getReview")) { result = getReview(); }
+            else if (params[0].equals("dislike")) { result = dislike(); }
+            else if (params[0].equals("Sub")) { result = sub(); }
             return result;
         }
 
@@ -713,6 +1004,7 @@ public class MemoryActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... Progress) { }
 
         //doInBackground结束后回调该方法，结束。
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in titleBar")) { refreshTitleBarUI(); }
@@ -721,6 +1013,11 @@ public class MemoryActivity extends AppCompatActivity {
             else if (result.equals("Succeed in following")) { refreshFollowButton(); }
             else if (result.equals("Succeed in unfollowing")) { refreshUnfollowButton(); }
             else if (result.equals("Succeed in getting memory images")) { refreshMemoryImages();}
+            else if (result.equals("Succeed in deliver review")) { refreshMemoryReview(); }
+            else if (result.equals("Succeed in getting review")) { refreshAllReview(); }
+            else if (result.equals("Succeed in unlike")) { refreshNavBarTotally(); }
+            else if (result.equals("Succeed in sub")) { refreshNavBarTotally(); }
+            else if (result.equals("Succeed in like memory")) { refreshNavBarTotally(); }
             else {
                 Toast.makeText(MemoryActivity.this, result, Toast.LENGTH_SHORT).show();
             }

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:background="#FFFEF4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp">
 
     <com.goldfish.sevenseconds.view.CircleImageView
         android:id="@+id/my_review_face"
@@ -24,8 +29,8 @@
             android:id="@+id/my_review_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="18sp" />
+            android:layout_marginTop="7dp"
+            android:textSize="15sp" />
 
         <TextView
             android:text="为什么呢？"

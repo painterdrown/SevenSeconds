@@ -1,14 +1,12 @@
 package com.goldfish.sevenseconds.activities;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,26 +14,18 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.LastUser;
 import com.goldfish.sevenseconds.tools.ImageUtils;
@@ -51,7 +41,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.jar.Manifest;
 
 import me.originqiu.library.EditTag;
 import rx.Observable;
@@ -61,11 +50,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static android.R.attr.height;
-import static android.R.attr.width;
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.goldfish.sevenseconds.tools.Http.addMemory;
-import static com.goldfish.sevenseconds.tools.Http.getUserInfo;
+import static com.goldfish.sevenseconds.http.MemoryHttpUtil.addMemory;
 
 public class Addmem extends AppCompatActivity {
     private EditTag editText_tag;

@@ -6,13 +6,16 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.InformationActivity;
@@ -20,11 +23,17 @@ import com.goldfish.sevenseconds.activities.MessageActivity;
 import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.activities.SettingActivity;
 import com.goldfish.sevenseconds.activities.BarActivity;
-import com.goldfish.sevenseconds.tools.Http;
-import com.goldfish.sevenseconds.view.TurnCardListView;
+import com.goldfish.sevenseconds.adapter.MyPageTimelineAdapter;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
+import com.goldfish.sevenseconds.item.MyPageTimelineItem;
+import com.goldfish.sevenseconds.item.Orientation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -37,22 +46,25 @@ public class MyFragment extends Fragment {
     private String currentUser;
     private Bitmap face;
     private ImageView headPortrait;
+    private Toolbar toolbar;
+    private TextView textView;
+    private Orientation orientation;
+    private RecyclerView recyclerView;
+    private MyPageTimelineAdapter myPageTimelineAdapter;
+    private List<MyPageTimelineItem> myPageTimelineItemList = new ArrayList<>();
+    private ArrayList<String> memoryList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         // 成功登陆的账号
         currentUser = "a";
 
-
         View view = inflater.inflate(R.layout.fragment_my_page,container,false);
-        Button myMessage = (Button) view.findViewById(R.id.myMessage);
-        Button myInformation = (Button) view.findViewById(R.id.myInformation);
-        Button mySetting = (Button) view.findViewById(R.id.mySetting);
-        Button myFollow = (Button) view.findViewById(R.id.myFollow);
+        RelativeLayout myMessage = (RelativeLayout) view.findViewById(R.id.myMessage);
+        RelativeLayout myInformation = (RelativeLayout) view.findViewById(R.id.myInformation);
+        RelativeLayout mySetting = (RelativeLayout) view.findViewById(R.id.mySetting);
+        RelativeLayout myFollow = (RelativeLayout) view.findViewById(R.id.myFollow);
         headPortrait = (ImageView) view.findViewById(R.id.headPortrait);
-
-        DownTask downTask = new DownTask();
-        downTask.execute("getImage");
 
 
         mySetting.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +100,14 @@ public class MyFragment extends Fragment {
                 startActivity(myToMessage);
             }
         });
-        TurnCardListView list = (TurnCardListView) view.findViewById(R.id.card_list);
+
+        orientation = Orientation.vertical;
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_page_timeline);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        /*TurnCardListView list = (TurnCardListView) view.findViewById(R.id.card_list);
 
         list.setOnTurnListener(new TurnCardListView.OnTurnListener() {
             @Override
@@ -96,7 +115,6 @@ public class MyFragment extends Fragment {
                 Toast.makeText(BarActivity.barActivity, "position = " + position, Toast.LENGTH_SHORT).show();
             }
         });
-
 
         list.setAdapter(new BaseAdapter() {
             int[] colors = {0xffFF9800, 0xff3F51B5, 0xff673AB7, 0xff006064, 0xffC51162, 0xffFFEB3B, 0xff795548, 0xff9E9E9E};
@@ -123,8 +141,31 @@ public class MyFragment extends Fragment {
                 }
                 return child;
             }
-        });
+        });*/
         return view;
+    }
+    private void initView() {
+        DownTask downTask = new DownTask();
+        downTask.execute("getMyMemoryList");
+    }
+
+    private void setDataListItems() {
+        if (myPageTimelineItemList.size() == 0) {
+            MyPageTimelineItem myPageTimelineItem = new MyPageTimelineItem();
+            Time t=new Time();
+            t.setToNow();
+            int year = t.year;
+            int month = t.month;
+            String date;
+            if (month <= 9) date = "0" + String.valueOf(month);
+            else date = String.valueOf(month);
+            date +=  "/" + String.valueOf(year);
+            myPageTimelineItem.setTime(date);
+            myPageTimelineItem.setTitle("您还没有忆单，创建一条吧~");
+            myPageTimelineItemList.add(myPageTimelineItem);
+        }
+        myPageTimelineAdapter = new MyPageTimelineAdapter(myPageTimelineItemList, orientation);
+        recyclerView.setAdapter(myPageTimelineAdapter);
     }
 
     private String getImage() {
@@ -132,7 +173,7 @@ public class MyFragment extends Fragment {
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
-            face = Http.getUserFace(jo);
+            face = UserHttpUtil.getUserFace(jo);
             if (face != null) {
                 result = "Succeed in getting face";
             } else {
@@ -145,24 +186,82 @@ public class MyFragment extends Fragment {
         return result;
     }
 
+    private String getMyMemoryList() {
+        String result;
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", currentUser);
+            memoryList = new ArrayList<>();
+            memoryList = UserHttpUtil.getMemoryList(jo);
+            result = "Succeed in getting my memory list";
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "服务器故障啦~";
+        }
+        return result;
+    }
+
+    private String getMyMemory() {
+        String result = "获取忆单失败";
+        if (memoryList != null) {
+            if (memoryList.size() > 0) {
+                for (int i = 0; i < memoryList.size(); i++) {
+                    if (!memoryList.get(i).equals("")) {
+                        try {
+                            JSONObject jo = new JSONObject();
+                            jo.put("memoryId", memoryList.get(i));
+                            JSONObject jo_return = MemoryHttpUtil.getMemory(jo);
+                            if (jo_return.getBoolean("ok")) {
+                                MyPageTimelineItem myPageTimelineItem = new MyPageTimelineItem();
+                                myPageTimelineItem.setTitle(jo_return.getString("title"));
+                                String time = jo_return.getString("time");
+                                time = time.substring(5, 7) + "/" + time.substring(0, 4);
+                                myPageTimelineItem.setTime(time);
+                                jo.put("i", 0);
+                                Bitmap bitmap = MemoryHttpUtil.getMemoryImg(jo);
+                                if (bitmap != null) {
+                                    myPageTimelineItem.setCover(bitmap);
+                                }
+                                myPageTimelineItem.setAccount(jo_return.getString("author"));
+                                myPageTimelineItem.setMemoryId(memoryList.get(i));
+                                myPageTimelineItemList.add(myPageTimelineItem);
+                                result = "Succeed in getting memory";
+                            }
+                        } catch (JSONException e) {
+                            result = "获取忆单失败";
+                            e.printStackTrace();
+                        }
+                    } else result = "Have no memory";
+                }
+            } else result = "Have no memory";
+        } else result = "Have no memory";
+        return result;
+    }
 
     class DownTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String result;
-            if (params[0].equals("getImage")) {
-                result = getImage();
-            } else {
-                result = params[0];
-            }
+            if (params[0].equals("getImage")) { result = getImage(); }
+            else if (params[0].equals("getMyMemoryList")) { result = getMyMemoryList(); }
+            else if (params[0].equals("getMyMemory")) { result = getMyMemory(); }
+            else { result = params[0]; }
             return result;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            if (s.equals("Succeed in getting face")) {
-                headPortrait.setImageBitmap(face);
+            if (s.equals("Succeed in getting face")) { headPortrait.setImageBitmap(face); }
+            else if (s.equals("Succeed in getting my memory list")) {
+                DownTask downTask = new DownTask();
+                downTask.execute("getMyMemory");
+            }
+            else if (s.equals("Succeed in getting memory")) {
+                setDataListItems();
+            }
+            else if (s.equals("Have no memory")) {
+                setDataListItems();
             }
         }
     }
@@ -177,6 +276,8 @@ public class MyFragment extends Fragment {
         super.onStart();
         DownTask downTask = new DownTask();
         downTask.execute("getImage");
+        myPageTimelineItemList.clear();
+        initView();
     }
 
     public static MyFragment newInstance(String libargument) {

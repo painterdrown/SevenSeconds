@@ -29,6 +29,7 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp">
 
+
         <ImageView
             android:id="@+id/nav_bar_add"
             android:src="@drawable/ic_add_box_black_24dp"
@@ -37,7 +38,23 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:alpha="0.4"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
+
+        <TextView
+            android:id="@+id/add_count"
+            android:visibility="invisible"
+            android:text="99+"
+            android:layout_marginTop="2dp"
+            android:layout_alignRight="@+id/nav_bar_add"
+            android:background="@drawable/red_point"
+            android:backgroundTint="@color/lightcoral"
+            android:gravity="center"
+            android:lines="1"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="6sp"
+            android:layout_width="12dp"
+            android:layout_height="12dp" />
 
         <ImageView
             android:id="@+id/nav_bar_like"
@@ -50,6 +67,22 @@
             android:alpha="0.4"
             android:layout_alignParentBottom="true"/>
 
+        <TextView
+            android:text="99+"
+            android:id="@+id/like_count"
+            android:visibility="invisible"
+            android:layout_marginTop="2dp"
+            android:layout_alignRight="@+id/nav_bar_like"
+            android:background="@drawable/red_point"
+            android:backgroundTint="@color/lightcoral"
+            android:gravity="center"
+            android:lines="1"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="6sp"
+            android:layout_width="12dp"
+            android:layout_height="12dp" />
+
         <ImageView
             android:id="@+id/nav_bar_review"
             android:src="@drawable/ic_comment_black_24dp"
@@ -60,6 +93,22 @@
             android:layout_marginLeft="15dp"
             android:alpha="0.4"
             android:layout_alignParentBottom="true"/>
+
+        <TextView
+            android:text="99+"
+            android:visibility="invisible"
+            android:id="@+id/review_count"
+            android:layout_marginTop="2dp"
+            android:layout_alignRight="@+id/nav_bar_review"
+            android:background="@drawable/red_point"
+            android:backgroundTint="@color/lightcoral"
+            android:gravity="center"
+            android:lines="1"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="6sp"
+            android:layout_width="12dp"
+            android:layout_height="12dp" />
 
     </com.zhy.android.percent.support.PercentRelativeLayout>
 

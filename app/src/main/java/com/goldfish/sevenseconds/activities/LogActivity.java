@@ -1,22 +1,14 @@
 package com.goldfish.sevenseconds.activities;
 
-import android.app.Notification;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,29 +16,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.bean.LastUser;
 import com.goldfish.sevenseconds.bean.Lastmes;
-import com.goldfish.sevenseconds.tools.Http;
-import com.goldfish.sevenseconds.bean.MyFollow;
-import com.goldfish.sevenseconds.bean.Users;
 import com.goldfish.sevenseconds.db.ChattingDatabaseHelper;
-import com.google.gson.Gson;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
-
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class LogActivity extends AppCompatActivity {
     static String account;
@@ -258,12 +238,11 @@ public class LogActivity extends AppCompatActivity {
     }
 
     private void compare_user() throws JSONException {
-        Http http = new Http();
         JSONObject jo = new JSONObject();
         jo.put("account",user);
         jo.put("password",psw);
         JSONObject answer = new JSONObject();
-        answer = http.login(jo);
+        answer = UserHttpUtil.login(jo);
         check = answer.getBoolean("ok");
         err_msg = answer.getString("errMsg");
         Log.d("err_msg",err_msg);
