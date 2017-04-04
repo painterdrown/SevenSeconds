@@ -27,14 +27,13 @@ import static org.litepal.LitePalApplication.getContext;
 
 public class SearchActivity extends Activity{
     String query;
-    private List<String> SearchItems = new ArrayList<>();
+    private List<MemorySheetPreview> SearchItems = new ArrayList<MemorySheetPreview>();
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
     private RecyclerView mRecyclerView;
     private MemAdapter mAdapter;
     private String name;
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
-    private ImageView editMemory;
     private int mLoadCount = 0;
 
     public void Exception(){

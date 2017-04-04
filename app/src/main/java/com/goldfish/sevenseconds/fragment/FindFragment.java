@@ -59,17 +59,8 @@ public class FindFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        //final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
-        //indicator.setColor(Color.WHITE);
-        //getSupportActionBar().setHomeAsUpIndicator(indicator);
-        // hide the action bar
-        /*ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
-            actionBar.hide();
-        }*/
-
-        /* creat the timeline view */
         mSearchView = (SearchView) view.findViewById(R.id.search);
+        mSearchView.setQueryHint("今日忆");
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {

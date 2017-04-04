@@ -37,17 +37,18 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="290dp"
+        android:layout_height="29dp"
         android:queryHint="大头"
         android:id="@+id/search"
         android:layout_gravity="top"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20.5dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:iconifiedByDefault="false"
         android:inputType="textFilter"
         android:maxLines="1"
+        android:background="#eeeeee"
         android:imeOptions="actionSearch">
 
     </android.support.v7.widget.SearchView>
@@ -55,60 +56,69 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="19dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="年代"
-            android:textSize="20dp"
-            android:textColor="#ff9519"
+            android:textSize="20sp"
+            android:textColor="#e6ff8900"
             />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:background="@drawable/btn"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="19dp"
                 android:layout_marginBottom="10dp"
                 android:text="【00年代】"
-                android:textSize="15dp"
+                android:textColor="#cc010101"
+                android:textSize="15sp"
                 android:id="@+id/year00"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_marginTop="10dp"
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
+                android:layout_marginTop="19dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="15dp"
                 android:text="【90年代】"
-                android:textSize="15dp"
+                android:id="@+id/year90"
+                android:textSize="15sp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:text="【80年代】"
-                android:textSize="15dp"
-                android:layout_marginRight="10dp"
+                android:id="@+id/year80"
+                android:textSize="15sp"
+                android:layout_marginRight="15dp"
                 android:layout_alignParentLeft="true"/>
             <Button
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="15dp"
                 android:text="【70年代】"
-                android:textSize="15dp"
+                android:id="@+id/year70"
+                android:textSize="15sp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>
@@ -116,81 +126,99 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="24.5dp"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="类别"
-            android:textSize="20dp"
-            android:textColor="#ff9519"
+            android:textSize="20sp"
+            android:textColor="#e6ff8900"
             />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:layout_marginTop="10dp"
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
+                android:layout_marginTop="21dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:text="【游戏】"
-                android:textSize="15dp"
+                android:id="@+id/label_game"
+                android:textSize="15sp"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
-                android:layout_marginTop="10dp"
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
+                android:layout_marginTop="21dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
                 android:text="【动漫】"
-                android:textSize="15dp"
+                android:id="@+id/label_cartoon"
+                android:textSize="15sp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:text="【影视】"
-                android:textSize="15dp"
+                android:id="@+id/label_tv"
+                android:textSize="15sp"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
                 android:text="【体育】"
-                android:textSize="15dp"
+                android:id="@+id/label_sport"
+                android:textSize="15sp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:text="【音乐】"
-                android:textSize="15dp"
+                android:id="@+id/label_music"
+                android:textSize="15sp"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentLeft="true"/>
             <Button
+                android:background="@drawable/btn"
+                android:textColor="#cc010101"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
                 android:text="【童趣】"
-                android:textSize="15dp"
+                android:id="@+id/label_kid"
+                android:textSize="15sp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>
