@@ -1,10 +1,6 @@
 [
     {
-<<<<<<< HEAD
         "outputFile": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-fr\\values-fr.xml",
-=======
-        "outputFile": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-fr\\values-fr.xml",
->>>>>>> origin/master
         "map": [
             {
                 "to": {
@@ -15,11 +11,7 @@
                     "endOffset": 128
                 },
                 "from": {
-<<<<<<< HEAD
                     "file": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
-=======
-                    "file": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
->>>>>>> origin/master
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -38,11 +30,7 @@
                     "endOffset": 201
                 },
                 "from": {
-<<<<<<< HEAD
                     "file": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
-=======
-                    "file": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
->>>>>>> origin/master
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -61,73 +49,7 @@
                     "endOffset": 285
                 },
                 "from": {
-<<<<<<< HEAD
                     "file": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
-=======
-                    "file": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
-                    "position": {
-                        "startLine": 4,
-                        "startColumn": 4,
-                        "startOffset": 206,
-                        "endColumn": 83,
-                        "endOffset": 285
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "outputFile": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-fr\\values-fr.xml",
-        "map": [
-            {
-                "to": {
-                    "startLine": 2,
-                    "startColumn": 4,
-                    "startOffset": 55,
-                    "endColumn": 77,
-                    "endOffset": 128
-                },
-                "from": {
-                    "file": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
-                    "position": {
-                        "startLine": 2,
-                        "startColumn": 4,
-                        "startOffset": 55,
-                        "endColumn": 77,
-                        "endOffset": 128
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 3,
-                    "startColumn": 4,
-                    "startOffset": 133,
-                    "endColumn": 72,
-                    "endOffset": 201
-                },
-                "from": {
-                    "file": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
-                    "position": {
-                        "startLine": 3,
-                        "startColumn": 4,
-                        "startOffset": 133,
-                        "endColumn": 72,
-                        "endOffset": 201
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 4,
-                    "startColumn": 4,
-                    "startOffset": 206,
-                    "endColumn": 83,
-                    "endOffset": 285
-                },
-                "from": {
-                    "file": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\values-fr\\values-fr.xml",
->>>>>>> origin/master
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
