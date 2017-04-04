@@ -7,6 +7,7 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
 import com.goldfish.sevenseconds.tools.Http;
+import com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,11 +47,14 @@ public class SquareFragment extends Fragment{
     static final String[] TEST_STRINGS = {"ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX",
             "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE"};
 
+    private PullToRefreshRecyclerView mPullRefreshRecyclerView;
+    private RecyclerView mRecyclerView;
+    private MemAdapter mAdapter;
     private String name;
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
     private Http http = new Http();
-    XRefreshView xRefreshView;
+    //XRefreshView xRefreshView;
 
 
 
@@ -72,22 +78,66 @@ public class SquareFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         Exception();
         View view = inflater.inflate(R.layout.fragment_square,container,false);
-
+        /*
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
         recyclerView.setHasFixedSize(true);
 
         xRefreshView = (XRefreshView)view.findViewById(R.id.x_fresh_square);
-
+        */
+        /*
         MemAdapter adapter;
         adapter = new MemAdapter(memlist,view.getContext());
-        LinearLayoutManager layoutManager;
-        layoutManager = new LinearLayoutManager(view.getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
+        mPullRefreshRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.hor_rec_refresh);
+        mRecyclerView = mPullRefreshRecyclerView.getRefreshableView();
+        mPullRefreshRecyclerView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<RecyclerView>() {
+
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                /*String label = DateUtils.formatDateTime(
+                        getApplicationContext(),
+                        System.currentTimeMillis(),
+                        DateUtils.FORMAT_SHOW_TIME
+                                | DateUtils.FORMAT_SHOW_DATE
+                                | DateUtils.FORMAT_ABBREV_ALL);
+                // 显示最后更新的时间
+                mPullRefreshRecyclerView.getLoadingLayoutProxy()
+                        .setLastUpdatedLabel(label);
+                refreshView.getLoadingLayoutProxy()
+                        .setLastUpdatedLabel(label);*/
+                Toast.makeText(BarActivity.barActivity, "Pull left!", Toast.LENGTH_SHORT).show();
+                //new GetDataTask().execute();
+                mPullRefreshRecyclerView.onRefreshComplete();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                /*
+                String label = DateUtils.formatDateTime(
+                        getApplicationContext(),
+                        System.currentTimeMillis(),
+                        DateUtils.FORMAT_SHOW_TIME
+                                | DateUtils.FORMAT_SHOW_DATE
+                                | DateUtils.FORMAT_ABBREV_ALL);
+                // 显示最后更新的时间
+                mPullRefreshRecyclerView.getLoadingLayoutProxy()
+                        .setLastUpdatedLabel(label);
+                refreshView.getLoadingLayoutProxy()
+                        .setLastUpdatedLabel(label);*/
+                Toast.makeText(BarActivity.barActivity, "Pull right!", Toast.LENGTH_SHORT).show();
+                //new GetDataTask().execute();
+                mPullRefreshRecyclerView.onRefreshComplete();
+            }
+        });
+        for (int i = 0;i < 10; i++){
+            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1");
+            memlist.add(memex);
+        }
+        mAdapter = new MemAdapter(memlist,view.getContext());
+        mRecyclerView.setAdapter(mAdapter);
 
 
-        xRefreshView.setPinnedTime(1000);
+        /*xRefreshView.setPinnedTime(1000);
         xRefreshView.setMoveForHorizontal(true);
         xRefreshView.setPullLoadEnable(true);
         xRefreshView.setAutoLoadMore(false);
@@ -125,7 +175,7 @@ public class SquareFragment extends Fragment{
                     }
                 }, 1000);
             }
-        });
+        });*/
 
         /*RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.container);
         ArrayList<String> strings = new ArrayList<>();

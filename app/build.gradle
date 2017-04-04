@@ -61,4 +61,5 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.foamtrace:photopicker:1.0'
+    compile project(':PullToRefresh')
 }

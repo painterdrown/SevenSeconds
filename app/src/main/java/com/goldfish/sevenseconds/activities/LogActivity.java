@@ -49,6 +49,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LogActivity extends AppCompatActivity {
+    static String account;
     private String user;
     private String psw;
     private boolean check;
@@ -165,6 +166,7 @@ public class LogActivity extends AppCompatActivity {
                         LastUser lastUser = new LastUser();
                         lastUser.setName(user);
                         lastUser.updateAll();
+                        account = user;
                         Intent intent = new Intent(LogActivity.this, BarActivity.class);
                         startActivity(intent);
                         finish();
@@ -205,6 +207,7 @@ public class LogActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if (check == true) {
+                            account = user;
                             LastUser llast = new LastUser();
                             llast.setName(user);
                             llast.updateAll();
