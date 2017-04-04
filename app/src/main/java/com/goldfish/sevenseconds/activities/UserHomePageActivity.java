@@ -16,10 +16,10 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.MyPageTimelineAdapter;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
 import com.goldfish.sevenseconds.fragment.MyFragment;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.MyPageTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
-import com.goldfish.sevenseconds.tools.Http;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -128,7 +128,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
-            face = Http.getUserFace(jo);
+            face = UserHttpUtil.getUserFace(jo);
             if (face != null) {
                 result = "Succeed in getting face";
             } else {
@@ -147,7 +147,7 @@ public class UserHomePageActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
             memoryList = new ArrayList<>();
-            memoryList = Http.getMemoryList(jo);
+            memoryList = UserHttpUtil.getMemoryList(jo);
             result = "Succeed in getting my memory list";
         } catch (JSONException e) {
             e.printStackTrace();
@@ -165,7 +165,7 @@ public class UserHomePageActivity extends AppCompatActivity {
                         try {
                             JSONObject jo = new JSONObject();
                             jo.put("memoryId", memoryList.get(i));
-                            JSONObject jo_return = Http.getMemory(jo);
+                            JSONObject jo_return = MemoryHttpUtil.getMemory(jo);
                             if (jo_return.getBoolean("ok")) {
                                 MyPageTimelineItem myPageTimelineItem = new MyPageTimelineItem();
                                 myPageTimelineItem.setTitle(jo_return.getString("title"));
@@ -173,7 +173,7 @@ public class UserHomePageActivity extends AppCompatActivity {
                                 time = time.substring(5, 7) + "/" + time.substring(0, 4);
                                 myPageTimelineItem.setTime(time);
                                 jo.put("i", 0);
-                                Bitmap bitmap = Http.getMemoryImg(jo);
+                                Bitmap bitmap = MemoryHttpUtil.getMemoryImg(jo);
                                 if (bitmap != null) {
                                     myPageTimelineItem.setCover(bitmap);
                                 }
@@ -199,13 +199,13 @@ public class UserHomePageActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
-            JSONObject jo_return = Http.getUserInfo(jo);
+            JSONObject jo_return = UserHttpUtil.getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 titleBarInfo.setName(jo_return.getString("username"));
                 titleBarInfo.setIntroduction(jo_return.getString("introduction"));
                 titleBarInfo.setBirthday(jo_return.getString("birthday").substring(0, 10));
                 titleBarInfo.setSex(jo_return.getString("sex"));
-                titleBarInfo.setFace(Http.getUserFace(jo));
+                titleBarInfo.setFace(UserHttpUtil.getUserFace(jo));
                 result = "Succeed in getting information";
             } else{
                 result = "获取用户信息失败 TAT";
@@ -242,7 +242,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", LogActivity.user);
-            ArrayList<String> myFollowers = Http.getFollowingList(jo);
+            ArrayList<String> myFollowers = UserHttpUtil.getFollowingList(jo);
             for (int i = 0; i < myFollowers.size(); i++) {
                 if (myFollowers.get(i).equals(currentUser)) {
                     hadFollowed = true;
@@ -271,7 +271,7 @@ public class UserHomePageActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", LogActivity.user);
             jo.put("otherAccount", currentUser);
-            JSONObject jo_return = Http.addFollow(jo);
+            JSONObject jo_return = UserHttpUtil.addFollow(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in following";
             } else {
@@ -292,7 +292,7 @@ public class UserHomePageActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", LogActivity.user);
             jo.put("otherAccount", currentUser);
-            JSONObject jo_return = Http.deleteFollow(jo);
+            JSONObject jo_return = UserHttpUtil.deleteFollow(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in unfollowing";
             } else {

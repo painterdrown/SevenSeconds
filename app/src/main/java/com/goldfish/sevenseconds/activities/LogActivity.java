@@ -27,7 +27,7 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.bean.LastUser;
 import com.goldfish.sevenseconds.bean.Lastmes;
-import com.goldfish.sevenseconds.tools.Http;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.bean.MyFollow;
 import com.goldfish.sevenseconds.bean.Users;
 import com.goldfish.sevenseconds.db.ChattingDatabaseHelper;
@@ -49,7 +49,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LogActivity extends AppCompatActivity {
-    static public String user;
+    public static String user;
     private String psw;
     private boolean check;
     private  String err_msg;
@@ -255,12 +255,11 @@ public class LogActivity extends AppCompatActivity {
     }
 
     private void compare_user() throws JSONException {
-        Http http = new Http();
         JSONObject jo = new JSONObject();
         jo.put("account",user);
         jo.put("password",psw);
         JSONObject answer = new JSONObject();
-        answer = http.login(jo);
+        answer = UserHttpUtil.login(jo);
         check = answer.getBoolean("ok");
         err_msg = answer.getString("errMsg");
         Log.d("err_msg",err_msg);
