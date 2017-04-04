@@ -49,7 +49,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LogActivity extends AppCompatActivity {
-    private String user;
+    static public String user;
     private String psw;
     private boolean check;
     private  String err_msg;

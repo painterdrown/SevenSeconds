@@ -248,6 +248,7 @@ public class MemoryActivity extends AppCompatActivity {
                 if ((NetWorkUtils.getAPNType(context) != 0) && titleBarFinished) {
                     Intent intent = new Intent(MemoryActivity.this,
                             UserHomePageActivity.class);
+                    intent.putExtra("account", memAccount);
                     startActivity(intent);
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
