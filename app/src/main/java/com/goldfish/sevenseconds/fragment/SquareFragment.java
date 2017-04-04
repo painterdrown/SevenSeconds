@@ -1,5 +1,6 @@
 package com.goldfish.sevenseconds.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -10,11 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.andview.refreshview.XRefreshView;
 import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.Addmem;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
@@ -41,6 +44,7 @@ public class SquareFragment extends Fragment{
     private String name;
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
+    private ImageView editMemory;
     //XRefreshView xRefreshView;
 
 
@@ -65,6 +69,14 @@ public class SquareFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         Exception();
         View view = inflater.inflate(R.layout.fragment_square,container,false);
+        editMemory = (ImageView) view.findViewById(R.id.square_edit);
+        editMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Addmem.class);
+                startActivity(intent);
+            }
+        });
         /*
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
         recyclerView.setHasFixedSize(true);

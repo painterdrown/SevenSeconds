@@ -6,20 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.goldfish.sevenseconds.activities.BarActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/square_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/shellowyellow"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/lightorange"
-            android:textSize="20sp" />
-    </android.support.v7.widget.Toolbar>
 
     <com.ycl.tabview.library.TabView
         android:id="@+id/tabView_square"
@@ -27,6 +13,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/square_toolbar">
+        app:tab_tabViewBackgroundColor="@color/shellowyellow"
+        app:tab_textViewSize="0sp">
     </com.ycl.tabview.library.TabView>
+
 </RelativeLayout>

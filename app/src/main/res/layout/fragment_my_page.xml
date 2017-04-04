@@ -7,9 +7,36 @@
     android:layout_height="match_parent"
     android:background="#fffff4">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_page_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/shellowyellow"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:id="@+id/my_page_title"
+            android:text="我的"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/lightorange"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/my_page_letter"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_redeem_black_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.5" />
+    </android.support.v7.widget.Toolbar>
+
     <RelativeLayout
         android:id="@+id/my_information"
         android:padding="16dp"
+        android:layout_below="@+id/my_page_toolbar"
         android:background="#1afff45c"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

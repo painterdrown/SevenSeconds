@@ -10,6 +10,32 @@
     android:weightSum="1"
     android:background="@color/white">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/square_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/shellowyellow"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:id="@+id/find_title"
+            android:text="发现"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/lightorange"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/find_edit"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_edit_black_36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.5" />
+    </android.support.v7.widget.Toolbar>
+
     <android.support.v7.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

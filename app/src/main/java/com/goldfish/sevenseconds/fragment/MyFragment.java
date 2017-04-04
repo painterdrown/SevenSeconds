@@ -53,6 +53,7 @@ public class MyFragment extends Fragment {
     private MyPageTimelineAdapter myPageTimelineAdapter;
     private List<MyPageTimelineItem> myPageTimelineItemList = new ArrayList<>();
     private ArrayList<String> memoryList;
+    private ImageView letter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
@@ -65,6 +66,14 @@ public class MyFragment extends Fragment {
         RelativeLayout mySetting = (RelativeLayout) view.findViewById(R.id.mySetting);
         RelativeLayout myFollow = (RelativeLayout) view.findViewById(R.id.myFollow);
         headPortrait = (ImageView) view.findViewById(R.id.headPortrait);
+
+        letter = (ImageView) view.findViewById(R.id.my_page_letter);
+        letter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
         mySetting.setOnClickListener(new View.OnClickListener() {

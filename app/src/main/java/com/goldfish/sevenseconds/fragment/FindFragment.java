@@ -16,10 +16,12 @@ import android.view.View;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.Addmem;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.activities.SearchActivity;
 import com.goldfish.sevenseconds.adapter.TimeLineAdapter;
@@ -44,10 +46,19 @@ public class FindFragment extends Fragment {
     private Orientation mOrientation;
     private SearchView mSearchView;
     private List<TimeLineModel> mDataList = new ArrayList<>();
+    private ImageView editMemory;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         View view = inflater.inflate(R.layout.fragment_find,container,false);
-
+        editMemory = (ImageView) view.findViewById(R.id.find_edit);
+        editMemory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Addmem.class);
+                startActivity(intent);
+            }
+        });
         //final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
         //indicator.setColor(Color.WHITE);
         //getSupportActionBar().setHomeAsUpIndicator(indicator);

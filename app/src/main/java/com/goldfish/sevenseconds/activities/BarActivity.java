@@ -28,8 +28,8 @@ import java.util.List;
 import static com.goldfish.sevenseconds.http.UserHttpUtil.getUsername;
 
 public class BarActivity extends AppCompatActivity {
-    private  Toolbar toolbar;
-    private  TextView textView;
+    /*private  Toolbar toolbar;
+    private  TextView textView;*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.square_toolbar,menu);
@@ -66,26 +66,26 @@ public class BarActivity extends AppCompatActivity {
         Connector.getDatabase();
 
 
-        toolbar = (Toolbar) findViewById(R.id.square_toolbar);
+        /*toolbar = (Toolbar) findViewById(R.id.square_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         textView = (TextView)findViewById(R.id.toolbar_title);
         GetName getName = new GetName();
-        getName.execute();
+        getName.execute();*/
 
         TabView tabView = (TabView)findViewById(R.id.tabView_square);
         List<TabViewChild> tabViewChildList=new ArrayList<>();
-        TabViewChild tabViewChild01=new TabViewChild(R.drawable.squaresl,R.drawable.squarensel,"广场",  SquareFragment.newInstance("广场"));
-        TabViewChild tabViewChild02=new TabViewChild(R.drawable.searchsl,R.drawable.searchunsl,"发现",  FindFragment.newInstance("发现"));
-        TabViewChild tabViewChild03=new TabViewChild(R.drawable.mysl,R.drawable.myunsel,"我的",  MyFragment.newInstance("我的"));
+        TabViewChild tabViewChild01=new TabViewChild(R.drawable.ic_card_membership_orange_36dp, R.drawable.ic_card_membership_black_36dp,"旧胶卷",  SquareFragment.newInstance("旧胶卷"));
+        TabViewChild tabViewChild02=new TabViewChild(R.drawable.ic_youtube_searched_for_orange_36dp, R.drawable.ic_youtube_searched_for_black_36dp,"发现",  FindFragment.newInstance("发现"));
+        TabViewChild tabViewChild03=new TabViewChild(R.drawable.ic_face_orange_36dp, R.drawable.ic_face_black_36dp,"我的",  MyFragment.newInstance("我的"));
         tabViewChildList.add(tabViewChild01);
         tabViewChildList.add(tabViewChild02);
         tabViewChildList.add(tabViewChild03);
         tabView.setTabViewChild(tabViewChildList,getSupportFragmentManager());
     }
-    class GetName extends AsyncTask<Void,Void,Boolean> {
+    /*class GetName extends AsyncTask<Void,Void,Boolean> {
         private String username;
 
         @Override
@@ -113,6 +113,6 @@ public class BarActivity extends AppCompatActivity {
                 textView.setText(username);
             }
         }
-    }
+    }*/
 
 }
