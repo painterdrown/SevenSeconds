@@ -19,10 +19,12 @@ import android.widget.TextView;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.InformationActivity;
+import com.goldfish.sevenseconds.activities.LogActivity;
 import com.goldfish.sevenseconds.activities.MessageActivity;
 import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.activities.SettingActivity;
 import com.goldfish.sevenseconds.activities.BarActivity;
+import com.goldfish.sevenseconds.activities.TimeCapsuleManagerActivity;
 import com.goldfish.sevenseconds.adapter.MyPageTimelineAdapter;
 import com.goldfish.sevenseconds.http.MemoryHttpUtil;
 import com.goldfish.sevenseconds.http.UserHttpUtil;
@@ -58,7 +60,7 @@ public class MyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         // 成功登陆的账号
-        currentUser = "a";
+        currentUser = LogActivity.user;
 
         View view = inflater.inflate(R.layout.fragment_my_page,container,false);
         RelativeLayout myMessage = (RelativeLayout) view.findViewById(R.id.myMessage);
@@ -71,7 +73,8 @@ public class MyFragment extends Fragment {
         letter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getContext(), TimeCapsuleManagerActivity.class);
+                getActivity().startActivity(intent);
             }
         });
 

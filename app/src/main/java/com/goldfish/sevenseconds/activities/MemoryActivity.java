@@ -7,11 +7,17 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,11 +37,13 @@ import com.goldfish.sevenseconds.item.AmemReviewItem;
 import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.service.NetWorkUtils;
+import com.goldfish.sevenseconds.tools.ScrollSpeedLinearLayoutManger;
 import com.goldfish.sevenseconds.view.ReviewDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +128,13 @@ public class MemoryActivity extends AppCompatActivity {
     private int lastVisibleItem;
     private int firstVisibleItem;
     private int currentVisibleItem;
-    private String[] months = { "Nov" ,"Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec", "Jan", "Feb" };
+    private TextView nextYear;
+    private TextView lastYear;
+    private String[] months = {"Feb", "Jan" ,"Dec", "Nov", "Oct", "Sept", "Aug", "Jul", "Jun", "May", "Apr", "Mar", "Feb", "Jan", "Dec", "Nov"};
+    private String collectTime;
+    private String monthStr;
+    private ImageView addOne;
+
 
     /*
     ** 评论区
@@ -136,17 +150,8 @@ public class MemoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_amem);
         Intent getData = getIntent();
         context = this;
-        memAccount = getData.getStringExtra("account");
         memID = getData.getStringExtra("memoryID");
-
-        // 测试临时个人账户和忆单的作者账户
-        myAccount = "a";
-        if (memAccount == null) {
-            memAccount = "b";
-        }
-        if (memID == null) {
-            memID = "1491188366992";
-        }
+        myAccount = LogActivity.user;
 
         /*
         ** 时间轴
@@ -154,10 +159,12 @@ public class MemoryActivity extends AppCompatActivity {
         // 控件
         orientation = Orientation.horizontal;
         recyclerView = (RecyclerView) findViewById(R.id.my_timeline);
-        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        final ScrollSpeedLinearLayoutManger mLayoutManager = new ScrollSpeedLinearLayoutManger(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mLayoutManager.setSpeedSlow();
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
         initView();
+        addOne = (ImageView) findViewById(R.id.amem_add_one);
 
         /**
          *  顶部标题栏
@@ -192,50 +199,86 @@ public class MemoryActivity extends AppCompatActivity {
             }
         });
 
+
+        // 加载忆单主体内容
         downTask = new DownTask();
-        downTask.execute("titleBar");
+        downTask.execute("getContext");
 
         // 时间轴
         lastVisibleItem = 0;
         firstVisibleItem = 0;
         currentVisibleItem = 0;
+        lastYear = (TextView) findViewById(R.id.last_year);
+        nextYear = (TextView) findViewById(R.id.next_year);
 
-        recyclerView.setOnScrollListener(new  RecyclerView.OnScrollListener() {
+
+
+        recyclerView.addOnScrollListener(new  RecyclerView.OnScrollListener() {
+
+            // 状态改变的时候调用函数
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+
                 if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                         lastVisibleItem + 1 == myTimelineAdapter.getItemCount()) {
                     recyclerView.smoothScrollToPosition(lastVisibleItem);
                     recyclerView.scrollToPosition(1);
-                    initData();
-                    currentVisibleItem = mLayoutManager.findFirstVisibleItemPosition() + 1;
-                    TextView textView = (TextView) mLayoutManager.findViewByPosition(currentVisibleItem).findViewById(R.id.my_timeline_month);
-                    textView.setText(months[0] + "1998");
+                    /*int top=childView.getLeft();
+                    int topEdge=recyclerView.getPaddingLeft();
+                    if(top >= topEdge){
+                        recyclerView.scrollToPosition(14);
+                    }*/
+                    Log.d(months[currentVisibleItem], String.valueOf(currentVisibleItem));
+                    nextYear.setText(String.valueOf(Integer.parseInt(nextYear.getText().toString()) - 1));
+                    lastYear.setText(String.valueOf(Integer.parseInt(lastYear.getText().toString()) - 1));
                 }
                 else if (newState == RecyclerView.SCROLL_STATE_IDLE &&
                         firstVisibleItem == 0) {
-                    mLayoutManager.scrollToPositionWithOffset(firstVisibleItem, 0);
-                    recyclerView.scrollToPosition(14);
-                    initData();
-                    currentVisibleItem = mLayoutManager.findFirstVisibleItemPosition() + 1;
-                    TextView textView = (TextView) mLayoutManager.findViewByPosition(currentVisibleItem).findViewById(R.id.my_timeline_month);
-                    textView.setText(months[11] + "1998");
+                    //mLayoutManager.scrollToPositionWithOffset(firstVisibleItem + 1, 0);
+                    recyclerView.smoothScrollToPosition(lastVisibleItem);
+                    View childView=recyclerView.getChildAt(0);
+                    int top=childView.getLeft();
+                    int topEdge=recyclerView.getPaddingLeft();
+                    if(top >= topEdge){
+                        recyclerView.scrollToPosition(14);
+                        nextYear.setText(String.valueOf(Integer.parseInt(nextYear.getText().toString()) + 1));
+                        lastYear.setText(String.valueOf(Integer.parseInt(lastYear.getText().toString()) + 1));
+                    }
+                    Log.d(months[currentVisibleItem], String.valueOf(currentVisibleItem));
                 }
                 else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     recyclerView.smoothScrollToPosition(lastVisibleItem);
-                    TextView textView = (TextView) mLayoutManager.findViewByPosition(currentVisibleItem).findViewById(R.id.my_timeline_month);
-                    initData();
-                    textView.setText(months[currentVisibleItem - 2] + "1998");
+                    //Log.d(months[currentVisibleItem], String.valueOf(currentVisibleItem));
                 }
+                collectTime = String.valueOf(Integer.parseInt(nextYear.getText().toString()) + 1) + "-" + monthStr;
             }
 
+            // 滚动结束的时候调用函数
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
                 firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
-                currentVisibleItem = mLayoutManager.findFirstVisibleItemPosition() + 1;
+                currentVisibleItem = firstVisibleItem + 1;
+                int month = 1;
+                if (currentVisibleItem >= 2 && currentVisibleItem <= 13) {
+                    month = 14 - currentVisibleItem;
+                }
+                else if (currentVisibleItem == 1) {
+                    month = 1;
+                }
+                else if (currentVisibleItem == 0) {
+                    month = 2;
+                }
+                else if (currentVisibleItem == 14) {
+                    month = 2;
+                }else if (currentVisibleItem == 15) {
+                    month = 1;
+                }
+                if (month <=9 ) {
+                    monthStr = "0";
+                }
+                monthStr += String.valueOf(month);
             }
         });
 
@@ -303,10 +346,10 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (navBarFinished) {
-                    TextView textView = (TextView) findViewById(R.id.amem_review_title1);
+                    /*TextView textView = (TextView) findViewById(R.id.amem_review_title1);
                     textView.setFocusableInTouchMode(false);
                     textView.setFocusableInTouchMode(true);
-                    textView.requestFocus();
+                    textView.requestFocus();*/
                 }
             }
         });
@@ -391,10 +434,6 @@ public class MemoryActivity extends AppCompatActivity {
         // 数据
         memoryContext = new MemoryContext();
         contextFinished = false;
-
-        // 加载忆单主体内容
-        downTask = new DownTask();
-        downTask.execute("getContext");
 
         // 加载评论区
         downTask = new DownTask();
@@ -509,33 +548,18 @@ public class MemoryActivity extends AppCompatActivity {
 
     // 添加忆单
     private String showInMyFavorites() {
-        String result;
+        String result = "Failed in collect";
         try {
-            RequestBody requestBody = new FormBody.Builder()
-                    .add("username", myAccount)
-                    .add("memoryId", memID).build();
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request
-                    .Builder()
-                    .url("http://139.199.158.84:3000/api/collectMemory")
-                    .post(requestBody).build();
-            Response response = null;
-            response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                String responseData = response.body().string();
-                JSONObject jsonObject = new JSONObject(responseData);
-                if (jsonObject.getBoolean("ok")) {
-                    result = "success in adding memory sheet";
-                } else {
-                    result = jsonObject.getString("errMsg");
-                }
-            } else {
-                result = "failed";
+            JSONObject jo = new JSONObject();
+            jo.put("account", myAccount);
+            jo.put("memoryId", memID);
+            jo.put("time", collectTime);
+            JSONObject jo_return = UserHttpUtil.collectMemory(jo);
+            if (jo_return.getBoolean("ok")) {
+                result = "Succeed in collect";
             }
-        }
-        catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
-            result = "failed";
         }
         return result;
     }
@@ -614,6 +638,7 @@ public class MemoryActivity extends AppCompatActivity {
                 memoryContext.setReviewCount(jo_return.getInt("reviewCount"));
                 memoryContext.setCollectCount(jo_return.getInt("collectCount"));
                 memoryContext.setLikeCount(jo_return.getInt("likeCount"));
+                memAccount = jo_return.getString("author");
                 jo = new JSONObject();
                 jo.put("memoryId", memID);
                 jo.put("i", 0);
@@ -704,9 +729,19 @@ public class MemoryActivity extends AppCompatActivity {
 
     // 更新忆单内容UI
     private void refreshContext() {
+        // 加载标题栏
+        downTask = new DownTask();
+        downTask.execute("titleBar");
+
         contextTitle.setText(memoryContext.getTitle());
         contextTime.setText(memoryContext.getTime());
-        contextCover.setImageBitmap(memoryContext.getCover());
+        if (memoryContext.getCover() == null) {
+            contextCover.setVisibility(View.GONE);
+        }
+        else {
+            contextCover.setImageBitmap(memoryContext.getCover());
+        }
+
         String labels = "";
         for (int i = 0; i < memoryContext.getLabel().length; i++) {
             if (memoryContext.getLabel()[i].equals("")) {
@@ -802,7 +837,7 @@ public class MemoryActivity extends AppCompatActivity {
     }
 
     private String getMemoryImg() {
-        String result = "获取图片失败";
+        String result = "Succeed in getting memory images";
         bitImages = new Bitmap[image.size()];
         for (int i = 0; i < image.size(); i++) {
             try {
@@ -902,27 +937,12 @@ public class MemoryActivity extends AppCompatActivity {
                                         jo_return.getString("time"),
                                         jo_return.getString("account"));
                                 reviewItemList.add(amemReviewItem);
-                                result = "Succeed in getting review";
-                            }
-                            else {
-                                result = "Failed in getting review";
-                                break;
                             }
                         }
-                        else {
-                            result = "Failed in getting review";
-                            break;
-                        }
-                    }
-                    else {
-                        result = "Failed in getting review";
-                        break;
                     }
                 }
             }
-            else {
-                result = "Failed in getting review";
-            }
+            result = "Succeed in getting review";
         } catch (JSONException e) {
             e.printStackTrace();
             result = "Failed in getting review";
@@ -972,6 +992,21 @@ public class MemoryActivity extends AppCompatActivity {
         downTask.execute("navBar");
     }
 
+    // +1动画
+    private void showAddOne() {
+        refreshNavBarTotally();
+        addOne.setVisibility(View.VISIBLE);
+        Animation translateAnimation = new TranslateAnimation(0.0f, 0.0f,0.0f,-100.0f);
+        Animation alphaAnimation = new AlphaAnimation(1.0f, 0.1f);
+        AnimationSet set = new AnimationSet(true);
+        set.addAnimation(translateAnimation);
+        set.addAnimation(alphaAnimation);
+        set.setDuration(1000);
+        addOne.startAnimation(set);
+        addOne.setVisibility(View.GONE);
+    }
+
+
     /**
      * 异步操作
      */
@@ -979,7 +1014,7 @@ public class MemoryActivity extends AppCompatActivity {
 
         //该回调方法执行完毕后，将会调用doInBackground
         @Override
-        protected void onPreExecute() { }
+        protected void onPreExecute() {}
 
         // 在另一个线程操作
         @Override
@@ -1019,6 +1054,7 @@ public class MemoryActivity extends AppCompatActivity {
             else if (result.equals("Succeed in unlike")) { refreshNavBarTotally(); }
             else if (result.equals("Succeed in sub")) { refreshNavBarTotally(); }
             else if (result.equals("Succeed in like memory")) { refreshNavBarTotally(); }
+            else if (result.equals("Succeed in collect")) { showAddOne(); }
             else {
                 Toast.makeText(MemoryActivity.this, result, Toast.LENGTH_SHORT).show();
             }

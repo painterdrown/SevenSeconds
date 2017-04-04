@@ -14,6 +14,46 @@ public class MyReviewItem {
     private String otherMessage;
     private String myMessage;
     private String time;
+    private boolean isMemory;
+    private Bitmap cover;
+    private String title;
+    private String memoryId;
+
+    public String getMemoryId() {
+        return memoryId;
+    }
+
+    public void setMemoryId(String memoryId) {
+        this.memoryId = memoryId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Bitmap getCover() {
+        return cover;
+    }
+
+    public void setCover(Bitmap cover) {
+        this.cover = cover;
+    }
+
+    public boolean getIsMemory() {
+        return isMemory;
+    }
+
+    public void setIsMemory(boolean flag) {
+        isMemory = flag;
+    }
+
+    public void setMemory(boolean memory) {
+        isMemory = memory;
+    }
 
     public String getAccount() {
         return account;

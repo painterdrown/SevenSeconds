@@ -58,7 +58,6 @@ public class MyPageTimelineAdapter extends RecyclerView.Adapter<MyPageTimelineAd
             public void onClick(View v) {
                 Intent intent = new Intent(viewGroup.getContext(), MemoryActivity.class);
                 intent.putExtra("memoryID", myPageTimelineItem.getMemoryId());
-                intent.putExtra("account", myPageTimelineItem.getAccount());
                 viewGroup.getContext().startActivity(intent);
             }
         });

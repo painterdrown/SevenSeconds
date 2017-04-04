@@ -9,10 +9,10 @@
     <com.goldfish.sevenseconds.view.TimelineView
         app:line_orientation="horizontal"
         android:id="@+id/amem_timeline"
-        android:layout_width="110dp"
+        android:layout_width="100dp"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        app:line_size="1dp"
+        app:line_size="2dp"
         app:marker_size="11.5dp"
         app:line="@color/lightgray"
         app:marker="@drawable/my_timeline_marker"/>

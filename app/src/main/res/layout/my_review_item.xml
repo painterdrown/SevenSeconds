@@ -38,14 +38,39 @@
             android:id="@+id/my_review_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <TextView
-            android:text="哎哟喂"
-            android:padding="10dp"
-            android:background="@color/transparentlightgrey"
-            android:id="@+id/my_review_my"
+
+        <LinearLayout
+            android:id="@+id/my_review_layout"
             android:layout_marginTop="5dp"
+            android:background="@color/transparentlightgrey"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/my_review_my"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/my_review_cover"
+                android:visibility="gone"
+                android:src="@drawable/app_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/my_review_title"
+                android:visibility="gone"
+                android:text="哎哟喂"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <View
             android:layout_marginTop="5dp"

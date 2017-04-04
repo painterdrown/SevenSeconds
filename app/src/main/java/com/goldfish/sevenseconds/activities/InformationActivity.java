@@ -259,7 +259,7 @@ public class InformationActivity extends AppCompatActivity {
     }
 
     // 异步
-    class DownTask extends AsyncTask<String, Integer, String> {
+    private class DownTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {

@@ -1,15 +1,18 @@
 package com.goldfish.sevenseconds.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.MemoryActivity;
 import com.goldfish.sevenseconds.activities.MessageActivity;
 import com.goldfish.sevenseconds.activities.UserHomePageActivity;
 import com.goldfish.sevenseconds.item.MyReviewItem;
@@ -33,19 +36,36 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final MyReviewItem myReviewItem = myReviewItemList.get(position);
         holder.name.setText(myReviewItem.getName());
         holder.face.setImageBitmap(myReviewItem.getFace());
         holder.time.setText(myReviewItem.getTime());
-        holder.myMessage.setText(myReviewItem.getMyMessage());
+        if (myReviewItem.getIsMemory()) {
+            holder.cover.setImageBitmap(myReviewItem.getCover());
+            holder.cover.setVisibility(View.VISIBLE);
+            holder.title.setText(myReviewItem.getTitle());
+            holder.title.setVisibility(View.VISIBLE);
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MessageActivity.messageActivity, MemoryActivity.class);
+                    intent.putExtra("memoryID", myReviewItem.getMemoryId());
+                    MessageActivity.messageActivity.startActivity(intent);
+                }
+            });
+        }
+        else {
+            holder.myMessage.setText(myReviewItem.getMyMessage());
+            holder.myMessage.setVisibility(View.VISIBLE);
+        }
         holder.otherMessage.setText(myReviewItem.getOtherMessage());
         holder.face.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MessageActivity.messageActivity, UserHomePageActivity.class);
                 intent.putExtra("account", myReviewItem.getAccount());
-                // 跳转到主页
+                MessageActivity.messageActivity.startActivity(intent);
             }
         });
     }
@@ -61,6 +81,9 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
         TextView time;
         TextView otherMessage;
         TextView myMessage;
+        ImageView cover;
+        TextView title;
+        LinearLayout layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +92,9 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
             time = (TextView) itemView.findViewById(R.id.my_review_time);
             otherMessage = (TextView) itemView.findViewById(R.id.my_review_other);
             myMessage = (TextView) itemView.findViewById(R.id.my_review_my);
+            cover = (ImageView) itemView.findViewById(R.id.my_review_cover);
+            title = (TextView) itemView.findViewById(R.id.my_review_title);
+            layout = (LinearLayout) itemView.findViewById(R.id.my_review_layout);
         }
     }
 

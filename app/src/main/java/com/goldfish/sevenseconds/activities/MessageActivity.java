@@ -3,6 +3,7 @@ package com.goldfish.sevenseconds.activities;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,8 +18,14 @@ import com.goldfish.sevenseconds.adapter.MessageAdapter;
 import com.goldfish.sevenseconds.adapter.MyReviewAdapter;
 import com.goldfish.sevenseconds.fragment.MessageFragment;
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.http.CommentHttpUtil;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.MyReviewItem;
 import com.gxz.PagerSlidingTabStrip;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -33,6 +40,7 @@ public class MessageActivity extends AppCompatActivity {
     private ViewPager pager;
     public static MessageActivity messageActivity;
     private List<MyReviewItem> myReviewItems = new ArrayList<>();
+    private ArrayList<JSONObject> jsonComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +55,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         init();
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_review_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MessageActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        MyReviewAdapter adapter = new MyReviewAdapter(myReviewItems);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-
 
         // 后期有即时聊天系统再加
         /*pager = (ViewPager) findViewById(R.id.pager);
@@ -76,17 +74,81 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void init() {
-        for (int i = 0; i < 3; i++) {
-            MyReviewItem myReviewItem = new MyReviewItem();
-            myReviewItem.setAccount("a");
-            myReviewItem.setName("穿睡服的金鱼");
-            myReviewItem.setMyMessage("测试我的评论");
-            myReviewItem.setOtherMessage("测试别人回复我的评论");
-            myReviewItem.setTime("2017-3-30");
-            Resources res = getResources();
-            Bitmap bmp = ((BitmapDrawable) res.getDrawable(R.drawable.app_icon)).getBitmap();
-            myReviewItem.setFace(bmp);
-            myReviewItems.add(myReviewItem);
+        DownTask downTask = new DownTask();
+        downTask.execute("getCommentAboutMe");
+    }
+
+    private String getCommentAboutMe() {
+        String result = "Failed in geting comment about me";
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", LogActivity.user);
+            jsonComment = CommentHttpUtil.getCommentsAboutMe(jo);
+            if (jsonComment != null)
+                if (jsonComment.size() > 0) {
+                    for (int i = 0; i < jsonComment.size(); i++) {
+                        MyReviewItem myReviewItem = new MyReviewItem();
+                        myReviewItem.setTime(jsonComment.get(i).getString("time"));
+                        myReviewItem.setOtherMessage(jsonComment.get(i).getString("content"));
+                        jo = new JSONObject();
+                        jo.put("account", jsonComment.get(i).getString("account"));
+                        JSONObject user = UserHttpUtil.getUserInfo(jo);
+                        myReviewItem.setIsMemory(true);
+                        Bitmap face = UserHttpUtil.getUserFace(jo);
+                        if (user.getBoolean("ok") && face != null) {
+                            myReviewItem.setFace(face);
+                            myReviewItem.setName(user.getString("username"));
+                        }
+                        jo = new JSONObject();
+                        jo.put("memoryId", jsonComment.get(i).getString("memoryId"));
+                        myReviewItem.setMemoryId(jsonComment.get(i).getString("memoryId"));
+                        JSONObject memory = MemoryHttpUtil.getMemory(jo);
+                        if (memory.getBoolean("ok")) {
+                            myReviewItem.setTitle(memory.getString("title"));
+                        }
+                        jo.put("i", 0);
+                        Bitmap cover = MemoryHttpUtil.getMemoryImg(jo);
+                        if (cover != null) myReviewItem.setCover(cover);
+                        myReviewItems.add(myReviewItem);
+                    }
+                }
+            result = "Succeed in getting comment";
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void refreshComment() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_review_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MessageActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        MyReviewAdapter adapter = new MyReviewAdapter(myReviewItems);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private class DownTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "Failed in AsyncTask";
+            switch (params[0]){
+                case "getCommentAboutMe":
+                    result = getCommentAboutMe();
+                    break;
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            switch (result){
+                case "Succeed in getting comment":
+                    refreshComment();
+                    break;
+            }
         }
     }
+
 }
