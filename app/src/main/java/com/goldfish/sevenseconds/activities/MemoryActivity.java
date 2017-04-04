@@ -3,45 +3,39 @@ package com.goldfish.sevenseconds.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.transition.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andview.refreshview.XRefreshView;
-import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.AmemReviewAdapter;
 import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
 import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.bean.TitleBarInfo;
+import com.goldfish.sevenseconds.http.CommentHttpUtil;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.AmemReviewItem;
 import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.service.NetWorkUtils;
-import com.goldfish.sevenseconds.tools.Http;
 import com.goldfish.sevenseconds.view.ReviewDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +47,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.goldfish.sevenseconds.http.UserHttpUtil.addFollow;
+import static com.goldfish.sevenseconds.http.UserHttpUtil.deleteFollow;
+import static com.goldfish.sevenseconds.http.UserHttpUtil.getUserInfo;
 
 public class MemoryActivity extends AppCompatActivity {
 
@@ -449,7 +447,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
             jo.put("account", myAccount);
-            JSONObject jo_return = Http.likeMemory(jo);
+            JSONObject jo_return = UserHttpUtil.likeMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in like memory";
                 memoryContext.setIsLike(true);
@@ -465,6 +463,8 @@ public class MemoryActivity extends AppCompatActivity {
         return result;
     }
 
+
+
     // 添加关注
     private String follow() {
         String result;
@@ -472,7 +472,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", myAccount);
             jo.put("otherAccount", memAccount);
-            JSONObject jo_return = Http.addFollow(jo);
+            JSONObject jo_return = addFollow(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in following";
             } else {
@@ -493,7 +493,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("myAccount", myAccount);
             jo.put("otherAccount", memAccount);
-            JSONObject jo_return = Http.deleteFollow(jo);
+            JSONObject jo_return = deleteFollow(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in unfollowing";
             } else {
@@ -547,7 +547,7 @@ public class MemoryActivity extends AppCompatActivity {
             // 查看是否已经关注过作者
             JSONObject jo = new JSONObject();
             jo.put("account", myAccount);
-            ArrayList<String> myFollowers = Http.getFollowingList(jo);
+            ArrayList<String> myFollowers = UserHttpUtil.getFollowingList(jo);
             for (int i = 0; i < myFollowers.size(); i++) {
                 if (myFollowers.get(i).equals(memAccount)) {
                     hadFollowed = true;
@@ -556,8 +556,8 @@ public class MemoryActivity extends AppCompatActivity {
             // 获取标题栏数据
             jo = new JSONObject();
             jo.put("account", memAccount);
-            titleBarInfo.setFace(Http.getUserFace(jo));
-            JSONObject jo_return = Http.getUserInfo(jo);
+            titleBarInfo.setFace(UserHttpUtil.getUserFace(jo));
+            JSONObject jo_return = getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 titleBarInfo.setName(jo_return.getString("username"));
                 result = "Succeed in titleBar";
@@ -580,11 +580,11 @@ public class MemoryActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
-            JSONObject jo_review = Http.getCommentCount(jo);
-            JSONObject jo_like = Http.getLikeCount(jo);
+            JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
+            JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
             jo.put("account", myAccount);
-            JSONObject jo_isLike = Http.ifLikeMemory(jo);
-            JSONObject jo_isAdd = Http.ifCollectMemory(jo);
+            JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
+            JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
             if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok")) {
                 memoryContext.setLikeCount(jo_like.getInt("count"));
                 memoryContext.setReviewCount(jo_review.getInt("count"));
@@ -604,7 +604,7 @@ public class MemoryActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
-            JSONObject jo_return = Http.getMemory(jo);
+            JSONObject jo_return = MemoryHttpUtil.getMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 memoryContext.setTitle(jo_return.getString("title"));
                 memoryContext.setTime(jo_return.getString("time"));
@@ -617,7 +617,7 @@ public class MemoryActivity extends AppCompatActivity {
                 jo = new JSONObject();
                 jo.put("memoryId", memID);
                 jo.put("i", 0);
-                memoryContext.setCover(Http.getMemoryImg(jo));
+                memoryContext.setCover(MemoryHttpUtil.getMemoryImg(jo));
                 result = "Succeed in context";
             } else {
                 result = jo_return.getString("errMsg");
@@ -809,7 +809,7 @@ public class MemoryActivity extends AppCompatActivity {
                 JSONObject jo = new JSONObject();
                 jo.put("memoryId", memID);
                 jo.put("i", image.get(i));
-                Bitmap temp = Http.getMemoryImg(jo);
+                Bitmap temp = MemoryHttpUtil.getMemoryImg(jo);
                 if (temp != null) {
                     bitImages[i] = temp;
                     result = "Succeed in getting memory images";
@@ -851,7 +851,7 @@ public class MemoryActivity extends AppCompatActivity {
             jo.put("memoryId", memID);
             jo.put("account", myAccount);
             jo.put("content", editContext);
-            JSONObject jo_return = Http.addComment(jo);
+            JSONObject jo_return = CommentHttpUtil.addComment(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in deliver review";
             }
@@ -883,19 +883,19 @@ public class MemoryActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
-            ArrayList<String> commentList = Http.getCommentList(jo);
+            ArrayList<String> commentList = MemoryHttpUtil.getCommentList(jo);
             if (!commentList.isEmpty()) {
                 for (int i = 0; i < commentList.size(); i++) {
                     if (!commentList.get(i).isEmpty()) {
                         jo = new JSONObject();
                         jo.put("commentId", commentList.get(i));
-                        JSONObject jo_return = Http.getComment(jo);
+                        JSONObject jo_return = CommentHttpUtil.getComment(jo);
                         if (jo_return.getBoolean("ok")) {
                             jo = new JSONObject();
                             jo.put("account", jo_return.getString("account"));
-                            JSONObject user_return = Http.getUserInfo(jo);
+                            JSONObject user_return = getUserInfo(jo);
                             if (user_return.getBoolean("ok")) {
-                                Bitmap face = Http.getUserFace(jo);
+                                Bitmap face = UserHttpUtil.getUserFace(jo);
                                 AmemReviewItem amemReviewItem = new AmemReviewItem(face,
                                         user_return.getString("username"),
                                         jo_return.getString("content"),
@@ -937,7 +937,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("account", myAccount);
             jo.put("memoryId", memID);
-            JSONObject jo_return = Http.unlikeMemory(jo);
+            JSONObject jo_return = UserHttpUtil.unlikeMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 memoryContext.setIsLike(false);
                 result = "Succeed in unlike";
@@ -955,7 +955,7 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo = new JSONObject();
             jo.put("account", myAccount);
             jo.put("memoryId", memID);
-            JSONObject jo_return = Http.uncollectMemory(jo);
+            JSONObject jo_return = UserHttpUtil.uncollectMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 memoryContext.setIsAdd(false);
                 result = "Succeed in sub";

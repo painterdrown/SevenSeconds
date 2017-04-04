@@ -4,16 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,11 +30,7 @@ import com.bumptech.glide.Glide;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.bean.SetInfo;
-import com.goldfish.sevenseconds.bean.TitleBarInfo;
-import com.goldfish.sevenseconds.tools.Http;
-import com.google.gson.Gson;
-import com.jph.takephoto.model.TImage;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
@@ -49,18 +42,9 @@ import org.litepal.tablemanager.Connector;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.picker.DatePicker;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import static com.darsh.multipleimageselect.helpers.Constants.REQUEST_CODE;
 
@@ -192,13 +176,13 @@ public class InformationActivity extends AppCompatActivity {
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
-            JSONObject jo_return = Http.getUserInfo(jo);
+            JSONObject jo_return = UserHttpUtil.getUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 information.setName(jo_return.getString("username"));
                 information.setIntroduction(jo_return.getString("introduction"));
                 information.setBirthday(jo_return.getString("birthday").substring(0, 10));
                 information.setSex(jo_return.getString("sex"));
-                face = Http.getUserFace(jo);
+                face = UserHttpUtil.getUserFace(jo);
                 result = "Succeed in getting information";
             } else{
                 result = "获取用户信息失败 TAT";
@@ -220,13 +204,13 @@ public class InformationActivity extends AppCompatActivity {
             jo.put("introduction", information.getIntroduction());
             jo.put("birthday", information.getBirthday());
             jo.put("sex", information.getSex());
-            JSONObject jo_return = Http.modifyUserInfo(jo);
+            JSONObject jo_return = UserHttpUtil.modifyUserInfo(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in posting information";
                 if (uri != null) {
                     jo = new JSONObject();
                     jo.put("account", currentUser);
-                    JSONObject image_return = Http.setUserFace(jo, uri_str);
+                    JSONObject image_return = UserHttpUtil.setUserFace(jo, uri_str);
                     if (image_return.getBoolean("ok")) {
                         result = "Succeed in posting information";
                     } else {

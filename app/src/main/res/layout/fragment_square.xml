@@ -5,17 +5,10 @@
     android:background="#0000"
     android:orientation="vertical"
     android:id="@+id/container">
-
-    <com.andview.refreshview.XRefreshView
+    <com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView
+        android:id="@+id/hor_rec_refresh"
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/x_fresh_square">
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_gravity="center"
-            android:paddingTop="18dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/mem_list"></android.support.v7.widget.RecyclerView>
-    </com.andview.refreshview.XRefreshView>
+        ptr:ptrMode="both" />
 </RelativeLayout>

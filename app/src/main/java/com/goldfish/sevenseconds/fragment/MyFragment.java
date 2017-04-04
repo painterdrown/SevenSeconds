@@ -3,11 +3,8 @@ package com.goldfish.sevenseconds.fragment;
 import android.content.Intent;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.icu.util.Calendar;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +13,9 @@ import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.InformationActivity;
@@ -30,10 +24,10 @@ import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.activities.SettingActivity;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.adapter.MyPageTimelineAdapter;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.MyPageTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
-import com.goldfish.sevenseconds.tools.Http;
-import com.goldfish.sevenseconds.view.TurnCardListView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -179,7 +173,7 @@ public class MyFragment extends Fragment {
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
-            face = Http.getUserFace(jo);
+            face = UserHttpUtil.getUserFace(jo);
             if (face != null) {
                 result = "Succeed in getting face";
             } else {
@@ -198,7 +192,7 @@ public class MyFragment extends Fragment {
             JSONObject jo = new JSONObject();
             jo.put("account", currentUser);
             memoryList = new ArrayList<>();
-            memoryList = Http.getMemoryList(jo);
+            memoryList = UserHttpUtil.getMemoryList(jo);
             result = "Succeed in getting my memory list";
         } catch (JSONException e) {
             e.printStackTrace();
@@ -216,7 +210,7 @@ public class MyFragment extends Fragment {
                         try {
                             JSONObject jo = new JSONObject();
                             jo.put("memoryId", memoryList.get(i));
-                            JSONObject jo_return = Http.getMemory(jo);
+                            JSONObject jo_return = MemoryHttpUtil.getMemory(jo);
                             if (jo_return.getBoolean("ok")) {
                                 MyPageTimelineItem myPageTimelineItem = new MyPageTimelineItem();
                                 myPageTimelineItem.setTitle(jo_return.getString("title"));
@@ -224,7 +218,7 @@ public class MyFragment extends Fragment {
                                 time = time.substring(5, 7) + "/" + time.substring(0, 4);
                                 myPageTimelineItem.setTime(time);
                                 jo.put("i", 0);
-                                Bitmap bitmap = Http.getMemoryImg(jo);
+                                Bitmap bitmap = MemoryHttpUtil.getMemoryImg(jo);
                                 if (bitmap != null) {
                                     myPageTimelineItem.setCover(bitmap);
                                 }

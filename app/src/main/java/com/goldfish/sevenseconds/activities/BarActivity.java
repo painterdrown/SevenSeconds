@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.LastUser;
@@ -18,15 +17,15 @@ import com.goldfish.sevenseconds.fragment.FindFragment;
 import com.goldfish.sevenseconds.fragment.SquareFragment;
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
-import com.goldfish.sevenseconds.tools.Http;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.goldfish.sevenseconds.http.UserHttpUtil.getUsername;
 
 public class BarActivity extends AppCompatActivity {
     private  Toolbar toolbar;
@@ -97,7 +96,7 @@ public class BarActivity extends AppCompatActivity {
                 if (lastusers.size() == 0) return false;
                 LastUser lastuser = lastusers.get(0);
                 jo.put("account", lastuser.getName());
-                JSONObject result = Http.getUsername(jo);
+                JSONObject result = getUsername(jo);
                 if (result.getBoolean("ok")) {
                     // 成功取到用户名
                     username = result.getString("username");
