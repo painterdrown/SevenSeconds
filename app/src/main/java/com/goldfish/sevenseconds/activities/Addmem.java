@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.qqtheme.framework.picker.DatePicker;
 import me.originqiu.library.EditTag;
 import rx.Observable;
 import rx.Observer;
@@ -67,9 +70,11 @@ public class Addmem extends AppCompatActivity {
     private String up_title;
     private Boolean re;
     private String imagerealpath;
+    private TextView set_date;
     private LinearLayout contents;
     private RichTextEditor users_content;
-
+    private String str;
+    static boolean is;
     private ProgressDialog loadingDialog;
     private ProgressDialog insertDialog;
 
@@ -107,9 +112,9 @@ public class Addmem extends AppCompatActivity {
                 jsonObjectinfo.put("account",user.getName());
                 JSONObject userinfo = getUserInfo(jsonObjectinfo);*/
                 jsonObject.put("author",user.getName());
+                /*
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                String str = formatter.format(curDate);
+                Date curDate = new Date(System.currentTimeMillis());//获取当前时间*/
                 jsonObject.put("time",str);
                 jsonObject.put("description",up_contents.substring(0,(up_contents.length()<1000)?up_contents.length():200));
                 jsonObject.put("content",up_contents);
@@ -153,6 +158,12 @@ public class Addmem extends AppCompatActivity {
                 finish();
                 break;
             case R.id.a_mem_add:
+                str = set_date.getText().toString();
+                if (str.equals("选择年月")){
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date curDate = new Date(System.currentTimeMillis());
+                    str = curDate.toString();
+                }
                 addTask add = new addTask();
                 up_title = editText_title.getText().toString();
                 up_contents = getEditData();
@@ -182,13 +193,54 @@ public class Addmem extends AppCompatActivity {
         }
         return true;
     }
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+    private void setToText(String msg) { set_date.setText(msg); }
+    public void onYearMonthDayPicker(View view) {
+        final DatePicker picker = new DatePicker(this);
+        picker.setTopPadding(2);
+        picker.setRangeStart(1900, 1, 1);
+        picker.setRangeEnd(2018, 1, 1);
+        picker.setSelectedItem(2017, 2, 23);
+        picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
+            @Override
+            public void onDatePicked(String year, String month, String day) {
+                showToast(year + "-" + month + "-" + day);
+                setToText(year + "-" + month + "-" + day);
+            }
+        });
+        picker.setOnWheelListener(new DatePicker.OnWheelListener() {
+            @Override
+            public void onYearWheeled(int index, String year) {
+                picker.setTitleText(year + "-" + picker.getSelectedMonth() + "-" + picker.getSelectedDay());
+            }
+
+            @Override
+            public void onMonthWheeled(int index, String month) {
+                picker.setTitleText(picker.getSelectedYear() + "-" + month + "-" + picker.getSelectedDay());
+            }
+
+            @Override
+            public void onDayWheeled(int index, String day) {
+                picker.setTitleText(picker.getSelectedYear() + "-" + picker.getSelectedMonth() + "-" + day);
+            }
+        });
+        picker.show();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Connector.getDatabase();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmem);
 
-
+        set_date = (TextView) findViewById(R.id.add_mem_day);
+        set_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onYearMonthDayPicker(v);
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.admem_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -213,8 +265,8 @@ public class Addmem extends AppCompatActivity {
         editText_title = (EditText)findViewById(R.id.a_mem_title);
         users_content = (RichTextEditor)findViewById(R.id.admem_content);
         editText_tag = (EditTag) findViewById(R.id.admem_edit_tag);
-        Button add_pic = (Button) findViewById(R.id.add_pic);
-        add_pic.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton add_pic2 = (FloatingActionButton)findViewById(R.id.add_pic2);
+        add_pic2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (ContextCompat.checkSelfPermission(Addmem.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){

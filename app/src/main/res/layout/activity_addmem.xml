@@ -8,60 +8,107 @@
     android:background="@drawable/log_background"
     tools:context="com.goldfish.sevenseconds.activities.Addmem">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/admem_toolbar"
-        android:id="@+id/a_mem_title"
-        android:hint="回忆标题..."/>
-    <me.originqiu.library.EditTag
-        android:id="@+id/admem_edit_tag"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/a_mem_title"
-        app:tag_layout="@layout/view_sample_tag"
-        app:input_layout="@layout/view_sample_input_tag"/>
-
-
-    <Button
-        android:id="@+id/add_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:textSize="20sp"
-        android:text="添加图片"/>
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/admem_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/khaki"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/admem_toolbar"
+        android:paddingTop="14dp"
+        android:id="@+id/add_date">
+
         <TextView
-            android:id="@+id/addmem_title"
+            android:id="@+id/add_mem_day"
+            android:text="选择年月"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="29.5dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="回忆年月"
+            android:textSize="14sp"
+            android:paddingLeft="29.5dp"
+            android:textColor="#505050"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="添加忆单"
-            android:textSize="20sp" />
-    </android.support.v7.widget.Toolbar>
+            android:id="@+id/add_chose_year" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/add_contents"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/admem_edit_tag"
-        android:layout_above="@+id/add_pic"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_above="@+id/add_mem_pic">
+
         <com.sendtion.xrichtext.RichTextEditor
+            android:paddingLeft="10.5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/admem_content"/>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/addmem_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="添加新忆单"
+        android:textSize="20sp"
+        android:textColor="#FF8900"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp" />
+
+    <me.originqiu.library.EditTag
+        android:id="@+id/admem_edit_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        app:tag_layout="@layout/view_sample_tag"
+        app:input_layout="@layout/view_sample_input_tag"
+        android:layout_below="@+id/a_mem_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_pic2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="#00000000"
+        android:paddingBottom="9dp"
+        android:layout_marginRight="9dp"
+        android:src="@drawable/ic_add_circle_black_36dp"
+        app:rippleColor="#00000000"
+        android:layout_below="@+id/add_contents"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/add_mem_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/addmem_title"
+        android:layout_alignEnd="@+id/addmem_title" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/a_mem_title"
+        android:hint="回忆标题..."
+        android:textSize="14sp"
+        android:textColorHint="#a6a6a6"
+        android:gravity="center"
+        android:layout_below="@+id/add_date"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
