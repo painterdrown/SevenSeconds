@@ -296,7 +296,7 @@ public class Http
      * 【参数】
      * memoryId
      * 【返回值】
-     * ok, title, labels（字符串，如"movies,music"）, time（忆单的时间属性，不是创建忆单的时间）, content， reviewCount（评论数目）, collectCount（被收藏数目）, likeCount（被点赞/喜欢数目）
+     * ok, title, author, labels（字符串，如"movies,music"）, time（忆单的时间属性，不是创建忆单的时间）, content， reviewCount（评论数目）, collectCount（被收藏数目）, likeCount（被点赞/喜欢数目）
      */
     public static JSONObject getMemory(JSONObject jo)
     {
@@ -465,6 +465,17 @@ public class Http
     public static ArrayList<String> getMemoryList(JSONObject jo)
     {
         return postForArrayList("/get-memory-list", jo);
+    }
+
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getCollectMemoryList(JSONObject jo)
+    {
+        return postForArrayList("/get-collect-memory-list", jo);
     }
 
     /**
