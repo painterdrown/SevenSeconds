@@ -237,4 +237,26 @@ public class UserHttpUtil extends HttpBase {
     {
         return postForArrayList("/get-collect-memory-list", jo);
     }
+
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getFuturesForMe(JSONObject jo)
+    {
+        return postForArrayList("/get-futures-for-me", jo);
+    }
+
+    /**
+     * 【参数】
+     * account
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> getFuturesFromMe(JSONObject jo)
+    {
+        return postForArrayList("/get-futures-from-me", jo);
+    }
 }
