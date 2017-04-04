@@ -1,10 +1,8 @@
 package com.goldfish.sevenseconds.activities;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,18 +13,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.bean.MyFollow;
 import com.goldfish.sevenseconds.adapter.MyFollowAdapter;
 import com.goldfish.sevenseconds.item.MyFollowItem;
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.item.MyTimelineItem;
-import com.goldfish.sevenseconds.tools.Http;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
-import org.litepal.tablemanager.Connector;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;

@@ -2,7 +2,6 @@ package com.goldfish.sevenseconds.adapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -13,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.item.MyFollowItem;
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.tools.Http;
 
 import org.json.JSONException;
 import org.json.JSONObject;

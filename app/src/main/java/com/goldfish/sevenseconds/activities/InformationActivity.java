@@ -4,16 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,11 +30,6 @@ import com.bumptech.glide.Glide;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.goldfish.sevenseconds.bean.Information;
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.bean.SetInfo;
-import com.goldfish.sevenseconds.bean.TitleBarInfo;
-import com.goldfish.sevenseconds.tools.Http;
-import com.google.gson.Gson;
-import com.jph.takephoto.model.TImage;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
@@ -49,18 +41,9 @@ import org.litepal.tablemanager.Connector;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.qqtheme.framework.picker.DatePicker;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import static com.darsh.multipleimageselect.helpers.Constants.REQUEST_CODE;
 

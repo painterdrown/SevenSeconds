@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.bean.LastUser;
@@ -18,9 +17,7 @@ import com.goldfish.sevenseconds.fragment.FindFragment;
 import com.goldfish.sevenseconds.fragment.SquareFragment;
 import com.ycl.tabview.library.TabView;
 import com.ycl.tabview.library.TabViewChild;
-import com.goldfish.sevenseconds.tools.Http;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;

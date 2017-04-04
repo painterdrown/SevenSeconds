@@ -11,20 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.goldfish.sevenseconds.tools.Http;
 import com.goldfish.sevenseconds.R;
-import com.goldfish.sevenseconds.service.GetLogMSG;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
