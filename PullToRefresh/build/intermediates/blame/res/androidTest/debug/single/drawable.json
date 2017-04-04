@@ -4,7 +4,15 @@
         "source": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_top.xml"
     },
     {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_bottom.xml",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_bottom.xml"
+    },
+    {
         "merged": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_bottom.xml",
         "source": "D:\\22\\PainterDrown\\CodeSpace\\sevens\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_bottom.xml"
+    },
+    {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indicator_bg_top.xml",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable\\indicator_bg_top.xml"
     }
 ]
