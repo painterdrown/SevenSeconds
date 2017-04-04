@@ -46,7 +46,6 @@ public class SearchActivity extends Activity{
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build());
     }
-
     @Override
     protected void onCreate(Bundle a){
         super.onCreate(a);
@@ -61,7 +60,6 @@ public class SearchActivity extends Activity{
                 finish();
             }
         });
-
         mPullRefreshRecyclerView = (PullToRefreshRecyclerView) findViewById(R.id.hor_rec_refresh);
         mRecyclerView = mPullRefreshRecyclerView.getRefreshableView();
         mPullRefreshRecyclerView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<RecyclerView>() {
@@ -109,66 +107,6 @@ public class SearchActivity extends Activity{
         }
         mAdapter = new MemAdapter(memlist, getContext());
         mRecyclerView.setAdapter(mAdapter);
-
-
-        /*xRefreshView.setPinnedTime(1000);
-        xRefreshView.setMoveForHorizontal(true);
-        xRefreshView.setPullLoadEnable(true);
-        xRefreshView.setAutoLoadMore(false);
-        adapter.setCustomLoadMoreView(new XRefreshViewFooter(view.getContext()));
-        xRefreshView.enableReleaseToLoadMore(true);
-        xRefreshView.enableRecyclerViewPullUp(true);
-        xRefreshView.enablePullUpWhenLoadCompleted(true);
-        xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
-
-            @Override
-            public void onRefresh(boolean isPullDown) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        initMem();
-                        xRefreshView.stopRefresh();
-                    }
-                }, 500);
-            }
-
-            @Override
-            public void onLoadMore(boolean isSilence) {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        mLoadCount++;
-                        if (mLoadCount >= 3) {//模拟没有更多数据的情况
-                            xRefreshView.setLoadComplete(true);
-                        } else {
-                            // 刷新完成必须调用此方法停止加载
-                            xRefreshView.stopLoadMore(false);
-                            //当数据加载失败 不需要隐藏footerview时，可以调用以下方法，传入false，不传默认为true
-                            // 同时在Footerview的onStateFinish(boolean hideFooter)，可以在hideFooter为false时，显示数据加载失败的ui
-//                            xRefreshView1.stopLoadMore(false);
-                        }
-                    }
-                }, 1000);
-            }
-        });*/
-
-        /*RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.container);
-        ArrayList<String> strings = new ArrayList<>();
-        Collections.addAll(strings, TEST_STRINGS);
-        mAdapter = new SimpleAdapter(strings);
-        //recyclerView
-        recyclerView= new SnappingSwipingViewBuilder(view.getContext())
-                .setAdapter(mAdapter)
-                .setHeadTailExtraMarginDp(17F)
-                .setItemMarginDp(8F, 20F, 8F, 20F)
-                .setOnSwipeListener(this)
-                .setSnapMethod(SnappyLinearLayoutManager.SnappyLinearSmoothScroller.SNAP_CENTER)
-                .build();
-        if (rl != null) {
-            recyclerView.setLayoutParams(new ViewGroup.MarginLayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            rl.addView(recyclerView);
-        }*/
-
 
     }
 }
