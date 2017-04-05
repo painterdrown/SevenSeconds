@@ -12,7 +12,7 @@
         android:id="@+id/admem_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/khaki"
+        android:background="@color/shellowyellow"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></android.support.v7.widget.Toolbar>
     <RelativeLayout
         android:layout_width="wrap_content"
