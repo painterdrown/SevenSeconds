@@ -59,6 +59,16 @@ public class FindFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        Button btn1 = (Button) view.findViewById(R.id.year00);
+        Button btn2 = (Button) view.findViewById(R.id.year90);
+        Button btn3 = (Button) view.findViewById(R.id.year80);
+        Button btn4 = (Button) view.findViewById(R.id.year70);
+        Button btn5 = (Button) view.findViewById(R.id.label_cartoon);
+        Button btn6 = (Button) view.findViewById(R.id.label_game);
+        Button btn7 = (Button) view.findViewById(R.id.label_kid);
+        Button btn8 = (Button) view.findViewById(R.id.label_music);
+        Button btn9 = (Button) view.findViewById(R.id.label_sport);
+        Button btn10 = (Button) view.findViewById(R.id.label_tv);
         mSearchView = (SearchView) view.findViewById(R.id.search);
         mSearchView.setQueryHint("今日忆");
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
@@ -67,22 +77,75 @@ public class FindFragment extends Fragment {
                 //搜索
                 Toast.makeText(getContext(), "你搜索了" + query, Toast.LENGTH_LONG).show();
                 mSearchView.clearFocus();
-                searchfor(query);
+                searchfor(query, false);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 //文本改变
-                Toast.makeText(getContext(), "文本改变了" + newText, Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "文本改变了" + newText, Toast.LENGTH_LONG).show();
                 return false;
             }
         });
-        Button btn1 = (Button) view.findViewById(R.id.year00);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Toast.makeText(getContext(), "xxx", Toast.LENGTH_LONG);
+                searchfor("2000", true);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("1990", true);
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("1980", true);
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("1970", true);
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("动漫", false);
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("游戏", false);
+            }
+        });
+        btn7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("童趣", false);
+            }
+        });
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("音乐", false);
+            }
+        });
+        btn9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("体育", false);
+            }
+        });
+        btn10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                searchfor("影视", false);
             }
         });
         return view;
@@ -99,9 +162,11 @@ public class FindFragment extends Fragment {
         return mm;
     }
 
-    public void searchfor(String query){
+    public void searchfor(String query, boolean year){
         Intent intent = new Intent(BarActivity.barActivity, SearchActivity.class);
         intent.putExtra("querydata", query);
+        intent.putExtra("year", year);
+
         startActivity(intent);
     }
 
