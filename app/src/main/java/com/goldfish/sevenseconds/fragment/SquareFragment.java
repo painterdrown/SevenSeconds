@@ -1,6 +1,7 @@
 package com.goldfish.sevenseconds.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -87,6 +88,28 @@ public class SquareFragment extends Fragment{
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build());
+    }
+    class refresh extends AsyncTask<Void,Integer,Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params){
+          try {
+              getAllMemoryList();
+          }catch (Exception e){
+              Log.d("get data error",e.getMessage());
+              return false;
+          }
+            return true;
+        }
+        @Override
+        protected void onPostExecute(Boolean result){
+            if (result){
+                Toast.makeText(BarActivity.barActivity,"拉取成功!"+allmem.get(0),Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(BarActivity.barActivity,"拉取失败!",Toast.LENGTH_LONG).show();
+            }
+        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
@@ -243,7 +266,8 @@ public class SquareFragment extends Fragment{
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
-
+        new refresh().execute();
+        //allmem = getAllMemoryList();
         for (int i = 0;i < 10; i++){
             MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
