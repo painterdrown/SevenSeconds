@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.activities.MemoryActivity;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -29,8 +32,11 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         public View memView;
         public TextView title;
         public TextView contents;
+        public TextView tags;
+        public TextView pre_time;
         public ImageView bkg;
         public int position;
+        public Button pre_add;
 
         public memViewHolder(View itemView, boolean isItem) {
             super(itemView);
@@ -41,6 +47,9 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
                         .findViewById(R.id.premem_contents);
                 this.bkg = (ImageView) itemView.findViewById(R.id.premem_bgr);
                 this.memView = itemView.findViewById(R.id.card_view);
+                this.pre_add = (Button)itemView.findViewById(R.id.premem_button);
+                this.pre_time = (TextView)itemView.findViewById(R.id.preview_time);
+                this.tags = (TextView)itemView.findViewById(R.id.pre_tag);
             }
         }
     }
@@ -62,6 +71,8 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     @Override
     public void onBindViewHolder(final memViewHolder holder, final int position, boolean isItem) {
         MemorySheetPreview now = list.get(position);
+        holder.pre_time.setText(now.getPre_time());
+        holder.tags.setText(now.getPre_tags());
         holder.title.setText(now.getTitle());
         holder.contents.setText(now.getContents());
         holder.bkg.setImageResource(now.getImageid());
@@ -69,6 +80,12 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
             holder.memView.getLayoutParams().height = position % 2 != 0 ? largeCardHeight : smallCardHeight;
         }
+        holder.pre_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         holder.memView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

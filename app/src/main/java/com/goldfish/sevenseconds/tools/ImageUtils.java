@@ -137,11 +137,12 @@ public class ImageUtils {
         options.inJustDecodeBounds = false;
 
         Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+
         Bitmap newBitmap = compressImage(bitmap, 500);
         if (bitmap != null){
             bitmap.recycle();
         }
-        return newBitmap;
+        return bitmap;
     }
 
     /**

@@ -7,3 +7,8 @@
 /build
 /captures
 .externalNativeBuild
+PullToRefresh/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+PullToRefresh/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml
+PullToRefresh/build/intermediates/incremental/packageReleaseResources/merger.xml
+PullToRefresh/build/intermediates/incremental/mergeReleaseAssets/merger.xml
+PullToRefresh/build/outputs/aar/PullToRefresh-release.aar
