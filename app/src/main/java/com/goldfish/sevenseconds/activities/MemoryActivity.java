@@ -211,8 +211,6 @@ public class MemoryActivity extends AppCompatActivity {
         lastYear = (TextView) findViewById(R.id.last_year);
         nextYear = (TextView) findViewById(R.id.next_year);
 
-
-
         recyclerView.addOnScrollListener(new  RecyclerView.OnScrollListener() {
 
             // 状态改变的时候调用函数
@@ -733,6 +731,7 @@ public class MemoryActivity extends AppCompatActivity {
 
         contextTitle.setText(memoryContext.getTitle());
         contextTime.setText(memoryContext.getTime());
+        collectTime = memoryContext.getTime().substring(0, 7);
         if (memoryContext.getCover() == null) {
             contextCover.setVisibility(View.GONE);
         }

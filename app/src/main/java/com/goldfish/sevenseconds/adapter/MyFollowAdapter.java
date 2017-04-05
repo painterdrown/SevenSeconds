@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.goldfish.sevenseconds.activities.LogActivity;
+import com.goldfish.sevenseconds.activities.UserHomePageActivity;
 import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.MyFollowItem;
 import com.goldfish.sevenseconds.R;
@@ -67,7 +68,9 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition ();
                 MyFollowItem myFollow = mMyFollowList.get (position);
-                Intent intent = new Intent();
+                Intent intent = new Intent(parent.getContext(), UserHomePageActivity.class);
+                intent.putExtra("account", myFollow.getAccount());
+                parent.getContext().startActivity(intent);
             }
         });
         holder.loveImage.setOnClickListener (new View.OnClickListener () {

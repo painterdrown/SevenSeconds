@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andview.refreshview.XRefreshView;
@@ -22,10 +23,14 @@ import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.Addmem;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
+import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
 
+import com.goldfish.sevenseconds.item.MyTimelineItem;
+import com.goldfish.sevenseconds.item.Orientation;
 import com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView;
 import com.goldfish.sevenseconds.http.MemoryHttpUtil;
+import com.goldfish.sevenseconds.tools.ScrollSpeedLinearLayoutManger;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 
@@ -53,10 +58,22 @@ public class SquareFragment extends Fragment{
     private ImageView editMemory;
     //XRefreshView xRefreshView;
 
-
-
-
-
+    /*
+    ** 时间轴
+     */
+    private MyTimelineAdapter myTimelineAdapter;
+    private RecyclerView recyclerView1;
+    private Orientation orientation;
+    private List<MyTimelineItem> myTimelineItems = new ArrayList<>();
+    private int lastVisibleItem;
+    private int firstVisibleItem;
+    private int currentVisibleItem;
+    private TextView nextYear;
+    private TextView lastYear;
+    private String[] months = {"Feb", "Jan" ,"Dec", "Nov", "Oct", "Sept", "Aug", "Jul", "Jun", "May", "Apr", "Mar", "Feb", "Jan", "Dec", "Nov"};
+    private String collectTime;
+    private String monthStr;
+    private ImageView addOne;
 
 
     private int mLoadCount = 0;
@@ -81,6 +98,95 @@ public class SquareFragment extends Fragment{
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Addmem.class);
                 startActivity(intent);
+            }
+        });
+
+        /*
+        ** 时间轴
+         */
+        // 控件
+        orientation = Orientation.horizontal;
+        recyclerView1 = (RecyclerView) view.findViewById(R.id.square_timeline);
+        final ScrollSpeedLinearLayoutManger mLayoutManager = new ScrollSpeedLinearLayoutManger(recyclerView1.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mLayoutManager.setSpeedSlow();
+        recyclerView1.setLayoutManager(mLayoutManager);
+        recyclerView1.setHasFixedSize(true);
+        initView();
+        addOne = (ImageView) view.findViewById(R.id.amem_add_one);
+
+        // 时间轴
+        lastVisibleItem = 0;
+        firstVisibleItem = 0;
+        currentVisibleItem = 0;
+        lastYear = (TextView) view.findViewById(R.id.square_last_year);
+        nextYear = (TextView) view.findViewById(R.id.square_next_year);
+
+        recyclerView1.addOnScrollListener(new  RecyclerView.OnScrollListener() {
+
+            // 状态改变的时候调用函数
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        lastVisibleItem + 1 == myTimelineAdapter.getItemCount()) {
+                    recyclerView.smoothScrollToPosition(lastVisibleItem);
+                    recyclerView.scrollToPosition(1);
+                    /*int top=childView.getLeft();
+                    int topEdge=recyclerView.getPaddingLeft();
+                    if(top >= topEdge){
+                        recyclerView.scrollToPosition(14);
+                    }*/
+                    Log.d(months[currentVisibleItem], String.valueOf(currentVisibleItem));
+                    nextYear.setText(String.valueOf(Integer.parseInt(nextYear.getText().toString()) - 1));
+                    lastYear.setText(String.valueOf(Integer.parseInt(lastYear.getText().toString()) - 1));
+                }
+                else if (newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        firstVisibleItem == 0) {
+                    //mLayoutManager.scrollToPositionWithOffset(firstVisibleItem + 1, 0);
+                    recyclerView.smoothScrollToPosition(lastVisibleItem);
+                    View childView=recyclerView.getChildAt(0);
+                    int top=childView.getLeft();
+                    int topEdge=recyclerView.getPaddingLeft();
+                    if(top >= topEdge){
+                        recyclerView.scrollToPosition(14);
+                        nextYear.setText(String.valueOf(Integer.parseInt(nextYear.getText().toString()) + 1));
+                        lastYear.setText(String.valueOf(Integer.parseInt(lastYear.getText().toString()) + 1));
+                    }
+                    Log.d(months[currentVisibleItem], String.valueOf(currentVisibleItem));
+                }
+                else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    recyclerView.smoothScrollToPosition(lastVisibleItem);
+                    //Log.d(months[currentVisibleItem], String.valueOf(currentVisibleItem));
+                }
+                collectTime = String.valueOf(Integer.parseInt(nextYear.getText().toString()) + 1) + "-" + monthStr;
+            }
+
+            // 滚动结束的时候调用函数
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+                currentVisibleItem = firstVisibleItem + 1;
+                int month = 1;
+                if (currentVisibleItem >= 2 && currentVisibleItem <= 13) {
+                    month = 14 - currentVisibleItem;
+                }
+                else if (currentVisibleItem == 1) {
+                    month = 1;
+                }
+                else if (currentVisibleItem == 0) {
+                    month = 2;
+                }
+                else if (currentVisibleItem == 14) {
+                    month = 2;
+                }else if (currentVisibleItem == 15) {
+                    month = 1;
+                }
+                if (month <=9 ) {
+                    monthStr = "0";
+                }
+                monthStr += String.valueOf(month);
             }
         });
 
@@ -205,6 +311,21 @@ public class SquareFragment extends Fragment{
         }*/
         return view;
     }
+
+    private void initView() {
+        setDataListItems();
+        myTimelineAdapter = new MyTimelineAdapter(myTimelineItems, orientation);
+        recyclerView1.setAdapter(myTimelineAdapter);
+    }
+
+    private void setDataListItems() {
+        for (int i = 0; i < 16; i++) {
+            MyTimelineItem myTimelineItem = new MyTimelineItem();
+            myTimelineItem.setMonth(months[i]);
+            myTimelineItems.add(myTimelineItem);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {

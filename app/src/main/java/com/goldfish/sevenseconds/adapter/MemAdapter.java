@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 
 import com.andview.refreshview.recyclerview.BaseRecyclerAdapter;
+import com.goldfish.sevenseconds.service.NetWorkUtils;
 import com.goldfish.sevenseconds.tools.DensityUtil;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.BarActivity;
@@ -26,6 +27,7 @@ import java.util.List;
 public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     private List<MemorySheetPreview> list;
     private int largeCardHeight, smallCardHeight;
+    private Context context;
 
     public static class memViewHolder extends RecyclerView.ViewHolder {
 
@@ -66,6 +68,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         this.list = list;
         largeCardHeight = DensityUtil.dip2px(context, 150);
         smallCardHeight = DensityUtil.dip2px(context, 100);
+        this.context = context;
     }
 
     @Override
@@ -83,7 +86,21 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         holder.pre_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                /*if (NetWorkUtils.getAPNType(context) != 0) {
+                    if (memoryContext.getIsAdd()) {
+                        downTask = new DownTask();
+                        downTask.execute("Sub");
+                    }
+                    else {
+                        downTask = new DownTask();
+                        downTask.execute("Show in my favorites");
+                    }
+                }
+                else if (NetWorkUtils.getAPNType(context) == 0) {
+                    Toast.makeText(MemoryActivity.this,
+                            "哎呀~网络连接有问题！",
+                            Toast.LENGTH_SHORT).show();
+                }*/
             }
         });
         holder.memView.setOnClickListener(new View.OnClickListener() {
