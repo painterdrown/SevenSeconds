@@ -52,16 +52,10 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  //点击跳转(For test)
-                if (position == 1) {
+                if (position == 0) {
                     DataSupport.deleteAll(Lastmes.class);
                     Intent intent = new Intent(SettingActivity.this,LogActivity.class);
                     setingActivity.startActivity(intent);
-                }
-                if (position == 0) {
-                    Intent intent = new Intent(SettingActivity.this, MemoryActivity.class);
-                    intent.putExtra("account", "a");
-                    intent.putExtra("memoryID", "b");
-                    startActivity(intent);
                 }
             }
         });
@@ -69,8 +63,8 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void init() {
-        SettingItem accountmanage = new SettingItem(getString(R.string.account_manage));
-        settingItemsList.add(accountmanage);
+        /*SettingItem accountmanage = new SettingItem(getString(R.string.account_manage));
+        settingItemsList.add(accountmanage);*/
 
         SettingItem logout = new SettingItem(getString(R.string.logout));
         settingItemsList.add(logout);

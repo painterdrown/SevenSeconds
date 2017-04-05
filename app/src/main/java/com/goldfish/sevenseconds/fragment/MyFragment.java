@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.Addmem;
 import com.goldfish.sevenseconds.activities.InformationActivity;
 import com.goldfish.sevenseconds.activities.LogActivity;
 import com.goldfish.sevenseconds.activities.MessageActivity;
@@ -57,6 +58,9 @@ public class MyFragment extends Fragment {
     private ArrayList<String> memoryList;
     private ImageView letter;
 
+    private ImageView nowPoint;
+    private TextView nowText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         // 成功登陆的账号
@@ -68,12 +72,14 @@ public class MyFragment extends Fragment {
         RelativeLayout mySetting = (RelativeLayout) view.findViewById(R.id.mySetting);
         RelativeLayout myFollow = (RelativeLayout) view.findViewById(R.id.myFollow);
         headPortrait = (ImageView) view.findViewById(R.id.headPortrait);
+        nowPoint = (ImageView) view.findViewById(R.id.my_page_now_point);
+        nowText = (TextView) view.findViewById(R.id.my_page_now_text);
 
         letter = (ImageView) view.findViewById(R.id.my_page_letter);
         letter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TimeCapsuleManagerActivity.class);
+                Intent intent = new Intent(getContext(), Addmem.class);
                 getActivity().startActivity(intent);
             }
         });
@@ -91,7 +97,7 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent myToInformation = new Intent(BarActivity.barActivity, InformationActivity.class);
-                myToInformation.putExtra("currentUser", "y741323965");  // 到时候改成登陆成功的对象账号
+                myToInformation.putExtra("currentUser", currentUser);
                 startActivity(myToInformation);
             }
         });
@@ -100,7 +106,7 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent myToFollow = new Intent(BarActivity.barActivity, MyFollowActicity.class);
-                myToFollow.putExtra("currentUser", "y741323965");  // 到时候改成登陆成功的对象账号
+                myToFollow.putExtra("currentUser", currentUser);
                 startActivity(myToFollow);
             }
         });
@@ -176,6 +182,12 @@ public class MyFragment extends Fragment {
             myPageTimelineItem.setTitle("您还没有忆单，创建一条吧~");
             myPageTimelineItemList.add(myPageTimelineItem);
         }
+        nowPoint.setVisibility(View.VISIBLE);
+        Time t=new Time("GMT+8");
+        t.setToNow();
+        int year = t.year;
+        nowText.setText(String.valueOf(year));
+        nowText.setVisibility(View.VISIBLE);
         myPageTimelineAdapter = new MyPageTimelineAdapter(myPageTimelineItemList, orientation);
         recyclerView.setAdapter(myPageTimelineAdapter);
     }
@@ -289,6 +301,8 @@ public class MyFragment extends Fragment {
         DownTask downTask = new DownTask();
         downTask.execute("getImage");
         myPageTimelineItemList.clear();
+        nowPoint.setVisibility(View.INVISIBLE);
+        nowText.setVisibility(View.INVISIBLE);
         initView();
     }
 

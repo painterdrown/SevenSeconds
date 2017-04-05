@@ -42,13 +42,16 @@
         android:layout_below="@+id/amem_toolbar">
 
         <RelativeLayout
+            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/next_year"
                 android:text="1999"
-                android:layout_margin="10dp"
+                android:textColor="#b3a6a6a6"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -56,12 +59,14 @@
                 android:id="@+id/last_year"
                 android:text="1997"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#b3a6a6a6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="8dp"
                 android:visibility="invisible"
                 android:id="@+id/amem_add_one"
                 android:layout_centerHorizontal="true"
@@ -75,6 +80,7 @@
                 android:layout_below="@id/next_year"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginTop="-5dp"
                 android:layout_width="300dp"
                 android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"/>
@@ -87,6 +93,7 @@
 
             <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/activity_amem"
+                android:background="#F0F0F0"
                 android:layout_below="@+id/amem_titlebar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -165,18 +172,7 @@
                             android:orientation="vertical"
                             android:layout_marginTop="10dp">
                         </LinearLayout>
-
-                        <TextView
-                            android:visibility="gone"
-                            android:id="@+id/amem_main_context1"
-                            android:layout_below="@+id/amem_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.282"
-                            android:layout_marginTop="15dp"
-                            android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"/>
                     </RelativeLayout>
-
                 </RelativeLayout>
 
                 <TextView
@@ -188,6 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="textEnd"
+                    android:layout_marginBottom="25dp"
                     android:layout_alignLeft="@+id/amem_cover"
                     android:layout_alignRight="@+id/amem_cover"/>
 

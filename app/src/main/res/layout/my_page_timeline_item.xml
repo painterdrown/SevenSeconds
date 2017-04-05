@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -10,38 +10,31 @@
         android:text="04/2012"
         android:textSize="12sp"
         android:textColor="#b3a6a6"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="42.5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <com.vipul.hp_hp.timelineview.TimelineView
-        android:id="@+id/my_timeline"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:line_size="2dp"
-        app:marker_size="10dp"
-        app:line="@color/lightgray"
-        android:layout_marginLeft="5dp"
-        app:marker="@drawable/my_timeline_marker"/>
-
     <android.support.v7.widget.CardView
+        android:layout_toRightOf="@+id/my_page_time"
         android:id="@+id/my_page_layout"
         android:layout_marginTop="50dp"
-        app:cardBackgroundColor="#40dcdcdc"
+        app:cardBackgroundColor="#1afff45c"
         android:layout_width="265dp"
-        android:layout_marginBottom="5dp"
+        app:cardElevation="0dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginBottom="2dp"
         android:layout_height="48dp">
         <TextView
             android:id="@+id/my_page_title"
-            android:text="忆单"
+            android:text="pp"
             android:textSize="15sp"
-            android:layout_marginTop="15.5dp"
-            android:layout_marginBottom="15.5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="60dp"
             android:ellipsize="end"
             android:textColor="#cc000000"
             android:lines="1"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.goldfish.sevenseconds.view.CircleImageView
@@ -52,6 +45,15 @@
             android:layout_width="40dp"
             android:layout_height="40dp" />
     </android.support.v7.widget.CardView>
+    <com.vipul.hp_hp.timelineview.TimelineView
+        android:id="@+id/my_timeline"
+        android:layout_width="wrap_content"
+        android:layout_height="102dp"
+        app:line_size="2dp"
+        app:marker_size="10dp"
+        app:line="@color/lightgray"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/my_page_time"
+        app:marker="@drawable/my_timeline_marker"/>
 
-
-</LinearLayout>
+</RelativeLayout>

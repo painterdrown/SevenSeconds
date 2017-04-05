@@ -3,6 +3,7 @@ package com.goldfish.sevenseconds.adapter;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.goldfish.sevenseconds.activities.LogActivity;
 import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.MyFollowItem;
 import com.goldfish.sevenseconds.R;
@@ -65,7 +67,7 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition ();
                 MyFollowItem myFollow = mMyFollowList.get (position);
-                // 跳转到个人界面
+                Intent intent = new Intent();
             }
         });
         holder.loveImage.setOnClickListener (new View.OnClickListener () {
@@ -177,7 +179,7 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
                 Drawable.createFromStream(
                         new ByteArrayInputStream(myFollowItem.getFace()), "myFace"));
         memAccount = myFollowItem.getAccount();
-        myAccount = "a";
+        myAccount = LogActivity.user;
     }
 
     @Override

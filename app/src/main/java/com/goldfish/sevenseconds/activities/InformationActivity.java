@@ -89,7 +89,7 @@ public class InformationActivity extends AppCompatActivity {
         information = new Information();
 
         // 测试
-        currentUser = "a";
+        currentUser = LogActivity.user;
         information.setAccount(currentUser);
 
         // 获得各种按钮

@@ -27,7 +27,7 @@
             android:id="@+id/my_page_letter"
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
-            android:src="@drawable/ic_redeem_black_36dp"
+            android:src="@drawable/ic_edit_black_36dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.5" />
@@ -35,7 +35,10 @@
 
     <RelativeLayout
         android:id="@+id/my_information"
-        android:padding="16dp"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="30dp"
         android:layout_below="@+id/my_page_toolbar"
         android:background="#1afff45c"
         android:layout_width="match_parent"
@@ -52,6 +55,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
 
         <RelativeLayout
             android:id="@+id/myMessage"
@@ -159,9 +163,27 @@
         android:id="@+id/my_page_timeline"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="-10dp"
         android:layout_below="@id/my_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/my_page_now_point"
+        android:src="@drawable/red_point"
+        android:layout_above="@+id/my_page_timeline"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="64dp"
+        android:tint="#ff8900"
+        android:layout_width="12.5dp"
+        android:layout_height="12.5dp" />
+    <TextView
+        android:id="@+id/my_page_now_text"
+        android:text="2017"
+        android:layout_marginLeft="25dp"
+        android:layout_alignBottom="@+id/my_page_now_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <!--<com.goldfish.sevenseconds.view.TurnCardListView
         android:layout_below="@+id/mySetting"

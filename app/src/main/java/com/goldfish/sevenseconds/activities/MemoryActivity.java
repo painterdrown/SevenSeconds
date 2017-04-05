@@ -42,6 +42,7 @@ import com.goldfish.sevenseconds.view.ReviewDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.Console;
 import java.io.IOException;
@@ -134,7 +135,6 @@ public class MemoryActivity extends AppCompatActivity {
     private String collectTime;
     private String monthStr;
     private ImageView addOne;
-
 
     /*
     ** 评论区
@@ -502,8 +502,6 @@ public class MemoryActivity extends AppCompatActivity {
         return result;
     }
 
-
-
     // 添加关注
     private String follow() {
         String result;
@@ -744,17 +742,17 @@ public class MemoryActivity extends AppCompatActivity {
 
         String labels = "";
         for (int i = 0; i < memoryContext.getLabel().length; i++) {
-            if (memoryContext.getLabel()[i].equals("")) {
+            if (!memoryContext.getLabel()[i].equals("")) {
                 labels += "#" + memoryContext.getLabel()[i] + " ";
             }
         }
         if (labels.equals("# ")) {
             labels = "";
         }
+        contextLabel.setText(labels);
         downTask = new DownTask();
         downTask.execute("navBar");
         getMainContext();
-        contextLabel.setText(labels);
         contextFinished = true;
     }
 
@@ -813,7 +811,7 @@ public class MemoryActivity extends AppCompatActivity {
         for (int i = 0; i < textCount; i++) {
             if (text[i].equals("<img>")) {
                 ImageView img = new ImageView(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp.bottomMargin = 10;
                 imagePosition.add(i);
                 img.setId(i);
@@ -1005,7 +1003,6 @@ public class MemoryActivity extends AppCompatActivity {
         addOne.startAnimation(set);
         addOne.setVisibility(View.GONE);
     }
-
 
     /**
      * 异步操作
