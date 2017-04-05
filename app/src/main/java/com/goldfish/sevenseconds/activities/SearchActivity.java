@@ -26,6 +26,7 @@ import static org.litepal.LitePalApplication.getContext;
  */
 
 public class SearchActivity extends Activity{
+    boolean year;
     String query;
     private List<MemorySheetPreview> SearchItems = new ArrayList<MemorySheetPreview>();
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
@@ -51,6 +52,8 @@ public class SearchActivity extends Activity{
         super.onCreate(a);
         Intent getData = getIntent();
         query = getData.getStringExtra("querydata");
+        year = getData.getBooleanExtra("year", false);
+        Toast.makeText(getContext(), "query：" + query + "year:" + year, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_search);
         Exception();
         ImageView back = (ImageView) findViewById(R.id.back);
