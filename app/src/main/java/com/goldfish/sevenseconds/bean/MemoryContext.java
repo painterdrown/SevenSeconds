@@ -20,6 +20,24 @@ public class MemoryContext {
     private String context;
     private boolean isLike;
     private boolean isAdd;
+    private String author;
+    private String memoryId;
+
+    public String getMemoryId() {
+        return memoryId;
+    }
+
+    public void setMemoryId(String memoryId) {
+        this.memoryId = memoryId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public void setIsAdd(boolean add) {
         isAdd = add;

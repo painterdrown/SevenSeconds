@@ -344,10 +344,10 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (navBarFinished) {
-                    /*TextView textView = (TextView) findViewById(R.id.amem_review_title1);
+                    TextView textView = (TextView) findViewById(R.id.amem_review_title1);
                     textView.setFocusableInTouchMode(false);
                     textView.setFocusableInTouchMode(true);
-                    textView.requestFocus();*/
+                    textView.requestFocus();
                 }
             }
         });
@@ -453,18 +453,6 @@ public class MemoryActivity extends AppCompatActivity {
 
     private void initView() {
         setDataListItems();
-        myTimelineAdapter = new MyTimelineAdapter(myTimelineItems, orientation);
-        recyclerView.setAdapter(myTimelineAdapter);
-    }
-
-    private void initData() {
-        myTimelineItems.get(0).setMonth(months[10]);
-        myTimelineItems.get(1).setMonth(months[11]);
-        for (int i = 2; i < 14; i++) {
-            myTimelineItems.get(i).setMonth(months[i - 2]);
-        }
-        myTimelineItems.get(14).setMonth(months[0]);
-        myTimelineItems.get(15).setMonth(months[1]);
         myTimelineAdapter = new MyTimelineAdapter(myTimelineItems, orientation);
         recyclerView.setAdapter(myTimelineAdapter);
     }
@@ -602,14 +590,16 @@ public class MemoryActivity extends AppCompatActivity {
             jo.put("memoryId", memID);
             JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
             JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
+            JSONObject jo_add = MemoryHttpUtil.getCollectCount(jo);
             jo.put("account", myAccount);
             JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
             JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
-            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok")) {
+            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok") && jo_add.getBoolean("ok")) {
                 memoryContext.setLikeCount(jo_like.getInt("count"));
                 memoryContext.setReviewCount(jo_review.getInt("count"));
                 memoryContext.setIsAdd(jo_isAdd.getBoolean("ok"));
                 memoryContext.setIsLike(jo_isLike.getBoolean("ok"));
+                memoryContext.setCollectCount(jo_add.getInt("count"));
                 result = "Succeed in navBar";
             }
         } catch (JSONException e) {
