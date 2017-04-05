@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,11 +25,14 @@ import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.item.MemorySheetPreview;
 
 import com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView;
+import com.goldfish.sevenseconds.http.MemoryHttpUtil;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.goldfish.sevenseconds.http.MemoryHttpUtil.getAllMemoryList;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -41,6 +46,7 @@ public class SquareFragment extends Fragment{
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
     private RecyclerView mRecyclerView;
     private MemAdapter mAdapter;
+    private List<String> allmem = new ArrayList<String>();
     private String name;
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
@@ -77,6 +83,7 @@ public class SquareFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
         /*
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
         recyclerView.setHasFixedSize(true);
@@ -93,6 +100,7 @@ public class SquareFragment extends Fragment{
 
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                //getAllMemoryList();
                 /*String label = DateUtils.formatDateTime(
                         getApplicationContext(),
                         System.currentTimeMillis(),
@@ -111,6 +119,7 @@ public class SquareFragment extends Fragment{
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                //getAllMemoryList();
                 /*
                 String label = DateUtils.formatDateTime(
                         getApplicationContext(),
@@ -128,8 +137,9 @@ public class SquareFragment extends Fragment{
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
+
         for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1");
+            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
         }
         mAdapter = new MemAdapter(memlist,view.getContext());
@@ -214,7 +224,7 @@ public class SquareFragment extends Fragment{
     }
     private void initMem(){
         for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1");
+            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
         }
     }
