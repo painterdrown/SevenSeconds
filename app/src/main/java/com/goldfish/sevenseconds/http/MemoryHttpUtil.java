@@ -129,7 +129,7 @@ public class MemoryHttpUtil extends HttpBase {
      */
     public static ArrayList<String> getAllMemoryList()
     {
-        JSONObject jo = null;
+        JSONObject jo = new JSONObject();
         return postForArrayList("/get-all-memory-list", jo);
     }
 }
