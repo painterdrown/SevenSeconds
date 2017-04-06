@@ -30,10 +30,13 @@ import com.goldfish.sevenseconds.http.MemoryHttpUtil;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.goldfish.sevenseconds.http.MemoryHttpUtil.getAllMemoryList;
+import static com.goldfish.sevenseconds.http.MemoryHttpUtil.getMemory;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -49,6 +52,7 @@ public class SquareFragment extends Fragment{
     private MemAdapter mAdapter;
     private List<String> allmem = new ArrayList<String>();
     private String name;
+    private List<JSONObject> allmemb = new ArrayList<JSONObject>();
     private List<MemorySheetPreview> memlist = new ArrayList<MemorySheetPreview>();
     private RecyclerView recyclerView;
     private ImageView editMemory;
@@ -76,7 +80,7 @@ public class SquareFragment extends Fragment{
         @Override
         protected Boolean doInBackground(Void... params){
           try {
-              getAllMemoryList();
+              allmem = getAllMemoryList();
           }catch (Exception e){
               Log.d("get data error",e.getMessage());
               return false;
@@ -86,7 +90,8 @@ public class SquareFragment extends Fragment{
         @Override
         protected void onPostExecute(Boolean result){
             if (result){
-                Toast.makeText(BarActivity.barActivity,"拉取成功!"+allmem.get(0),Toast.LENGTH_LONG).show();
+                Toast.makeText(BarActivity.barActivity,"拉取成功!",Toast.LENGTH_LONG).show();
+                new refreshbegin().execute();
             }
             else
             {
@@ -94,6 +99,36 @@ public class SquareFragment extends Fragment{
             }
         }
     }
+    class refreshbegin extends AsyncTask<Void,Integer,Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params){
+            try {
+                for (int i =0;i<allmem.size();i++){
+                    JSONObject js = new JSONObject();
+                    js.put("memoryId",allmem.get(i));
+                    allmemb.add(getMemory(js));
+                }
+            }catch (Exception e){
+                Log.d("get data error",e.getMessage());
+                return false;
+            }
+            return true;
+        }
+        @Override
+        protected void onPostExecute(Boolean result){
+            if (result){
+                for (int i =0;i<allmemb.size();i++){
+                    memlist.add(new MemorySheetPreview());
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+            else
+            {
+                Toast.makeText(BarActivity.barActivity,"拉取失败!",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         Exception();
@@ -161,11 +196,11 @@ public class SquareFragment extends Fragment{
             }
         });
         new refresh().execute();
-        //allmem = getAllMemoryList();
+        /*
         for (int i = 0;i < 10; i++){
             MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
-        }
+        }*/
         mAdapter = new MemAdapter(memlist,view.getContext());
         mRecyclerView.setAdapter(mAdapter);
 
