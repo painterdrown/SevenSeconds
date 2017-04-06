@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,6 +68,7 @@ public class SquareFragment extends Fragment{
     private RecyclerView recyclerView;
     private ImageView editMemory;
     private View view;
+    private boolean ifStart = false;
     //XRefreshView xRefreshView;
 
     /*
@@ -81,6 +86,8 @@ public class SquareFragment extends Fragment{
     private String[] months = {"Feb", "Jan" ,"Dec", "Nov", "Oct", "Sept", "Aug", "Jul", "Jun", "May", "Apr", "Mar", "Feb", "Jan", "Dec", "Nov"};
     static private String collectTime = "1999-01";
     private String monthStr;
+    static private ImageView addOne;
+
 
 
     private int mLoadCount = 0;
@@ -214,8 +221,8 @@ public class SquareFragment extends Fragment{
     }
     // 更新预览界面
     private void refreshPreviewMemory() {
-        mRecyclerView.setAdapter(mAdapter);
         mAdapter = new MemAdapter(memlist,view.getContext());
+        mRecyclerView.setAdapter(mAdapter);
     }
     // 获取时间轴的时间
     static public String getCollectTime() {
@@ -312,6 +319,7 @@ public class SquareFragment extends Fragment{
                 monthStr += String.valueOf(month);
             }
         });
+        addOne = (ImageView) view.findViewById(R.id.square_add_one);
 
         /*
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
@@ -434,6 +442,29 @@ public class SquareFragment extends Fragment{
             rl.addView(recyclerView);
         }*/
         return view;
+    }
+
+    public static void showAddOne() {
+        addOne.setVisibility(View.VISIBLE);
+        Animation translateAnimation = new TranslateAnimation(0.0f, 0.0f,0.0f,-100.0f);
+        Animation alphaAnimation = new AlphaAnimation(1.0f, 0.1f);
+        AnimationSet set = new AnimationSet(true);
+        set.addAnimation(translateAnimation);
+        set.addAnimation(alphaAnimation);
+        set.setDuration(1000);
+        addOne.startAnimation(set);
+        addOne.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (ifStart) {
+            mAdapter.refreshAllCount();
+        } else{
+            ifStart = true;
+        }
+
     }
 
     // 时间轴相关

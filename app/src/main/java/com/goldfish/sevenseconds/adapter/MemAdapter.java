@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     private String memID;
     private MemoryContext now;
     private memViewHolder holder;
-    private ImageView addOne;
+
 
     public static class memViewHolder extends RecyclerView.ViewHolder {
 
@@ -105,7 +106,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         memID = now.getMemoryId();
         this.holder = holderTemp;
         // 更新底部按钮
-        refreshAllTotally();
+        refreshAllCount();
         holder.pre_time.setText(now.getTime());
         String labels = "";
         for (int i = 0; i < now.getLabel().length; i++) {
@@ -130,6 +131,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             @Override
             public void onClick(View view) {
                 if (NetWorkUtils.getAPNType(context) != 0) {
+                    Log.d("position", String.valueOf(position));
                     if (now.getIsAdd()) {
                         DownTask downTask = new DownTask();
                         downTask.execute("Sub");
@@ -201,6 +203,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             else if (result.equals("Succeed in like memory")) { refreshAllCount(); }
             else if (result.equals("Succeed in unlike")) { refreshAllCount(); }
             else if (result.equals("Succeed in refreshAllTotally")) { refreshUI(); }
+            else { Toast.makeText(context, result, Toast.LENGTH_SHORT).show(); }
         }
     }
 
@@ -216,13 +219,16 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in collect";
             }
+            else {
+                result = jo_return.getString("errMsg");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return result;
     }
     // 更新忆单的信息
-    private void refreshAllCount() {
+    public void refreshAllCount() {
         new DownTask().execute("refreshAllTotally");
     }
     // 加载忆单信息
@@ -258,11 +264,13 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
                 holder.commentNum.setText(String.valueOf(now.getCollectCount()));
             else
                 holder.commentNum.setText("99+");
+        else holder.commentNum.setText("");
         if (now.getLikeCount() > 0)
             if (now.getLikeCount() <= 99)
                 holder.likeNum.setText(String.valueOf(now.getLikeCount()));
             else
                 holder.likeNum.setText("99+");
+        else holder.likeNum.setText("");
         if (now.getIsLike()) {
             holder.pre_like.setAlpha((float) 0.9);
             holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
@@ -339,15 +347,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     // +1动画
     private void showAddOne() {
         refreshAllCount();
-        addOne.setVisibility(View.VISIBLE);
-        Animation translateAnimation = new TranslateAnimation(0.0f, 0.0f,0.0f,-100.0f);
-        Animation alphaAnimation = new AlphaAnimation(1.0f, 0.1f);
-        AnimationSet set = new AnimationSet(true);
-        set.addAnimation(translateAnimation);
-        set.addAnimation(alphaAnimation);
-        set.setDuration(1000);
-        addOne.startAnimation(set);
-        addOne.setVisibility(View.GONE);
+        SquareFragment.showAddOne();
     }
     // 抓取正文
     private void getMainContext() {
@@ -416,7 +416,6 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         View v = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.square_memory_item, parent, false);
         memViewHolder vh = new memViewHolder(v, true);
-        addOne = (ImageView) parent.findViewById(R.id.square_add_one);
         return vh;
     }
 

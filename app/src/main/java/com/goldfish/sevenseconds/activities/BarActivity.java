@@ -32,7 +32,7 @@ public class BarActivity extends AppCompatActivity {
     private  TextView textView;*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.square_toolbar,menu);
+        //getMenuInflater().inflate(R.menu.square_toolbar,menu);
         return true;
     }
     @Override

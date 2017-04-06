@@ -152,6 +152,9 @@ public class MemoryActivity extends AppCompatActivity {
         context = this;
         memID = getData.getStringExtra("memoryID");
         myAccount = LogActivity.user;
+        // 数据
+        memoryContext = new MemoryContext();
+        contextFinished = false;
 
         /*
         ** 时间轴
@@ -429,9 +432,6 @@ public class MemoryActivity extends AppCompatActivity {
         countLikeTv = (TextView) findViewById(R.id.like_count);
         countReviewTv = (TextView) findViewById(R.id.review_count);
 
-        // 数据
-        memoryContext = new MemoryContext();
-        contextFinished = false;
 
         // 加载评论区
         downTask = new DownTask();
@@ -541,6 +541,9 @@ public class MemoryActivity extends AppCompatActivity {
             JSONObject jo_return = UserHttpUtil.collectMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in collect";
+            }
+            else {
+                result = jo_return.getString("errMsg");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -966,6 +969,8 @@ public class MemoryActivity extends AppCompatActivity {
             if (jo_return.getBoolean("ok")) {
                 memoryContext.setIsAdd(false);
                 result = "Succeed in sub";
+            } else {
+                result = jo_return.getString("errMsg");
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -80,8 +80,7 @@
             android:textColor="#a6a6a6"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/premem_com"
-            android:textSize="12sp"
-            android:text="99+" />
+            android:textSize="12sp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,13 +97,12 @@
             android:textColor="#a6a6a6"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:text="99+"
             android:layout_alignParentRight="true" />
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/ic_add_box_black_24dp"
+            android:src="@drawable/ic_add_box_black_24dp"
             android:textSize="12sp"
             android:alpha="0.4"
             android:layout_alignParentBottom="true"
