@@ -1,4 +1,4 @@
-﻿package com.goldfish.sevenseconds.fragment;
+package com.goldfish.sevenseconds.fragment;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -74,7 +74,7 @@ public class SquareFragment extends Fragment{
     //XRefreshView xRefreshView;
 
     /*
-    ** 时间轴
+    ** ʱ����
      */
     private MyTimelineAdapter myTimelineAdapter;
     private RecyclerView recyclerView1;
@@ -95,7 +95,7 @@ public class SquareFragment extends Fragment{
     private int mLoadCount = 0;
 
     public void Exception(){
-        //避免出现android.os.NetworkOnMainThreadException异常
+        //�������android.os.NetworkOnMainThreadException�쳣
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads().detectDiskWrites().detectNetwork()
                 .penaltyLog().build());
@@ -105,7 +105,7 @@ public class SquareFragment extends Fragment{
                 .penaltyLog().penaltyDeath().build());
     }
 
-    // 异步获取忆单相关信息
+    // �첽��ȡ�䵥�����Ϣ
     class refresh extends AsyncTask<String, Integer, String>{
         /*@Override
         protected Boolean doInBackground(Void... params){
@@ -120,12 +120,12 @@ public class SquareFragment extends Fragment{
         @Override
         protected void onPostExecute(Boolean result){
             if (result){
-                Toast.makeText(BarActivity.barActivity,"拉取成功!",Toast.LENGTH_LONG).show();
+                Toast.makeText(BarActivity.barActivity,"��ȡ�ɹ�!",Toast.LENGTH_LONG).show();
                 new refreshbegin().execute();
             }
             else
             {
-                Toast.makeText(BarActivity.barActivity,"拉取失败!",Toast.LENGTH_LONG).show();
+                Toast.makeText(BarActivity.barActivity,"��ȡʧ��!",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -154,7 +154,7 @@ public class SquareFragment extends Fragment{
             }
             else
             {
-                Toast.makeText(BarActivity.barActivity,"拉取失败!",Toast.LENGTH_LONG).show();
+                Toast.makeText(BarActivity.barActivity,"��ȡʧ��!",Toast.LENGTH_LONG).show();
             }
         }*/
         @Override
@@ -172,7 +172,7 @@ public class SquareFragment extends Fragment{
         }
     }
 
-    // 获取所有忆单ID
+    // ��ȡ�����䵥ID
     private String getAllMemoryList() {
         String result;
         allmem = MemoryHttpUtil.getAllMemoryList();
@@ -180,15 +180,15 @@ public class SquareFragment extends Fragment{
             result = "Succeed in getAllMemoryList";
         }
         else {
-            result = "没有忆单";
+            result = "û���䵥";
         }
         return result;
     }
-    // 获取忆单ID后的操作
+    // ��ȡ�䵥ID��Ĳ���
     private void refreshGetAllMemory() {
         new refresh().execute("getSingleMemory");
     }
-    // 获取5条忆单的内容
+    // ��ȡ5���䵥������
     private String getSomeMemory() {
         String result = "Succeed in getSomeMemory";
         if (allmem.size() >= 5) {
@@ -202,7 +202,7 @@ public class SquareFragment extends Fragment{
         }
         return result;
     }
-    // 获取一条忆单的内容
+    // ��ȡһ���䵥������
     private boolean getSingleMemory(int index) {
         try {
             JSONObject jo = new JSONObject();
@@ -251,12 +251,12 @@ public class SquareFragment extends Fragment{
         }
         return true;
     }
-    // 更新预览界面
+    // ����Ԥ������
     private void refreshPreviewMemory() {
         mAdapter = new MemAdapter(memlist,view.getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
-    // 获取时间轴的时间
+    // ��ȡʱ�����ʱ��
     static public String getCollectTime() {
         return collectTime;
     }
@@ -275,7 +275,7 @@ public class SquareFragment extends Fragment{
         });
 
         /*
-        ** 时间轴
+        ** ʱ����
          */
         orientation = Orientation.horizontal;
         recyclerView1 = (RecyclerView) view.findViewById(R.id.square_timeline);
@@ -291,7 +291,7 @@ public class SquareFragment extends Fragment{
         nextYear = (TextView) view.findViewById(R.id.square_next_year);
         recyclerView1.addOnScrollListener(new  RecyclerView.OnScrollListener() {
 
-            // 状态改变的时候调用函数
+            // ״̬�ı��ʱ����ú���
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
@@ -322,7 +322,7 @@ public class SquareFragment extends Fragment{
                 collectTime = String.valueOf(Integer.parseInt(nextYear.getText().toString()) + 1) + "-" + monthStr;
             }
 
-            // 滚动结束的时候调用函数
+            // ����������ʱ����ú���
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -375,7 +375,7 @@ public class SquareFragment extends Fragment{
                         DateUtils.FORMAT_SHOW_TIME
                                 | DateUtils.FORMAT_SHOW_DATE
                                 | DateUtils.FORMAT_ABBREV_ALL);
-                // 显示最后更新的时间
+                // ��ʾ�����µ�ʱ��
                 mPullRefreshRecyclerView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
@@ -395,7 +395,7 @@ public class SquareFragment extends Fragment{
                         DateUtils.FORMAT_SHOW_TIME
                                 | DateUtils.FORMAT_SHOW_DATE
                                 | DateUtils.FORMAT_ABBREV_ALL);
-                // 显示最后更新的时间
+                // ��ʾ�����µ�ʱ��
                 mPullRefreshRecyclerView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
@@ -408,7 +408,7 @@ public class SquareFragment extends Fragment{
         new refresh().execute();
         /*
         for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
+            MemorySheetPreview memex = new MemorySheetPreview("��һ����Ϊ��������",R.drawable.memory_test,"��һ�ο�one piece��������,����Ϊ�ж�.\nû��û��,���ʱ����������õĸ��顣\n�ɼ�ʹ���ᣬ�ֻ�������ʤ����ϲ���ֿ���Ц...", "zhangziyang", "1","Jul,2007","#���� #������");
             memlist.add(memex);
         }*/
         mAdapter = new MemAdapter(memlist,view.getContext());
@@ -416,7 +416,7 @@ public class SquareFragment extends Fragment{
         new refresh().execute("getAllMemoryList");
         //allmem = getAllMemoryList();
         /*for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
+            MemorySheetPreview memex = new MemorySheetPreview("��һ����Ϊ��������",R.drawable.memory_test,"��һ�ο�one piece��������,����Ϊ�ж�.\nû��û��,���ʱ����������õĸ��顣\n�ɼ�ʹ���ᣬ�ֻ�������ʤ����ϲ���ֿ���Ц...", "zhangziyang", "1","Jul,2007","#���� #������");
             memlist.add(memex);
         }
         mRecyclerView.setAdapter(mAdapter);
@@ -448,13 +448,13 @@ public class SquareFragment extends Fragment{
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         mLoadCount++;
-                        if (mLoadCount >= 3) {//模拟没有更多数据的情况
+                        if (mLoadCount >= 3) {//ģ��û�и������ݵ����
                             xRefreshView.setLoadComplete(true);
                         } else {
-                            // 刷新完成必须调用此方法停止加载
+                            // ˢ����ɱ�����ô˷���ֹͣ����
                             xRefreshView.stopLoadMore(false);
-                            //当数据加载失败 不需要隐藏footerview时，可以调用以下方法，传入false，不传默认为true
-                            // 同时在Footerview的onStateFinish(boolean hideFooter)，可以在hideFooter为false时，显示数据加载失败的ui
+                            //�����ݼ���ʧ�� ����Ҫ����footerviewʱ�����Ե������·���������false������Ĭ��Ϊtrue
+                            // ͬʱ��Footerview��onStateFinish(boolean hideFooter)��������hideFooterΪfalseʱ����ʾ���ݼ���ʧ�ܵ�ui
 //                            xRefreshView1.stopLoadMore(false);
                         }
                     }
@@ -505,7 +505,7 @@ public class SquareFragment extends Fragment{
 
     }
 
-    // 时间轴相关
+    // ʱ�������
     private void initView() {
         for (int i = 0; i < 16; i++) {
             MyTimelineItem myTimelineItem = new MyTimelineItem();
@@ -535,7 +535,7 @@ public class SquareFragment extends Fragment{
     }
     /*private void initMem(){
         for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
+            MemorySheetPreview memex = new MemorySheetPreview("��һ����Ϊ��������",R.drawable.memory_test,"��һ�ο�one piece��������,����Ϊ�ж�.\nû��û��,���ʱ����������õĸ��顣\n�ɼ�ʹ���ᣬ�ֻ�������ʤ����ϲ���ֿ���Ц...", "zhangziyang", "1","Jul,2007","#���� #������");
             memlist.add(memex);
         }
     }*/
