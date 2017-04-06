@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,8 @@ import static com.goldfish.sevenseconds.http.MemoryHttpUtil.addMemory;
 public class Addmem extends AppCompatActivity {
     private EditTag editText_tag;
     private EditText editText_title;
+    private ImageView admem_clear;
+    private ImageView admem_add;
 
     private  ProgressDialog progressDialog;
     private int length;
@@ -148,16 +151,46 @@ public class Addmem extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.add_toolbar,menu);
+        //getMenuInflater().inflate(R.menu.add_toolbar,menu);
         return true;
     }
-    @Override
+
+    private void admemAdd() {
+        str = set_date.getText().toString();
+        if (str.equals("选择年月")){
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            str = curDate.toString();
+        }
+        addTask add = new addTask();
+        up_title = editText_title.getText().toString();
+        up_contents = getEditData();
+        tagStrings = editText_tag.getTagList();
+        up_tags = "";
+        for (int i =0 ;i<tagStrings.size();i++){
+            if (i != tagStrings.size()-1) up_tags = up_tags+tagStrings.get(i)+",";
+            else up_tags = up_tags + tagStrings.get(i);
+        }
+        int now = 0;
+        int st = up_contents.indexOf("<img src"); int ed = up_contents.indexOf("\"/>");
+        String mid;
+        while (st>0){
+            addimages.add(up_contents.substring(st+10,ed));
+            Log.d("path",up_contents.substring(st+10,ed));
+            up_contents = up_contents.substring(0,st)+"<img"+now+">"+up_contents.substring(ed+3);
+            st = up_contents.indexOf("<img src"); ed = up_contents.indexOf("\"/>",st);
+            now++;
+        }
+        add.execute();
+    }
+
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case android.R.id.home:
+            case R.id.admem_clear:
                 finish();
                 break;
-            case R.id.a_mem_add:
+            case R.id.admem_add:
                 str = set_date.getText().toString();
                 if (str.equals("选择年月")){
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -176,23 +209,20 @@ public class Addmem extends AppCompatActivity {
                 int now = 0;
                 int st = up_contents.indexOf("<img src"); int ed = up_contents.indexOf("\"/>");
                 String mid;
-                while (st>0){
-                    addimages.add(up_contents.substring(st+10,ed));
-                    Log.d("path",up_contents.substring(st+10,ed));
-                    up_contents = up_contents.substring(0,st)+"<img"+now+">"+up_contents.substring(ed+3);
-                    st = up_contents.indexOf("<img src"); ed = up_contents.indexOf("\"/>",st);
+                while (st>0) {
+                    addimages.add(up_contents.substring(st + 10, ed));
+                    Log.d("path", up_contents.substring(st + 10, ed));
+                    up_contents = up_contents.substring(0, st) + "<img" + now + ">" + up_contents.substring(ed + 3);
+                    st = up_contents.indexOf("<img src");
+                    ed = up_contents.indexOf("\"/>", st);
                     now++;
                 }
-                /*
-                Log.d("uptitle",up_title);
-                Log.d("uptags",up_tags);
-                Log.d("add",up_contents);*/
                 add.execute();
                 break;
             default:
         }
         return true;
-    }
+    }*/
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -241,13 +271,27 @@ public class Addmem extends AppCompatActivity {
                 onYearMonthDayPicker(v);
             }
         });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.admem_toolbar);
+        admem_add = (ImageView) findViewById(R.id.admem_add);
+        admem_clear = (ImageView) findViewById(R.id.admem_clear);
+        admem_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                admemAdd();
+            }
+        });
+        admem_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.admem_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_cancel);*/
 
         insertDialog = new ProgressDialog(this);
         insertDialog.setMessage("正在插入图片...");

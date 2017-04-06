@@ -26,6 +26,7 @@ import static org.litepal.LitePalApplication.getContext;
  */
 
 public class SearchActivity extends Activity{
+    boolean year;
     String query;
     private List<MemorySheetPreview> SearchItems = new ArrayList<MemorySheetPreview>();
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
@@ -51,6 +52,8 @@ public class SearchActivity extends Activity{
         super.onCreate(a);
         Intent getData = getIntent();
         query = getData.getStringExtra("querydata");
+        year = getData.getBooleanExtra("year", false);
+        Toast.makeText(getContext(), "query：" + query + "year:" + year, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_search);
         Exception();
         ImageView back = (ImageView) findViewById(R.id.back);
@@ -101,12 +104,12 @@ public class SearchActivity extends Activity{
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
-        for (int i = 0;i < 10; i++){
+        /*for (int i = 0;i < 10; i++){
             MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
         }
         mAdapter = new MemAdapter(memlist, getContext());
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);*/
 
     }
 }

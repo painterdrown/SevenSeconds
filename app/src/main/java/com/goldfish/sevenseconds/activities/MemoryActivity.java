@@ -152,6 +152,9 @@ public class MemoryActivity extends AppCompatActivity {
         context = this;
         memID = getData.getStringExtra("memoryID");
         myAccount = LogActivity.user;
+        // 数据
+        memoryContext = new MemoryContext();
+        contextFinished = false;
 
         /*
         ** 时间轴
@@ -210,8 +213,6 @@ public class MemoryActivity extends AppCompatActivity {
         currentVisibleItem = 0;
         lastYear = (TextView) findViewById(R.id.last_year);
         nextYear = (TextView) findViewById(R.id.next_year);
-
-
 
         recyclerView.addOnScrollListener(new  RecyclerView.OnScrollListener() {
 
@@ -346,10 +347,10 @@ public class MemoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (navBarFinished) {
-                    /*TextView textView = (TextView) findViewById(R.id.amem_review_title1);
+                    TextView textView = (TextView) findViewById(R.id.amem_review_title1);
                     textView.setFocusableInTouchMode(false);
                     textView.setFocusableInTouchMode(true);
-                    textView.requestFocus();*/
+                    textView.requestFocus();
                 }
             }
         });
@@ -431,9 +432,6 @@ public class MemoryActivity extends AppCompatActivity {
         countLikeTv = (TextView) findViewById(R.id.like_count);
         countReviewTv = (TextView) findViewById(R.id.review_count);
 
-        // 数据
-        memoryContext = new MemoryContext();
-        contextFinished = false;
 
         // 加载评论区
         downTask = new DownTask();
@@ -455,18 +453,6 @@ public class MemoryActivity extends AppCompatActivity {
 
     private void initView() {
         setDataListItems();
-        myTimelineAdapter = new MyTimelineAdapter(myTimelineItems, orientation);
-        recyclerView.setAdapter(myTimelineAdapter);
-    }
-
-    private void initData() {
-        myTimelineItems.get(0).setMonth(months[10]);
-        myTimelineItems.get(1).setMonth(months[11]);
-        for (int i = 2; i < 14; i++) {
-            myTimelineItems.get(i).setMonth(months[i - 2]);
-        }
-        myTimelineItems.get(14).setMonth(months[0]);
-        myTimelineItems.get(15).setMonth(months[1]);
         myTimelineAdapter = new MyTimelineAdapter(myTimelineItems, orientation);
         recyclerView.setAdapter(myTimelineAdapter);
     }
@@ -556,6 +542,9 @@ public class MemoryActivity extends AppCompatActivity {
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in collect";
             }
+            else {
+                result = jo_return.getString("errMsg");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -604,14 +593,16 @@ public class MemoryActivity extends AppCompatActivity {
             jo.put("memoryId", memID);
             JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
             JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
+            JSONObject jo_add = MemoryHttpUtil.getCollectCount(jo);
             jo.put("account", myAccount);
             JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
             JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
-            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok")) {
+            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok") && jo_add.getBoolean("ok")) {
                 memoryContext.setLikeCount(jo_like.getInt("count"));
                 memoryContext.setReviewCount(jo_review.getInt("count"));
                 memoryContext.setIsAdd(jo_isAdd.getBoolean("ok"));
                 memoryContext.setIsLike(jo_isLike.getBoolean("ok"));
+                memoryContext.setCollectCount(jo_add.getInt("count"));
                 result = "Succeed in navBar";
             }
         } catch (JSONException e) {
@@ -733,6 +724,7 @@ public class MemoryActivity extends AppCompatActivity {
 
         contextTitle.setText(memoryContext.getTitle());
         contextTime.setText(memoryContext.getTime());
+        collectTime = memoryContext.getTime().substring(0, 7);
         if (memoryContext.getCover() == null) {
             contextCover.setVisibility(View.GONE);
         }
@@ -977,6 +969,8 @@ public class MemoryActivity extends AppCompatActivity {
             if (jo_return.getBoolean("ok")) {
                 memoryContext.setIsAdd(false);
                 result = "Succeed in sub";
+            } else {
+                result = jo_return.getString("errMsg");
             }
         } catch (JSONException e) {
             e.printStackTrace();

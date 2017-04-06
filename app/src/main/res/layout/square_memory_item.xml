@@ -66,45 +66,45 @@
         <ImageView
             android:layout_alignParentBottom="true"
 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_sentiment_very_satisfied_black_24dp"
             android:alpha="0.4"
             android:layout_toLeftOf="@+id/premem_like_num"
             android:id="@+id/premem_like" />
 
         <TextView
-            android:layout_width="30dp"
+            android:layout_width="25dp"
             android:layout_height="30dp"
             android:id="@+id/premem_like_num"
+            android:textColor="#a6a6a6"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/premem_com"
-            android:textSize="12sp"
-            android:text="99+" />
+            android:textSize="12sp"/>
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_comment_black_24dp"
             android:alpha="0.4"
             android:id="@+id/premem_com"
             android:layout_toLeftOf="@+id/premem_com_num"
             android:layout_alignParentBottom="true"/>
         <TextView
-            android:layout_width="30dp"
+            android:layout_width="20dp"
             android:layout_height="30dp"
             android:id="@+id/premem_com_num"
             android:textSize="12sp"
             android:textColor="#a6a6a6"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:text="99+"
             android:layout_alignParentRight="true" />
 
-        <Button
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/pre_add_36dp"
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_add_box_black_24dp"
             android:textSize="12sp"
+            android:alpha="0.4"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
