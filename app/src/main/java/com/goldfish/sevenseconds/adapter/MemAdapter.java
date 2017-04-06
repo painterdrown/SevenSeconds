@@ -157,6 +157,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
                         new DownTask().execute("dislike");
                     }
                     else {
+                        Log.d("Main", now.getMemoryId());
                         new DownTask().execute("like");
                     }
                 }
@@ -311,6 +312,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         try {
             JSONObject jo = new JSONObject();
             jo.put("memoryId", memID);
+            Log.d("Async", memID);
             jo.put("account", LogActivity.user);
             JSONObject jo_return = UserHttpUtil.likeMemory(jo);
             if (jo_return.getBoolean("ok")) {

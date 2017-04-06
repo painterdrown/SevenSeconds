@@ -49,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.goldfish.sevenseconds.http.MemoryHttpUtil.getAllMemoryList;
-import static com.goldfish.sevenseconds.http.MemoryHttpUtil.getMemory;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -65,7 +64,6 @@ public class SquareFragment extends Fragment{
     private MemAdapter mAdapter;
     private List<String> allmem = new ArrayList<String>();
     private String name;
-    private List<JSONObject> allmemb = new ArrayList<JSONObject>();
     private List<MemoryContext> memlist = new ArrayList<>();
     private RecyclerView recyclerView;
     private ImageView editMemory;
@@ -74,7 +72,7 @@ public class SquareFragment extends Fragment{
     //XRefreshView xRefreshView;
 
     /*
-    ** ʱ����
+    ** 时间轴
      */
     private MyTimelineAdapter myTimelineAdapter;
     private RecyclerView recyclerView1;
@@ -95,7 +93,7 @@ public class SquareFragment extends Fragment{
     private int mLoadCount = 0;
 
     public void Exception(){
-        //�������android.os.NetworkOnMainThreadException�쳣
+        //避免出现android.os.NetworkOnMainThreadException异常
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads().detectDiskWrites().detectNetwork()
                 .penaltyLog().build());
@@ -105,7 +103,7 @@ public class SquareFragment extends Fragment{
                 .penaltyLog().penaltyDeath().build());
     }
 
-    // �첽��ȡ�䵥�����Ϣ
+    // 异步获取忆单相关信息
     class refresh extends AsyncTask<String, Integer, String>{
         /*@Override
         protected Boolean doInBackground(Void... params){
@@ -120,41 +118,11 @@ public class SquareFragment extends Fragment{
         @Override
         protected void onPostExecute(Boolean result){
             if (result){
-                Toast.makeText(BarActivity.barActivity,"��ȡ�ɹ�!",Toast.LENGTH_LONG).show();
-                new refreshbegin().execute();
+                Toast.makeText(BarActivity.barActivity,"拉取成功!"+allmem.get(0),Toast.LENGTH_LONG).show();
             }
             else
             {
-                Toast.makeText(BarActivity.barActivity,"��ȡʧ��!",Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-    class refreshbegin extends AsyncTask<Void,Integer,Boolean>{
-        @Override
-        protected Boolean doInBackground(Void... params){
-            try {
-                for (int i =0;i<allmem.size();i++){
-                    JSONObject js = new JSONObject();
-                    js.put("memoryId",allmem.get(i));
-                    allmemb.add(getMemory(js));
-                }
-            }catch (Exception e){
-                Log.d("get data error",e.getMessage());
-                return false;
-            }
-            return true;
-        }
-        @Override
-        protected void onPostExecute(Boolean result){
-            if (result){
-                for (int i =0;i<allmemb.size();i++){
-                    memlist.add(new MemorySheetPreview());
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-            else
-            {
-                Toast.makeText(BarActivity.barActivity,"��ȡʧ��!",Toast.LENGTH_LONG).show();
+                Toast.makeText(BarActivity.barActivity,"拉取失败!",Toast.LENGTH_LONG).show();
             }
         }*/
         @Override
@@ -172,7 +140,7 @@ public class SquareFragment extends Fragment{
         }
     }
 
-    // ��ȡ�����䵥ID
+    // 获取所有忆单ID
     private String getAllMemoryList() {
         String result;
         allmem = MemoryHttpUtil.getAllMemoryList();
@@ -180,15 +148,15 @@ public class SquareFragment extends Fragment{
             result = "Succeed in getAllMemoryList";
         }
         else {
-            result = "û���䵥";
+            result = "没有忆单";
         }
         return result;
     }
-    // ��ȡ�䵥ID��Ĳ���
+    // 获取忆单ID后的操作
     private void refreshGetAllMemory() {
         new refresh().execute("getSingleMemory");
     }
-    // ��ȡ5���䵥������
+    // 获取5条忆单的内容
     private String getSomeMemory() {
         String result = "Succeed in getSomeMemory";
         if (allmem.size() >= 5) {
@@ -202,7 +170,7 @@ public class SquareFragment extends Fragment{
         }
         return result;
     }
-    // ��ȡһ���䵥������
+    // 获取一条忆单的内容
     private boolean getSingleMemory(int index) {
         try {
             JSONObject jo = new JSONObject();
@@ -251,15 +219,16 @@ public class SquareFragment extends Fragment{
         }
         return true;
     }
-    // ����Ԥ������
+    // 更新预览界面
     private void refreshPreviewMemory() {
         mAdapter = new MemAdapter(memlist,view.getContext());
         mRecyclerView.setAdapter(mAdapter);
     }
-    // ��ȡʱ�����ʱ��
+    // 获取时间轴的时间
     static public String getCollectTime() {
         return collectTime;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
@@ -275,7 +244,7 @@ public class SquareFragment extends Fragment{
         });
 
         /*
-        ** ʱ����
+        ** 时间轴
          */
         orientation = Orientation.horizontal;
         recyclerView1 = (RecyclerView) view.findViewById(R.id.square_timeline);
@@ -291,7 +260,7 @@ public class SquareFragment extends Fragment{
         nextYear = (TextView) view.findViewById(R.id.square_next_year);
         recyclerView1.addOnScrollListener(new  RecyclerView.OnScrollListener() {
 
-            // ״̬�ı��ʱ����ú���
+            // 状态改变的时候调用函数
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
@@ -322,7 +291,7 @@ public class SquareFragment extends Fragment{
                 collectTime = String.valueOf(Integer.parseInt(nextYear.getText().toString()) + 1) + "-" + monthStr;
             }
 
-            // ����������ʱ����ú���
+            // 滚动结束的时候调用函数
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -355,7 +324,6 @@ public class SquareFragment extends Fragment{
         /*
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mem_list);
         recyclerView.setHasFixedSize(true);
-
         xRefreshView = (XRefreshView)view.findViewById(R.id.x_fresh_square);
         */
         /*
@@ -375,7 +343,7 @@ public class SquareFragment extends Fragment{
                         DateUtils.FORMAT_SHOW_TIME
                                 | DateUtils.FORMAT_SHOW_DATE
                                 | DateUtils.FORMAT_ABBREV_ALL);
-                // ��ʾ�����µ�ʱ��
+                // 显示最后更新的时间
                 mPullRefreshRecyclerView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
@@ -395,7 +363,7 @@ public class SquareFragment extends Fragment{
                         DateUtils.FORMAT_SHOW_TIME
                                 | DateUtils.FORMAT_SHOW_DATE
                                 | DateUtils.FORMAT_ABBREV_ALL);
-                // ��ʾ�����µ�ʱ��
+                // 显示最后更新的时间
                 mPullRefreshRecyclerView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
@@ -405,18 +373,11 @@ public class SquareFragment extends Fragment{
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
-        new refresh().execute();
-        /*
-        for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("��һ����Ϊ��������",R.drawable.memory_test,"��һ�ο�one piece��������,����Ϊ�ж�.\nû��û��,���ʱ����������õĸ��顣\n�ɼ�ʹ���ᣬ�ֻ�������ʤ����ϲ���ֿ���Ц...", "zhangziyang", "1","Jul,2007","#���� #������");
-            memlist.add(memex);
-        }*/
-        mAdapter = new MemAdapter(memlist,view.getContext());
 
         new refresh().execute("getAllMemoryList");
         //allmem = getAllMemoryList();
         /*for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("��һ����Ϊ��������",R.drawable.memory_test,"��һ�ο�one piece��������,����Ϊ�ж�.\nû��û��,���ʱ����������õĸ��顣\n�ɼ�ʹ���ᣬ�ֻ�������ʤ����ϲ���ֿ���Ц...", "zhangziyang", "1","Jul,2007","#���� #������");
+            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
         }
         mRecyclerView.setAdapter(mAdapter);
@@ -431,7 +392,6 @@ public class SquareFragment extends Fragment{
         xRefreshView.enableRecyclerViewPullUp(true);
         xRefreshView.enablePullUpWhenLoadCompleted(true);
         xRefreshView.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
-
             @Override
             public void onRefresh(boolean isPullDown) {
                 new Handler().postDelayed(new Runnable() {
@@ -442,19 +402,18 @@ public class SquareFragment extends Fragment{
                     }
                 }, 500);
             }
-
             @Override
             public void onLoadMore(boolean isSilence) {
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         mLoadCount++;
-                        if (mLoadCount >= 3) {//ģ��û�и������ݵ����
+                        if (mLoadCount >= 3) {//模拟没有更多数据的情况
                             xRefreshView.setLoadComplete(true);
                         } else {
-                            // ˢ����ɱ�����ô˷���ֹͣ����
+                            // 刷新完成必须调用此方法停止加载
                             xRefreshView.stopLoadMore(false);
-                            //�����ݼ���ʧ�� ����Ҫ����footerviewʱ�����Ե������·���������false������Ĭ��Ϊtrue
-                            // ͬʱ��Footerview��onStateFinish(boolean hideFooter)��������hideFooterΪfalseʱ����ʾ���ݼ���ʧ�ܵ�ui
+                            //当数据加载失败 不需要隐藏footerview时，可以调用以下方法，传入false，不传默认为true
+                            // 同时在Footerview的onStateFinish(boolean hideFooter)，可以在hideFooter为false时，显示数据加载失败的ui
 //                            xRefreshView1.stopLoadMore(false);
                         }
                     }
@@ -505,7 +464,7 @@ public class SquareFragment extends Fragment{
 
     }
 
-    // ʱ�������
+    // 时间轴相关
     private void initView() {
         for (int i = 0; i < 16; i++) {
             MyTimelineItem myTimelineItem = new MyTimelineItem();
@@ -535,7 +494,7 @@ public class SquareFragment extends Fragment{
     }
     /*private void initMem(){
         for (int i = 0;i < 10; i++){
-            MemorySheetPreview memex = new MemorySheetPreview("��һ����Ϊ��������",R.drawable.memory_test,"��һ�ο�one piece��������,����Ϊ�ж�.\nû��û��,���ʱ����������õĸ��顣\n�ɼ�ʹ���ᣬ�ֻ�������ʤ����ϲ���ֿ���Ц...", "zhangziyang", "1","Jul,2007","#���� #������");
+            MemorySheetPreview memex = new MemorySheetPreview("第一次因为动漫哭泣",R.drawable.memory_test,"第一次看one piece泪流满面,是因为感动.\n没错没错,最坏的时代，才有最好的感情。\n可即使流泪，又会随伙伴们胜利的喜悦又哭又笑...", "zhangziyang", "1","Jul,2007","#动漫 #海贼王");
             memlist.add(memex);
         }
     }*/
@@ -546,32 +505,24 @@ public class SquareFragment extends Fragment{
         mAdapter.removeItem(adapterPosition);
         rv.invalidateItemDecorations();
     }
-
     //SimpleViewHolder
     class SimpleViewHolder extends RecyclerView.ViewHolder {
-
         public final TextView mTextView;
-
         public SimpleViewHolder(View ll, TextView itemView) {
             super(ll);
             mTextView = itemView;
         }
     }
-
     //SimpleAdapter
     class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
         private final List<String> mDataSet;
-
-
         public SimpleAdapter(List<String> dataSet) {
             this.mDataSet = dataSet;
         }
-
         public void removeItem(int adapterPos) {
             mDataSet.remove(adapterPos);
             notifyItemRemoved(adapterPos);
         }
-
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             //Log.d(TAG, "onCreateViewHolder");
@@ -598,14 +549,12 @@ public class SquareFragment extends Fragment{
 //            ll.setBackground(getDrawable(R.drawable.round_rect_border));
             return new SimpleViewHolder(tv, tv);
         }
-
         private int getColor(int position) {
             float factor = (float) position / (float) getItemCount();
             return 0xFF000000 | (int) (0x0000FF * Math.sin(factor))
                     | ((int) (0x0000FF * Math.sin(2 * Math.PI * (factor + 1F / 3F))) << 8)
                     | ((int) (0x0000FF * Math.sin(2 * Math.PI * (factor + 2F / 3F))) << 16);
         }
-
         @Override
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
             //Log.d(TAG, "onBindViewHolder: " + holder.itemView);
@@ -618,7 +567,6 @@ public class SquareFragment extends Fragment{
             //Log.d(TAG, String.format("color: %8h", color));
             tv.setBackgroundColor(color);
         }
-
         @Override
         public int getItemCount() {
             return mDataSet.size();
