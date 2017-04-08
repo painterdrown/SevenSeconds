@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -193,16 +194,15 @@ public class SearchActivity extends Activity{
         }if(!year){
             allmem = MemoryHttpUtil.searchMemorys(jo);
         }else {
-
+            allmem = MemoryHttpUtil.searchMemorysViaDecade(jo);
         }
 
-        String result;
-        allmem = MemoryHttpUtil.getAllMemoryList();
-        if (allmem.size() > 0) {
-            result = "Succeed in getAllMemoryList";
-        }
-        else {
-            result = "没有忆单";
+        String result = "没有忆单";
+        if(allmem != null) {
+            Log.d("SS",""+allmem.size());
+            if (allmem.size() > 0) {
+                result = "Succeed in getAllMemoryList";
+            }
         }
         return result;
     }
