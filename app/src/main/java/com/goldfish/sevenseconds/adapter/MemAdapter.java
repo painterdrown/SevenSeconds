@@ -329,6 +329,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         }
         return result;
     }
+
     // 取消点赞
     private String dislike() {
         String result = "Failed in unlike";

@@ -112,7 +112,7 @@
                     app:layout_widthPercent="90%"
                     android:layout_height="200dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/app_icon"
+                    android:src="@drawable/defaultbg"
                     android:scaleType="centerCrop"/>
 
                 <com.zhy.android.percent.support.PercentRelativeLayout

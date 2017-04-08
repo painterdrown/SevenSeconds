@@ -177,9 +177,6 @@ public class MyFollowActicity extends AppCompatActivity {
                 downTask = new DownTask();
                 downTask.execute("storeInLocal");
             }
-            else {
-                Toast.makeText(MyFollowActicity.this, s, Toast.LENGTH_SHORT).show();
-            }
         }
     }
 

@@ -290,9 +290,6 @@ public class InformationActivity extends AppCompatActivity {
             else if (s.equals("Succeed in storing")) {
                 initializeInfo();
             }
-            else {
-                Toast.makeText(InformationActivity.this, s, Toast.LENGTH_SHORT).show();
-            }
         }
     }
 

@@ -58,7 +58,7 @@ public class SquareFragment extends Fragment{
     //private SimpleAdapter mAdapter;
     static final String[] TEST_STRINGS = {"ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX",
             "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE"};
-
+    static int sq_load_now;
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
     private RecyclerView mRecyclerView;
     private MemAdapter mAdapter;
@@ -130,16 +130,17 @@ public class SquareFragment extends Fragment{
             String result = "Failed";
             if (params[0].equals("getAllMemoryList")) { result = getAllMemoryList(); }
             else if (params[0].equals("getSingleMemory")) { result = getSomeMemory(); }
+            else if (params[0].equals("getmore")) {result = "Succeed in getresidue";}
             return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in getAllMemoryList")) { refreshGetAllMemory(); }
-            else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory(); }
+            else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory();}
+            else if (result.equals("Succeed in getresidue")) {refreshmore();}
         }
     }
-
     // 获取所有忆单ID
     private String getAllMemoryList() {
         String result;
@@ -159,9 +160,12 @@ public class SquareFragment extends Fragment{
     // 获取5条忆单的内容
     private String getSomeMemory() {
         String result = "Succeed in getSomeMemory";
+        sq_load_now = 0;
         if (allmem.size() >= 5) {
             for (int i = 0; i < 5; i++) {
+                sq_load_now = i;
                 if (!getSingleMemory(i)) break;
+
             }
         } else {
             for (int i = 0; i < allmem.size(); i++) {
@@ -212,12 +216,25 @@ public class SquareFragment extends Fragment{
                 return false;
             }
             memlist.add(memoryContext);
+            //mAdapter.notifyDataSetChanged();
         }
         catch (JSONException e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+    private void refreshmore(){
+        int mid = sq_load_now;
+        if (sq_load_now+1 >= allmem.size()){
+            Toast.makeText(BarActivity.barActivity,"没有更多的忆单了",Toast.LENGTH_LONG);
+        }
+        for (int i = sq_load_now+1;i<allmem.size();i++){
+            getSingleMemory(i);
+            mid = i;
+        }
+        mAdapter.notifyDataSetChanged();
+        sq_load_now = mid;
     }
     // 更新预览界面
     private void refreshPreviewMemory() {
@@ -348,7 +365,7 @@ public class SquareFragment extends Fragment{
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
-                Toast.makeText(BarActivity.barActivity, "Pull left!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BarActivity.barActivity, "左拉刷新", Toast.LENGTH_SHORT).show();
                 //new GetDataTask().execute();
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
@@ -368,7 +385,8 @@ public class SquareFragment extends Fragment{
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
-                Toast.makeText(BarActivity.barActivity, "Pull right!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BarActivity.barActivity, "右拉加载更多", Toast.LENGTH_SHORT).show();
+                new refresh().execute("getmore");
                 //new GetDataTask().execute();
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
