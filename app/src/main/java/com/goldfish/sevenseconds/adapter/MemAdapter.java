@@ -12,11 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,11 +28,9 @@ import com.goldfish.sevenseconds.tools.DensityUtil;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.BarActivity;
 import com.goldfish.sevenseconds.activities.MemoryActivity;
-import com.goldfish.sevenseconds.item.MemorySheetPreview;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +41,18 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     private List<MemoryContext> list;
     private int largeCardHeight, smallCardHeight;
     private Context context;
-    private String memID;
-    private MemoryContext now;
     private memViewHolder holder;
+    private memViewHolder currentHolder;
+    private int currentPosition;
+    private int position;
 
+    /*
+     * sub = 0
+     * collect = 1
+     * dislike = 2
+     * like = 3
+     * refreshAllTotally = 4
+     */
 
     public static class memViewHolder extends RecyclerView.ViewHolder {
 
@@ -102,11 +103,12 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
 
     @Override
     public void onBindViewHolder(final memViewHolder holderTemp, final int position, boolean isItem) {
-        now = list.get(position);
-        memID = now.getMemoryId();
-        this.holder = holderTemp;
+        holder = holderTemp;
+        final MemoryContext now = list.get(position);
+        String memID = now.getMemoryId();
+        this.position = position;
         // 更新底部按钮
-        refreshAllCount();
+        refreshStartCount();
         holder.pre_time.setText(now.getTime());
         String labels = "";
         for (int i = 0; i < now.getLabel().length; i++) {
@@ -119,7 +121,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         }
         holder.tags.setText(labels);
         holder.title.setText(now.getTitle());
-        getMainContext();
+        getMainContext(position);
         holder.bkg.setImageBitmap(now.getCover());
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
@@ -130,15 +132,17 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         holder.pre_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                currentHolder = holderTemp;
+                currentPosition = position;
                 if (NetWorkUtils.getAPNType(context) != 0) {
                     Log.d("position", String.valueOf(position));
                     if (now.getIsAdd()) {
                         DownTask downTask = new DownTask();
-                        downTask.execute("Sub");
+                        downTask.execute(0, position);
                     }
                     else {
                         DownTask downTask = new DownTask();
-                        downTask.execute("collect", now.getMemoryId(), SquareFragment.getCollectTime());
+                        downTask.execute(1, position);
                     }
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
@@ -152,16 +156,20 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         holder.pre_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MemoryContext now = list.get(position);
+                currentPosition = position;
+                currentHolder = holderTemp;
                 if (NetWorkUtils.getAPNType(context) != 0) {
                     if (now.getIsLike()) {
-                        new DownTask().execute("dislike");
+                        new DownTask().execute(2, position);
                     }
                     else {
                         Log.d("Main", now.getMemoryId());
-                        new DownTask().execute("like");
+                        new DownTask().execute(3, position);
                     }
                 }
                 else if (NetWorkUtils.getAPNType(context) == 0) {
+                    holder.likeNum.setText("99+");
                     Toast.makeText(context,
                             "哎呀~网络连接有问题！",
                             Toast.LENGTH_SHORT).show();
@@ -183,16 +191,17 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     /**
      * 异步操作
      */
-    class DownTask extends AsyncTask<String, Integer, String> {
+    class DownTask extends AsyncTask<Integer, Integer, String> {
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(Integer... params) {
             String result = "Failed";
-            if(params[0].equals("collect")) { result = collect(params); }
-            else if (params[0].equals("refreshAllTotally")) { result = refreshAllTotally(); }
-            else if (params[0].equals("Sub")) { result = Sub(); }
-            else if (params[0].equals("like")) { result = like(); }
-            else if (params[0].equals("dislike")) { result = dislike(); }
+            if(params[0].equals(1)) { result = collect(params[1]); }
+            else if (params[0].equals(4)) { result = refreshAllTotally(params[1]); }
+            else if (params[0].equals(0)) { result = Sub(params[1]); }
+            else if (params[0].equals(3)) { result = like(params[1]); }
+            else if (params[0].equals(2)) { result = dislike(params[1]); }
+            else if (params[0].equals(5)) { result = refreshStartTotally(); }
             return result;
         }
 
@@ -204,18 +213,20 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             else if (result.equals("Succeed in like memory")) { refreshAllCount(); }
             else if (result.equals("Succeed in unlike")) { refreshAllCount(); }
             else if (result.equals("Succeed in refreshAllTotally")) { refreshUI(); }
+            else if (result.equals("Succeed in refreshStartTotally")) { refreshAllUI(); }
             else { Toast.makeText(context, result, Toast.LENGTH_SHORT).show(); }
         }
     }
 
     // 收藏
-    private String collect(String... params) {
+    private String collect(int postion) {
         String result = "Failed in collect";
+        MemoryContext now = list.get(postion);
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", LogActivity.user);
-            jo.put("memoryId", params[1]);
-            jo.put("time", params[2]);
+            jo.put("memoryId", now.getMemoryId());
+            jo.put("time", now.getTime());
             JSONObject jo_return = UserHttpUtil.collectMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in collect";
@@ -230,36 +241,18 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     }
     // 更新忆单的信息
     public void refreshAllCount() {
-        new DownTask().execute("refreshAllTotally");
+        new DownTask().execute(4, currentPosition);
     }
-    // 加载忆单信息
-    private String refreshAllTotally() {
-        String result = "Failed in refreshAllTotally";
-        try {
-            JSONObject jo = new JSONObject();
-            jo.put("memoryId", memID);
-            JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
-            JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
-            JSONObject jo_add = MemoryHttpUtil.getCollectCount(jo);
-            jo.put("account", LogActivity.user);
-            JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
-            JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
-            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok") && jo_add.getBoolean("ok")) {
-                now.setLikeCount(jo_like.getInt("count"));
-                now.setReviewCount(jo_review.getInt("count"));
-                now.setIsAdd(jo_isAdd.getBoolean("ok"));
-                now.setIsLike(jo_isLike.getBoolean("ok"));
-                now.setCollectCount(jo_add.getInt("count"));
-                result = "Succeed in refreshAllTotally";
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
+
+    // 刚开始更新
+    public void refreshStartCount() {
+        new DownTask().execute(5);
     }
+
     // 更新UI
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void refreshUI() {
+    private void refreshAllUI() {
+        MemoryContext now = list.get(position);
         if (now.getCollectCount() > 0)
             if (now.getCollectCount() <= 99)
                 holder.commentNum.setText(String.valueOf(now.getCollectCount()));
@@ -289,13 +282,101 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             holder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
         }
     }
+
+    // 同上
+    private String refreshStartTotally() {
+        String result = "Failed in refreshStartTotally";
+        MemoryContext now = list.get(position);
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", now.getMemoryId());
+            JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
+            JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
+            JSONObject jo_add = MemoryHttpUtil.getCollectCount(jo);
+            jo.put("account", LogActivity.user);
+            JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
+            JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
+            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok") && jo_add.getBoolean("ok")) {
+                now.setLikeCount(jo_like.getInt("count"));
+                now.setReviewCount(jo_review.getInt("count"));
+                now.setIsAdd(jo_isAdd.getBoolean("ok"));
+                now.setIsLike(jo_isLike.getBoolean("ok"));
+                now.setCollectCount(jo_add.getInt("count"));
+                result = "Succeed in refreshStartTotally";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // 加载忆单信息
+    private String refreshAllTotally(int position) {
+        String result = "Failed in refreshAllTotally";
+        MemoryContext now = list.get(position);
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("memoryId", now.getMemoryId());
+            JSONObject jo_review = MemoryHttpUtil.getCommentCount(jo);
+            JSONObject jo_like = MemoryHttpUtil.getLikeCount(jo);
+            JSONObject jo_add = MemoryHttpUtil.getCollectCount(jo);
+            jo.put("account", LogActivity.user);
+            JSONObject jo_isLike =  UserHttpUtil.ifLikeMemory(jo);
+            JSONObject jo_isAdd = UserHttpUtil.ifCollectMemory(jo);
+            if (jo_like.getBoolean("ok") && jo_review.getBoolean("ok") && jo_add.getBoolean("ok")) {
+                now.setLikeCount(jo_like.getInt("count"));
+                now.setReviewCount(jo_review.getInt("count"));
+                now.setIsAdd(jo_isAdd.getBoolean("ok"));
+                now.setIsLike(jo_isLike.getBoolean("ok"));
+                now.setCollectCount(jo_add.getInt("count"));
+                result = "Succeed in refreshAllTotally";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    // 更新UI
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void refreshUI() {
+        MemoryContext now = list.get(currentPosition);
+        if (now.getCollectCount() > 0)
+            if (now.getCollectCount() <= 99)
+                currentHolder.commentNum.setText(String.valueOf(now.getCollectCount()));
+            else
+                currentHolder.commentNum.setText("99+");
+        else currentHolder.commentNum.setText("");
+        if (now.getLikeCount() > 0)
+            if (now.getLikeCount() <= 99)
+                currentHolder.likeNum.setText(String.valueOf(now.getLikeCount()));
+            else
+                currentHolder.likeNum.setText("99+");
+        else currentHolder.likeNum.setText("");
+        if (now.getIsLike()) {
+            currentHolder.pre_like.setAlpha((float) 0.9);
+            currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
+        }
+        else {
+            currentHolder.pre_like.setAlpha((float) 0.4);
+            currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+        }
+        if (now.getIsAdd()) {
+            currentHolder.pre_add.setAlpha((float) 0.9);
+            currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
+        }
+        else {
+            currentHolder.pre_add.setAlpha((float) 0.4);
+            currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+        }
+    }
     // 取消收藏
-    private String Sub() {
+    private String Sub(int position) {
         String result = "Failed in sub";
+        MemoryContext now = list.get(position);
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", LogActivity.user);
-            jo.put("memoryId", memID);
+            jo.put("memoryId", now.getMemoryId());
             JSONObject jo_return = UserHttpUtil.uncollectMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 now.setIsAdd(false);
@@ -307,12 +388,12 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         return result;
     }
     //点赞
-    private String like() {
+    private String like(int position) {
         String result;
+        MemoryContext now = list.get(position);
         try {
             JSONObject jo = new JSONObject();
-            jo.put("memoryId", memID);
-            Log.d("Async", memID);
+            jo.put("memoryId", now.getMemoryId());
             jo.put("account", LogActivity.user);
             JSONObject jo_return = UserHttpUtil.likeMemory(jo);
             if (jo_return.getBoolean("ok")) {
@@ -331,12 +412,13 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     }
 
     // 取消点赞
-    private String dislike() {
+    private String dislike(int position) {
         String result = "Failed in unlike";
+        MemoryContext now = list.get(position);
         try {
             JSONObject jo = new JSONObject();
             jo.put("account", LogActivity.user);
-            jo.put("memoryId", memID);
+            jo.put("memoryId", now.getMemoryId());
             JSONObject jo_return = UserHttpUtil.unlikeMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 now.setIsLike(false);
@@ -353,7 +435,8 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         SquareFragment.showAddOne();
     }
     // 抓取正文
-    private void getMainContext() {
+    private void getMainContext(int position) {
+        MemoryContext now = list.get(position);
         String mainContext = now.getContext();
         String[] text = new String[100];
         int textCount = 0;

@@ -3,7 +3,6 @@ package com.goldfish.sevenseconds.fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,13 +16,10 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.andview.refreshview.XRefreshView;
-import com.andview.refreshview.XRefreshViewFooter;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.activities.Addmem;
 import com.goldfish.sevenseconds.activities.BarActivity;
@@ -32,7 +28,6 @@ import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
 import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.http.UserHttpUtil;
-import com.goldfish.sevenseconds.item.MemorySheetPreview;
 
 import com.goldfish.sevenseconds.item.MyTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
@@ -47,8 +42,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.goldfish.sevenseconds.http.MemoryHttpUtil.getAllMemoryList;
 
 /**
  * Created by zzz87 on 2017/2/23.
@@ -475,7 +468,7 @@ public class SquareFragment extends Fragment{
     public void onStart() {
         super.onStart();
         if (ifStart) {
-            mAdapter.refreshAllCount();
+            mAdapter.refreshStartCount();
         } else{
             ifStart = true;
         }
