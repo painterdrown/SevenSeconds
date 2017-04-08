@@ -123,6 +123,17 @@ public class MemoryHttpUtil extends HttpBase {
 
     /**
      * 【参数】
+     * query（要查询的年代字符串，如"1980"就是指十九世纪80年代）
+     * 【返回值】
+     * ArrayList<String>（可能为null！！！）
+     */
+    public static ArrayList<String> searchMemorysViaDecade(JSONObject jo)
+    {
+        return postForArrayList("/search-memorys-via-decade", jo);
+    }
+
+    /**
+     * 【参数】
      * （不需要参数）
      * 【返回值】
      * ArrayList<String>（可能为null！！！）
