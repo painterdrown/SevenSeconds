@@ -4,6 +4,10 @@
         "source": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_horizontal.xml"
     },
     {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_vertical.xml",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_vertical.xml"
+    },
+    {
         "merged": "E:\\Github\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_horizontal.xml",
         "source": "E:\\Github\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_horizontal.xml"
     },
@@ -14,5 +18,9 @@
     {
         "merged": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_vertical.xml",
         "source": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_vertical.xml"
+    },
+    {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_horizontal.xml",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_horizontal.xml"
     }
 ]

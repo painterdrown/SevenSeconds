@@ -32,12 +32,59 @@
 
 
     </android.support.v7.widget.Toolbar>
-
-    <com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView
+    <RelativeLayout
+        android:background="#ffffff"
+        android:id="@+id/square_timeline_layout"
         android:layout_below="@+id/square_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/square_next_year"
+            android:text="1999"
+            android:textColor="#b3a6a6a6"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/square_last_year"
+            android:text="1997"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#b3a6a6a6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            android:id="@+id/square_add_one"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_plus_one_black_24dp"
+            android:tint="@color/lightcoral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/square_timeline"
+            android:layout_below="@id/square_next_year"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="-5dp"
+            android:layout_width="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+    <com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView
+        android:layout_below="@+id/square_timeline_layout"
         android:id="@+id/hor_rec_refresh"
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         ptr:ptrMode="both" />
 </RelativeLayout>

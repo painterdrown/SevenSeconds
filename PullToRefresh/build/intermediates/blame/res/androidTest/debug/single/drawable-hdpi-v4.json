@@ -4,6 +4,10 @@
         "source": "E:\\Github\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_flip.png"
     },
     {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_rotate.png",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_rotate.png"
+    },
+    {
         "merged": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_flip.png",
         "source": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_flip.png"
     },
@@ -14,6 +18,14 @@
     {
         "merged": "E:\\Github\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_rotate.png",
         "source": "E:\\Github\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_rotate.png"
+    },
+    {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\indicator_arrow.png",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_flip.png",
+        "source": "C:\\Users\\bytrain\\Desktop\\SevenSeconds\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_flip.png"
     },
     {
         "merged": "E:\\ANDROID\\SevenSeconds\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\indicator_arrow.png",
