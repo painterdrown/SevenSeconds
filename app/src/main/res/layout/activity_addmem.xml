@@ -67,20 +67,6 @@
             android:id="@+id/add_chose_year" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/add_contents"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/admem_edit_tag"
-        android:layout_above="@+id/add_mem_pic">
-
-        <com.sendtion.xrichtext.RichTextEditor
-            android:paddingLeft="10.5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/admem_content"/>
-    </LinearLayout>
-
     <me.originqiu.library.EditTag
         android:id="@+id/admem_edit_tag"
         android:layout_width="match_parent"
@@ -112,9 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00000000"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/addmem_title"
-        android:layout_alignEnd="@+id/addmem_title" />
+        android:layout_alignParentBottom="true" />
 
     <EditText
         android:layout_width="match_parent"
@@ -127,4 +111,20 @@
         android:layout_below="@+id/add_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/add_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/admem_edit_tag"
+        android:layout_above="@+id/add_mem_pic"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <com.sendtion.xrichtext.RichTextEditor
+            android:paddingLeft="10.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/admem_content"/>
+    </LinearLayout>
 </RelativeLayout>

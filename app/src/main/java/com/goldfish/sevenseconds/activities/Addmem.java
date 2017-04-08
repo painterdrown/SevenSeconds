@@ -171,10 +171,13 @@ public class Addmem extends AppCompatActivity {
             if (i != tagStrings.size()-1) up_tags = up_tags+tagStrings.get(i)+",";
             else up_tags = up_tags + tagStrings.get(i);
         }
+        Log.d("up", up_contents);
         int now = 0;
         int st = up_contents.indexOf("<img src"); int ed = up_contents.indexOf("\"/>");
         String mid;
-        while (st>0){
+        while (st>=0){
+
+            Log.d("up", ""+st);
             addimages.add(up_contents.substring(st+10,ed));
             Log.d("path",up_contents.substring(st+10,ed));
             up_contents = up_contents.substring(0,st)+"<img"+now+">"+up_contents.substring(ed+3);
@@ -317,6 +320,7 @@ public class Addmem extends AppCompatActivity {
                     ActivityCompat.requestPermissions(Addmem.this,new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                 }
                 else{
+                    Log.d("mymypath","1");
                     openalbum();
                 }
             }
@@ -381,19 +385,21 @@ public class Addmem extends AppCompatActivity {
             imagePath = uri.getPath();
         }
         imagerealpath = imagePath;
+        Log.d("mymypath",imagerealpath);
         useit();
     }
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
         imagerealpath = imagePath;
+        Log.d("mymypath",imagerealpath);
         useit();
     }
     private  void  useit(){
         if (imagerealpath != null){
             insertDialog.show();
-            final ArrayList<String> photos = new ArrayList<>();
-            photos.add(imagerealpath);
+            final ArrayList<String> myphotos = new ArrayList<>();
+            myphotos.add(imagerealpath);
             subsInsert = Observable.create(new Observable.OnSubscribe<String>() {
                 @Override
                 public void call(Subscriber<? super String> subscriber) {
@@ -402,11 +408,13 @@ public class Addmem extends AppCompatActivity {
                         int width = ScreenUtils.getScreenWidth(Addmem.this);
                         int height = ScreenUtils.getScreenHeight(Addmem.this);
                         //可以同时插入多张图片
-                        for (String imagePath : photos) {
+                        for (String imagePath : myphotos) {
                             //Log.i("NewActivity", "###path=" + imagePath);
                             Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, width, height);//压缩图片
+                            Log.d("mymypath",imagePath);
                             //bitmap = BitmapFactory.decodeFile(imagePath);
-                            imagePath = SDCardUtil.saveToSdCard(bitmap);
+                            //imagePath = SDCardUtil.saveToSdCard(bitmap);
+                            //Log.d("mymypath",imagePath);
                             //Log.i("NewActivity", "###imagePath="+imagePath);
                             subscriber.onNext(imagePath);
                         }

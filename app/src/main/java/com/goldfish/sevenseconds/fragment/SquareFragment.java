@@ -1,5 +1,6 @@
 package com.goldfish.sevenseconds.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ public class SquareFragment extends Fragment{
     private RecyclerView recyclerView;
     private ImageView editMemory;
     private View view;
+    private ProgressDialog progressDialog;
     private boolean ifStart = false;
     //XRefreshView xRefreshView;
 
@@ -130,7 +132,7 @@ public class SquareFragment extends Fragment{
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in getAllMemoryList")) { refreshGetAllMemory(); }
-            else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory();}
+            else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory();progressDialog.dismiss();}
             else if (result.equals("Succeed in getresidue")) {refreshmore();}
         }
     }
@@ -243,6 +245,9 @@ public class SquareFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         Exception();
+        progressDialog = new ProgressDialog(BarActivity.barActivity);
+        progressDialog.setMessage("正在在刷新中...");
+        progressDialog.setCanceledOnTouchOutside(false);
         view = inflater.inflate(R.layout.fragment_square,container,false);
         editMemory = (ImageView) view.findViewById(R.id.square_edit);
         editMemory.setOnClickListener(new View.OnClickListener() {
@@ -359,6 +364,10 @@ public class SquareFragment extends Fragment{
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
                 Toast.makeText(BarActivity.barActivity, "左拉刷新", Toast.LENGTH_SHORT).show();
+
+                progressDialog.show();
+                memlist.clear();
+                new refresh().execute("getAllMemoryList");
                 //new GetDataTask().execute();
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
@@ -384,7 +393,7 @@ public class SquareFragment extends Fragment{
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
-
+        progressDialog.show();
         new refresh().execute("getAllMemoryList");
         //allmem = getAllMemoryList();
         /*for (int i = 0;i < 10; i++){
