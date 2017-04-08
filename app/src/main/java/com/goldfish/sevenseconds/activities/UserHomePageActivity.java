@@ -257,11 +257,13 @@ public class UserHomePageActivity extends AppCompatActivity {
 
     // 更新关注按钮
     private void refreshFollowButton() {
+        hadFollowed = true;
         toolBarFollow.setImageResource(R.drawable.ic_star_black_36dp);
     }
 
     // 更新关注按钮
     private void refreshUnfollowButton() {
+        hadFollowed = false;
         toolBarFollow.setImageResource(R.drawable.ic_star_border_black_36dp);
     }
 
@@ -316,8 +318,8 @@ public class UserHomePageActivity extends AppCompatActivity {
             else if (params[0].equals("getMyMemoryList")) { result = getMyMemoryList(); }
             else if (params[0].equals("getMyMemory")) { result = getMyMemory(); }
             else if (params[0].equals("ifFollowAuthor")) { result = ifFollowAuthor(); }
-            else if (params[0].equals("Follow")) { result = follow(); }
-            else if (params[0].equals("Unfollow")) { result = unfollow(); }
+            else if (params[0].equals("follow")) { result = follow(); }
+            else if (params[0].equals("unfollow")) { result = unfollow(); }
             else { result = params[0]; }
             return result;
         }

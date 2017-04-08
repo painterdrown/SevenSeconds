@@ -807,7 +807,7 @@ public class MemoryActivity extends AppCompatActivity {
                 lp.bottomMargin = 10;
                 imagePosition.add(i);
                 img.setId(i);
-                img.setImageResource(R.drawable.app_icon);
+                img.setImageResource(R.drawable.defaultbg);
                 img.setLayoutParams(lp);
                 img.setAdjustViewBounds(true);
                 img.setScaleType(ImageView.ScaleType.CENTER_CROP);
