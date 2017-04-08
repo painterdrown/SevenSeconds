@@ -180,6 +180,7 @@ public class MyFragment extends Fragment {
             date +=  "/" + String.valueOf(year);
             myPageTimelineItem.setTime(date);
             myPageTimelineItem.setTitle("您还没有忆单，创建一条吧~");
+            myPageTimelineItem.setMemoryId("add memory");
             myPageTimelineItemList.add(myPageTimelineItem);
         }
         nowPoint.setVisibility(View.VISIBLE);
@@ -218,6 +219,20 @@ public class MyFragment extends Fragment {
             memoryList = new ArrayList<>();
             memoryList = UserHttpUtil.getMemoryList(jo);
             result = "Succeed in getting my memory list";
+        } catch (JSONException e) {
+            e.printStackTrace();
+            result = "服务器故障啦~";
+        }
+        return result;
+    }
+
+    private String getMyCollectList() {
+        String result;
+        try {
+            JSONObject jo = new JSONObject();
+            jo.put("account", currentUser);
+            memoryList.addAll(UserHttpUtil.getCollectMemoryList(jo));
+            result = "Succeed in getting my collect memory list";
         } catch (JSONException e) {
             e.printStackTrace();
             result = "服务器故障啦~";
@@ -270,6 +285,7 @@ public class MyFragment extends Fragment {
             if (params[0].equals("getImage")) { result = getImage(); }
             else if (params[0].equals("getMyMemoryList")) { result = getMyMemoryList(); }
             else if (params[0].equals("getMyMemory")) { result = getMyMemory(); }
+            else if (params[0].equals("getMyCollectList")) { result = getMyCollectList(); }
             else { result = params[0]; }
             return result;
         }
@@ -278,14 +294,18 @@ public class MyFragment extends Fragment {
         protected void onPostExecute(String s) {
             if (s.equals("Succeed in getting face")) { headPortrait.setImageBitmap(face); }
             else if (s.equals("Succeed in getting my memory list")) {
-                DownTask downTask = new DownTask();
-                downTask.execute("getMyMemory");
+                new DownTask().execute("getMyCollectList");
             }
             else if (s.equals("Succeed in getting memory")) {
                 setDataListItems();
             }
             else if (s.equals("Have no memory")) {
                 setDataListItems();
+            }
+            else if (s.equals("Succeed in getting my collect memory list"))
+            {
+                DownTask downTask = new DownTask();
+                downTask.execute("getMyMemory");
             }
         }
     }

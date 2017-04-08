@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.goldfish.sevenseconds.R;
+import com.goldfish.sevenseconds.activities.Addmem;
 import com.goldfish.sevenseconds.activities.MemoryActivity;
 import com.goldfish.sevenseconds.item.MyPageTimelineItem;
 import com.goldfish.sevenseconds.item.Orientation;
@@ -56,8 +57,15 @@ public class MyPageTimelineAdapter extends RecyclerView.Adapter<MyPageTimelineAd
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(viewGroup.getContext(), MemoryActivity.class);
-                intent.putExtra("memoryID", myPageTimelineItem.getMemoryId());
+                Intent intent;
+                if (myPageTimelineItem.getMemoryId().equals("add memory"))
+                {
+                    intent = new Intent(viewGroup.getContext(), Addmem.class);
+                }
+                else {
+                    intent = new Intent(viewGroup.getContext(), MemoryActivity.class);
+                    intent.putExtra("memoryID", myPageTimelineItem.getMemoryId());
+                }
                 viewGroup.getContext().startActivity(intent);
             }
         });

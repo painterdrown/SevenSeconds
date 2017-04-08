@@ -161,9 +161,11 @@ public class MyFollowActicity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s.equals("Succeed in getting follow list")) {
-                if (myFollow.size() > 0) {
-                    downTask = new DownTask();
-                    downTask.execute("getFollows");
+                if(myFollow != null) {
+                    if (myFollow.size() > 0) {
+                        downTask = new DownTask();
+                        downTask.execute("getFollows");
+                    }
                 }
             }
             else if (s.equals("Succeed in getting follows")) {
