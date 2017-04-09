@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/lightorange"
-            android:textSize="20sp" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/set_info_save"

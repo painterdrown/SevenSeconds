@@ -2,6 +2,9 @@
     android:id="@+id/tableLayout1"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:paddingTop="50dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
     android:background="@drawable/log_background"
     >
     <TableRow android:layout_weight="2">
@@ -13,20 +16,15 @@
         android:layout_width="wrap_content">
         <ImageView
             android:id="@+id/user_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/icon"
-            android:adjustViewBounds="true"
-            android:minHeight="200px"
-            android:minWidth="200px"
-            android:maxHeight="200px"
-            android:maxWidth="200px"
-            android:paddingBottom="30dp"
-            />
+            android:adjustViewBounds="true" />
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow_2"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -36,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="用户名"
-            android:textSize="40px"
+            android:textSize="20sp"
             />
 
         <EditText
@@ -44,8 +42,8 @@
             android:id="@+id/editText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200px"
-            android:textSize="30px"
+            android:minWidth="150px"
+            android:textSize="15sp"
             />
     </TableRow>
 
@@ -60,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="密    码"
-            android:textSize="40px"
+            android:textSize="20sp"
             />
 
         <EditText
@@ -68,8 +66,8 @@
             android:id="@+id/editText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="200px"
-            android:textSize="30px"
+            android:minWidth="150px"
+            android:textSize="15sp"
             android:inputType="textPassword"
             />
     </TableRow>
@@ -87,7 +85,7 @@
             android:layout_height="wrap_content"
             android:text="登 录"
             android:background="#00000000"
-            android:textSize="30px"
+            android:textSize="15sp"
             />
 
         <Button
@@ -96,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="注 册"
-            android:textSize="30px"
+            android:textSize="15sp"
             />
     </TableRow>
 
@@ -114,7 +112,7 @@
             android:id="@+id/return_something"
             android:gravity="left"
             android:text="无法登录?"
-            android:textSize="40px"
+            android:textSize="20sp"
             android:layout_weight="1"
             android:textColor="#FFF68F"
             android:layout_height="wrap_content"
@@ -130,7 +128,7 @@
             android:id="@+id/connect_us"
             android:textColor="#FFF68F"
             android:text="联系我们"
-            android:textSize="40px"
+            android:textSize="20sp"
             android:background="#00000000"
             />
     </TableRow>

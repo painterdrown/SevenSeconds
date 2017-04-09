@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.goldfish.sevenseconds.R;
 import com.goldfish.sevenseconds.adapter.MemAdapter;
 import com.goldfish.sevenseconds.adapter.MyTimelineAdapter;
+import com.goldfish.sevenseconds.adapter.SearchMemAdapter;
 import com.goldfish.sevenseconds.bean.MemoryContext;
 import com.goldfish.sevenseconds.fragment.SquareFragment;
 import com.goldfish.sevenseconds.http.MemoryHttpUtil;
@@ -50,7 +51,7 @@ public class SearchActivity extends Activity{
     String query;
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
     private RecyclerView mRecyclerView;
-    private MemAdapter mAdapter;
+    private SearchMemAdapter mAdapter;
     private List<String> allmem = new ArrayList<String>();
     private String name;
     private List<MemoryContext> memlist = new ArrayList<>();
@@ -76,6 +77,7 @@ public class SearchActivity extends Activity{
     static private String collectTime = "1999-01";
     private String monthStr;
     static private ImageView addOne;
+    static public SearchActivity searchActivity;
 
 
 
@@ -164,7 +166,7 @@ public class SearchActivity extends Activity{
     }
     // 更新预览界面
     private void refreshPreviewMemory() {
-        mAdapter = new MemAdapter(memlist, getContext());
+        mAdapter = new SearchMemAdapter(memlist, this);
         mRecyclerView.setAdapter(mAdapter);
     }
     // 获取时间轴的时间
@@ -340,7 +342,7 @@ public class SearchActivity extends Activity{
     public void onStart() {
         super.onStart();
         if (ifStart) {
-            mAdapter.refreshAllCount();
+            mAdapter.refreshStartCount();
         } else{
             ifStart = true;
         }

@@ -137,8 +137,11 @@ public class Addmem extends AppCompatActivity {
             progressDialog.dismiss();
             if (result){
                 if (re){
-                Toast.makeText(Addmem.this,"上传完成",Toast.LENGTH_LONG);
-                finish();
+                    Toast.makeText(Addmem.this,"上传完成",Toast.LENGTH_LONG);
+                    Intent intent = new Intent();
+                    intent.putExtra("add memory return", "refresh memory");
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
                 else {
                     Toast.makeText(Addmem.this,"上传成功但校验失败请询问服务器原因",Toast.LENGTH_LONG);

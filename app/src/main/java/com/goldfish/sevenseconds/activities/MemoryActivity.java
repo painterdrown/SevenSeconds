@@ -1,5 +1,6 @@
 package com.goldfish.sevenseconds.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -74,6 +75,7 @@ public class MemoryActivity extends AppCompatActivity {
     private TextView userName;
     private ImageView editMemory;
     private ImageView back;
+    private ProgressDialog progressDialog;
 
     // 数据
     private TitleBarInfo titleBarInfo;
@@ -155,6 +157,9 @@ public class MemoryActivity extends AppCompatActivity {
         // 数据
         memoryContext = new MemoryContext();
         contextFinished = false;
+        progressDialog = new ProgressDialog(MemoryActivity.this);
+        progressDialog.setMessage("7秒正在拼命加载忆单，请稍候~");
+        progressDialog.setCanceledOnTouchOutside(false);
 
         /*
         ** 时间轴
@@ -204,6 +209,7 @@ public class MemoryActivity extends AppCompatActivity {
 
 
         // 加载忆单主体内容
+        progressDialog.show();
         downTask = new DownTask();
         downTask.execute("getContext");
 
@@ -854,6 +860,7 @@ public class MemoryActivity extends AppCompatActivity {
             ImageView imageView = (ImageView) contextMain.findViewById(imagePosition.get(i));
             imageView.setImageBitmap(bitImages[i]);
         }
+        progressDialog.dismiss();
     }
 
     // 更新关注按钮

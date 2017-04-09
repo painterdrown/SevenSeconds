@@ -63,6 +63,7 @@ public class SquareFragment extends Fragment{
     private ImageView editMemory;
     private View view;
     private ProgressDialog progressDialog;
+    private ProgressDialog loadProgressDialog;
     private boolean ifStart = false;
     //XRefreshView xRefreshView;
 
@@ -229,6 +230,7 @@ public class SquareFragment extends Fragment{
             mid = i;
         }
         mAdapter.notifyDataSetChanged();
+        loadProgressDialog.dismiss();
         sq_load_now = mid;
     }
     // 更新预览界面
@@ -246,8 +248,13 @@ public class SquareFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         Exception();
         progressDialog = new ProgressDialog(BarActivity.barActivity);
-        progressDialog.setMessage("正在在刷新中...");
+        progressDialog.setMessage("正在刷新中...");
         progressDialog.setCanceledOnTouchOutside(false);
+
+        loadProgressDialog = new ProgressDialog(BarActivity.barActivity);
+        loadProgressDialog.setMessage("正在加载中...");
+        loadProgressDialog.setCanceledOnTouchOutside(false);
+
         view = inflater.inflate(R.layout.fragment_square,container,false);
         editMemory = (ImageView) view.findViewById(R.id.square_edit);
         editMemory.setOnClickListener(new View.OnClickListener() {
@@ -388,6 +395,7 @@ public class SquareFragment extends Fragment{
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
                 Toast.makeText(BarActivity.barActivity, "右拉加载更多", Toast.LENGTH_SHORT).show();
+                loadProgressDialog.show();
                 new refresh().execute("getmore");
                 //new GetDataTask().execute();
                 mPullRefreshRecyclerView.onRefreshComplete();

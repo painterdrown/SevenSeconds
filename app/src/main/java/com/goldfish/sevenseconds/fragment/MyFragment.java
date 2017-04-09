@@ -1,5 +1,6 @@
 package com.goldfish.sevenseconds.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -38,6 +39,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by zzz87 on 2017/2/23.
  */
@@ -57,6 +60,7 @@ public class MyFragment extends Fragment {
     private List<MyPageTimelineItem> myPageTimelineItemList = new ArrayList<>();
     private ArrayList<String> memoryList;
     private ImageView letter;
+    private ProgressDialog progressDialog;
 
     private ImageView nowPoint;
     private TextView nowText;
@@ -65,6 +69,10 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
         // 成功登陆的账号
         currentUser = LogActivity.user;
+
+        progressDialog = new ProgressDialog(BarActivity.barActivity);
+        progressDialog.setMessage("正在加载您的忆单，请稍候~");
+        progressDialog.setCanceledOnTouchOutside(false);
 
         View view = inflater.inflate(R.layout.fragment_my_page,container,false);
         RelativeLayout myMessage = (RelativeLayout) view.findViewById(R.id.myMessage);
@@ -80,10 +88,15 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Addmem.class);
-                getActivity().startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
+        // 从编辑忆单回来才需要重新加载
+        myPageTimelineItemList.clear();
+        nowPoint.setVisibility(View.INVISIBLE);
+        nowText.setVisibility(View.INVISIBLE);
+        initView();
 
         mySetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,9 +176,29 @@ public class MyFragment extends Fragment {
         return view;
     }
     private void initView() {
+        progressDialog.show();
         DownTask downTask = new DownTask();
         downTask.execute("getMyMemoryList");
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    String returnData = data.getStringExtra("add memory return");
+                    if (returnData.equals("refresh memory")) {
+                        // 从编辑忆单回来才需要重新加载
+                        myPageTimelineItemList.clear();
+                        nowPoint.setVisibility(View.INVISIBLE);
+                        nowText.setVisibility(View.INVISIBLE);
+                        initView();
+                    }
+                }
+                break;
+        }
+    }
+
 
     private void setDataListItems() {
         if (myPageTimelineItemList.size() == 0) {
@@ -189,8 +222,35 @@ public class MyFragment extends Fragment {
         int year = t.year;
         nowText.setText(String.valueOf(year));
         nowText.setVisibility(View.VISIBLE);
+        myPageTimelineItemList = makeInorder(myPageTimelineItemList);
         myPageTimelineAdapter = new MyPageTimelineAdapter(myPageTimelineItemList, orientation);
         recyclerView.setAdapter(myPageTimelineAdapter);
+        progressDialog.dismiss();
+    }
+
+    // 排序
+    private List<MyPageTimelineItem> makeInorder(List<MyPageTimelineItem> apageTimelineItemList) {
+        for (int i = 0; i < apageTimelineItemList.size() - 1; i++) {
+            for (int j = i + 1; j < apageTimelineItemList.size(); j++) {
+                if (StringToInt(apageTimelineItemList.get(i).getTime()) < StringToInt(apageTimelineItemList.get(j).getTime())){
+                    MyPageTimelineItem temp = apageTimelineItemList.get(i);
+                    apageTimelineItemList.set(i, apageTimelineItemList.get(j));
+                    apageTimelineItemList.set(j, temp);
+                }
+            }
+        }
+        return apageTimelineItemList;
+    }
+
+    private int StringToInt(String s) {
+        if (s != null) {
+            if (s.length() >= 7) {
+                String temp = s.substring(3, 7);
+                temp += s.substring(0, 2);
+                return Integer.parseInt(temp);
+            }
+        }
+        return 0;
     }
 
     private String getImage() {
@@ -320,10 +380,6 @@ public class MyFragment extends Fragment {
         super.onStart();
         DownTask downTask = new DownTask();
         downTask.execute("getImage");
-        myPageTimelineItemList.clear();
-        nowPoint.setVisibility(View.INVISIBLE);
-        nowText.setVisibility(View.INVISIBLE);
-        initView();
     }
 
     public static MyFragment newInstance(String libargument) {

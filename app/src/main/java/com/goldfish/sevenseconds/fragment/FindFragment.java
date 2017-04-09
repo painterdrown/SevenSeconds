@@ -75,7 +75,7 @@ public class FindFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //搜索
-                Toast.makeText(getContext(), "你搜索了" + query, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "你搜索了" + query, Toast.LENGTH_LONG).show();
                 mSearchView.clearFocus();
                 searchfor(query, false);
                 return true;
@@ -84,7 +84,7 @@ public class FindFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 //文本改变
-                Toast.makeText(getContext(), "文本改变了" + newText, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "文本改变了" + newText, Toast.LENGTH_LONG).show();
                 return false;
             }
         });
