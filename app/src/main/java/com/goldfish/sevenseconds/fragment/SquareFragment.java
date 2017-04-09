@@ -62,8 +62,9 @@ public class SquareFragment extends Fragment{
     private RecyclerView recyclerView;
     private ImageView editMemory;
     private View view;
+    private boolean ifstart;
     private ProgressDialog progressDialog;
-    private ProgressDialog loadProgressDialog;
+   // private ProgressDialog loadProgressDialog;
     private boolean ifStart = false;
     //XRefreshView xRefreshView;
 
@@ -133,7 +134,10 @@ public class SquareFragment extends Fragment{
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in getAllMemoryList")) { refreshGetAllMemory(); }
-            else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory();progressDialog.dismiss();}
+            else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory();//progressDialog.dismiss();
+                if (ifstart == true) progressDialog.dismiss();
+                else mPullRefreshRecyclerView.onRefreshComplete();
+                 }
             else if (result.equals("Succeed in getresidue")) {refreshmore();}
         }
     }
@@ -161,10 +165,10 @@ public class SquareFragment extends Fragment{
             for (int i = 0; i < 5; i++) {
                 sq_load_now = i;
                 if (!getSingleMemory(i)) break;
-
             }
         } else {
             for (int i = 0; i < allmem.size(); i++) {
+                sq_load_now = i;
                 if (!getSingleMemory(i)) break;
             }
         }
@@ -230,8 +234,9 @@ public class SquareFragment extends Fragment{
             mid = i;
         }
         mAdapter.notifyDataSetChanged();
-        loadProgressDialog.dismiss();
+        //loadProgressDialog.dismiss();
         sq_load_now = mid;
+        mPullRefreshRecyclerView.onRefreshComplete();
     }
     // 更新预览界面
     private void refreshPreviewMemory() {
@@ -246,14 +251,15 @@ public class SquareFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
+        ifstart = true;
         Exception();
         progressDialog = new ProgressDialog(BarActivity.barActivity);
-        progressDialog.setMessage("正在刷新中...");
+        progressDialog.setMessage("正在载入中请稍后...");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        loadProgressDialog = new ProgressDialog(BarActivity.barActivity);
+        /*loadProgressDialog = new ProgressDialog(BarActivity.barActivity);
         loadProgressDialog.setMessage("正在加载中...");
-        loadProgressDialog.setCanceledOnTouchOutside(false);
+        loadProgressDialog.setCanceledOnTouchOutside(false);*/
 
         view = inflater.inflate(R.layout.fragment_square,container,false);
         editMemory = (ImageView) view.findViewById(R.id.square_edit);
@@ -354,10 +360,12 @@ public class SquareFragment extends Fragment{
         recyclerView.setAdapter(adapter);*/
         mPullRefreshRecyclerView = (PullToRefreshRecyclerView) view.findViewById(R.id.hor_rec_refresh);
         mRecyclerView = mPullRefreshRecyclerView.getRefreshableView();
+
         mPullRefreshRecyclerView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<RecyclerView>() {
 
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                ifstart = false;
                 //getAllMemoryList();
                 /*String label = DateUtils.formatDateTime(
                         getApplicationContext(),
@@ -371,16 +379,18 @@ public class SquareFragment extends Fragment{
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
                 Toast.makeText(BarActivity.barActivity, "左拉刷新", Toast.LENGTH_SHORT).show();
-
-                progressDialog.show();
                 memlist.clear();
+                allmem.clear();
+                //progressDialog.show();
+                sq_load_now  = 0;
                 new refresh().execute("getAllMemoryList");
                 //new GetDataTask().execute();
-                mPullRefreshRecyclerView.onRefreshComplete();
+               // mPullRefreshRecyclerView.onRefreshComplete();
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                ifstart = false;
                 //getAllMemoryList();
                 /*
                 String label = DateUtils.formatDateTime(
@@ -395,10 +405,10 @@ public class SquareFragment extends Fragment{
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
                 Toast.makeText(BarActivity.barActivity, "右拉加载更多", Toast.LENGTH_SHORT).show();
-                loadProgressDialog.show();
+                //loadProgressDialog.show();
                 new refresh().execute("getmore");
                 //new GetDataTask().execute();
-                mPullRefreshRecyclerView.onRefreshComplete();
+              //  mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
         progressDialog.show();
