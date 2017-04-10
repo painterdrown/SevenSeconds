@@ -634,10 +634,10 @@ public class MemoryActivity extends AppCompatActivity {
                 memoryContext.setCollectCount(jo_return.getInt("collectCount"));
                 memoryContext.setLikeCount(jo_return.getInt("likeCount"));
                 memAccount = jo_return.getString("author");
-                jo = new JSONObject();
+                /*jo = new JSONObject();
                 jo.put("memoryId", memID);
                 jo.put("i", 0);
-                memoryContext.setCover(MemoryHttpUtil.getMemoryImg(jo));
+                memoryContext.setCover(MemoryHttpUtil.getMemoryImg(jo));*/
                 result = "Succeed in context";
             } else {
                 result = jo_return.getString("errMsg");
@@ -731,12 +731,13 @@ public class MemoryActivity extends AppCompatActivity {
         contextTitle.setText(memoryContext.getTitle());
         contextTime.setText(memoryContext.getTime());
         collectTime = memoryContext.getTime().substring(0, 7);
-        if (memoryContext.getCover() == null) {
+        contextCover.setVisibility(View.GONE);
+        /*if (memoryContext.getCover() == null) {
             contextCover.setVisibility(View.GONE);
         }
         else {
             contextCover.setImageBitmap(memoryContext.getCover());
-        }
+        }*/
 
         String labels = "";
         for (int i = 0; i < memoryContext.getLabel().length; i++) {
@@ -859,7 +860,7 @@ public class MemoryActivity extends AppCompatActivity {
         for (int i = 0; i < imagePosition.size(); i++) {
             ImageView imageView = (ImageView) contextMain.findViewById(imagePosition.get(i));
             imageView.setImageBitmap(bitImages[i]);
-        }
+    }
         progressDialog.dismiss();
     }
 

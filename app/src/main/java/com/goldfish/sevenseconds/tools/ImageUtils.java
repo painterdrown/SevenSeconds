@@ -13,6 +13,7 @@ import android.util.Log;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -137,11 +138,25 @@ public class ImageUtils {
         options.inJustDecodeBounds = false;
 
         Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
-        Bitmap newBitmap = compressImage(bitmap, 500);
+        ByteArrayOutputStream baos = null ;
+        if (bitmap == null)
+            return null;
+        try {
+            baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 30, baos);
+        } finally {
+            try {
+                if (baos != null)
+                    baos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        /*Bitmap newBitmap = compressImage(bitmap, 500);
         if (bitmap != null){
             bitmap.recycle();
-        }
-        return newBitmap;
+        }*/
+        return bitmap;
     }
 
     /**
