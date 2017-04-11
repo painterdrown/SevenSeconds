@@ -1,4 +1,4 @@
-package com.goldfish.sevenseconds.activities;
+﻿package com.goldfish.sevenseconds.activities;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
@@ -426,6 +426,7 @@ public class Addmem extends AppCompatActivity {
                             //bitmap = BitmapFactory.decodeFile(imagePath);
                             imagePath = SDCardUtil.saveToSdCard(bitmap);
                             Log.d("getSmallImage",imagePath);
+                            Log.d("path",imagePath);
                             //Log.i("NewActivity", "###imagePath="+imagePath);
                             subscriber.onNext(imagePath);
                         }

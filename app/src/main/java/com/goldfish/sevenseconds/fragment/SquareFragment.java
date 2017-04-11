@@ -228,22 +228,33 @@ public class SquareFragment extends Fragment{
     }
     private void refreshmore(){
         int mid = sq_load_now;
-        if (sq_load_now+1 >= allmem.size()){
-            Toast.makeText(BarActivity.barActivity,"没有更多的忆单了",Toast.LENGTH_LONG);
+        Log.d("now",sq_load_now+"");
+        Log.d("now",allmem.size()+"");
+        if (allmem.size() <= sq_load_now+6) {
+            for (int i = sq_load_now + 1; i < allmem.size(); i++) {
+                getSingleMemory(i);
+                mid = i;
+            }
         }
-        for (int i = sq_load_now+1;i<allmem.size();i++){
-            getSingleMemory(i);
-            mid = i;
+        else {
+            for (int i = sq_load_now+1;i<sq_load_now+6;i++){
+                getSingleMemory(i);
+                mid = i;
+            }
         }
+        mPullRefreshRecyclerView.onRefreshComplete();
         mAdapter.notifyDataSetChanged();
         //loadProgressDialog.dismiss();
         sq_load_now = mid;
-        mPullRefreshRecyclerView.onRefreshComplete();
     }
     // 更新预览界面
     private void refreshPreviewMemory() {
+        if (ifstart == true){
         mAdapter = new MemAdapter(memlist,view.getContext());
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);}else{
+            mAdapter.notifyDataSetChanged();
+        }
+
     }
     // 获取时间轴的时间
     static public String getCollectTime() {
@@ -406,9 +417,14 @@ public class SquareFragment extends Fragment{
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
+
+                if (sq_load_now+1 >= allmem.size()){
+                    Toast.makeText(BarActivity.barActivity,"没有更多的忆单了",Toast.LENGTH_LONG).show();
+                    mPullRefreshRecyclerView.onRefreshComplete();
+                }else {
                 Toast.makeText(BarActivity.barActivity, "右拉加载更多", Toast.LENGTH_SHORT).show();
                 //loadProgressDialog.show();
-                new refresh().execute("getmore");
+                new refresh().execute("getmore");}
                 //new GetDataTask().execute();
               //  mPullRefreshRecyclerView.onRefreshComplete();
             }
