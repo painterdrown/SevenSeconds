@@ -416,7 +416,7 @@ public class Addmem extends AppCompatActivity {
                             Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, width, height);//压缩图片
                             //bitmap = BitmapFactory.decodeFile(imagePath);
                             imagePath = SDCardUtil.saveToSdCard(bitmap);
-                            //Log.d("mymypath",imagePath);
+                            Log.d("path",imagePath);
                             //Log.i("NewActivity", "###imagePath="+imagePath);
                             subscriber.onNext(imagePath);
                         }
