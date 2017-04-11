@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -141,6 +142,7 @@ public class Addmem extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("add memory return", "refresh memory");
                     setResult(RESULT_OK, intent);
+                    BarActivity.isCollectOrAdd = true;
                     finish();
                 }
                 else {
@@ -182,7 +184,7 @@ public class Addmem extends AppCompatActivity {
 
             Log.d("up", ""+st);
             addimages.add(up_contents.substring(st+10,ed));
-            Log.d("path",up_contents.substring(st+10,ed));
+            Log.d("StorePath",up_contents.substring(st+10,ed));
             up_contents = up_contents.substring(0,st)+"<img"+now+">"+up_contents.substring(ed+3);
             st = up_contents.indexOf("<img src"); ed = up_contents.indexOf("\"/>",st);
             now++;
@@ -288,6 +290,10 @@ public class Addmem extends AppCompatActivity {
         admem_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("add memory return", "refresh memory");
+                setResult(RESULT_OK, intent);
+                BarActivity.isCollectOrAdd = true;
                 finish();
             }
         });
@@ -408,15 +414,18 @@ public class Addmem extends AppCompatActivity {
                 public void call(Subscriber<? super String> subscriber) {
                     try{
                         users_content.measure(0, 0);
-                        int width = ScreenUtils.getScreenWidth(Addmem.this);
-                        int height = ScreenUtils.getScreenHeight(Addmem.this);
+                        /*int width = ScreenUtils.getScreenWidth(Addmem.this);
+                        int height = ScreenUtils.getScreenHeight(Addmem.this);*/
+                        DisplayMetrics dm = getResources().getDisplayMetrics();
+                        int width = dm.widthPixels;
+                        int height = dm.heightPixels;
                         //可以同时插入多张图片
                         for (String imagePath : myphotos) {
                             //Log.i("NewActivity", "###path=" + imagePath);
                             Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, width, height);//压缩图片
                             //bitmap = BitmapFactory.decodeFile(imagePath);
                             imagePath = SDCardUtil.saveToSdCard(bitmap);
-                            //Log.d("mymypath",imagePath);
+                            Log.d("getSmallImage",imagePath);
                             //Log.i("NewActivity", "###imagePath="+imagePath);
                             subscriber.onNext(imagePath);
                         }

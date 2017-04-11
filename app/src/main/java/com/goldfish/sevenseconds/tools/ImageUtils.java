@@ -143,7 +143,7 @@ public class ImageUtils {
             return null;
         try {
             baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 30, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 32, baos);
         } finally {
             try {
                 if (baos != null)

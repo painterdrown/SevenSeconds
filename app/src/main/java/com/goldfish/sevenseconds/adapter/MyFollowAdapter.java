@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.goldfish.sevenseconds.activities.LogActivity;
+import com.goldfish.sevenseconds.activities.MyFollowActicity;
 import com.goldfish.sevenseconds.activities.UserHomePageActivity;
 import com.goldfish.sevenseconds.http.UserHttpUtil;
 import com.goldfish.sevenseconds.item.MyFollowItem;
@@ -33,9 +34,8 @@ import java.util.List;
 public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHolder>  {
 
     private List<MyFollowItem> mMyFollowList = new ArrayList<>();
-    private String memAccount;
     private String myAccount;
-    private ViewHolder holder;
+    private ViewHolder currentHolder;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView userFace;
@@ -62,54 +62,12 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_follow_item, null, false);
-        holder = new ViewHolder(view);
-        holder.myFollowView.setOnClickListener(new View.OnClickListener () {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition ();
-                MyFollowItem myFollow = mMyFollowList.get (position);
-                Intent intent = new Intent(parent.getContext(), UserHomePageActivity.class);
-                intent.putExtra("account", myFollow.getAccount());
-                parent.getContext().startActivity(intent);
-            }
-        });
-        holder.loveImage.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition ();
-                MyFollowItem myFollowItem = mMyFollowList.get (position);
-                if (!holder.loveImage.getTag ().equals ("red_love")) {
-                    DownTask downTask = new DownTask();
-                    downTask.execute("follow");
-                } else {
-                    DialogInterface.OnClickListener dialogOnclickListerner = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case Dialog.BUTTON_POSITIVE:
-                                    DownTask downTask = new DownTask();
-                                    downTask.execute("unfollow");
-                                    break;
-                                case Dialog.BUTTON_NEGATIVE:
-                                    break;
-                            }
-                        }
-                    };
-                    AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                    builder.setTitle("提示");
-                    builder.setMessage("是否取消关注该用户？");
-                    builder.setIcon(R.drawable.app_icon);
-                    builder.setPositiveButton("确认", dialogOnclickListerner);
-                    builder.setNegativeButton("取消", dialogOnclickListerner);
-                    builder.create().show();
-                }
-            }
-        });
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     // 添加关注
-    private String follow() {
+    private String follow(String memAccount) {
         String result;
         try {
             JSONObject jo = new JSONObject();
@@ -130,7 +88,7 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
     }
 
     // 取消关注
-    private String unfollow() {
+    private String unfollow(String memAccount) {
         String result;
         try {
             JSONObject jo = new JSONObject();
@@ -155,25 +113,25 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
         @Override
         protected String doInBackground(String... params) {
             String result = "Failed";
-            if (params[0].equals("follow")) { result = follow();}
-            else if (params[0].equals("unfollow")) { result = unfollow(); }
+            if (params[0].equals("follow")) { result = follow(params[1]);}
+            else if (params[0].equals("unfollow")) { result = unfollow(params[1]); }
             return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in following")) {
-                holder.loveImage.setImageResource (R.drawable.ic_star_black_24dp);
-                holder.loveImage.setTag ("red_love");}
+                currentHolder.loveImage.setImageResource (R.drawable.ic_star_black_24dp);
+                currentHolder.loveImage.setTag ("red_love");}
             else if (result.equals("Succeed in unfollowing")) {
-                holder.loveImage.setImageResource (R.drawable.ic_star_border_black_24dp);
-                holder.loveImage.setTag ("blank_love");
+                currentHolder.loveImage.setImageResource (R.drawable.ic_star_border_black_24dp);
+                currentHolder.loveImage.setTag ("blank_love");
             }
         }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         MyFollowItem myFollowItem = mMyFollowList.get(position);
         holder.userName.setText(myFollowItem.getName());
         holder.loveImage.setImageResource(myFollowItem.getImageid());
@@ -181,8 +139,51 @@ public class MyFollowAdapter extends RecyclerView.Adapter<MyFollowAdapter.ViewHo
         holder.userFace.setImageDrawable(
                 Drawable.createFromStream(
                         new ByteArrayInputStream(myFollowItem.getFace()), "myFace"));
-        memAccount = myFollowItem.getAccount();
         myAccount = LogActivity.user;
+        holder.myFollowView.setOnClickListener(new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                currentHolder = holder;
+                int position = holder.getAdapterPosition ();
+                MyFollowItem myFollow = mMyFollowList.get (position);
+                Intent intent = new Intent(MyFollowActicity.myFollowActicity, UserHomePageActivity.class);
+                intent.putExtra("account", myFollow.getAccount());
+                MyFollowActicity.myFollowActicity.startActivity(intent);
+            }
+        });
+        holder.loveImage.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition ();
+                currentHolder = holder;
+                final MyFollowItem myFollowItem = mMyFollowList.get (position);
+                if (!holder.loveImage.getTag ().equals ("red_love")) {
+                    DownTask downTask = new DownTask();
+                    downTask.execute("follow", myFollowItem.getAccount());
+                } else {
+                    DialogInterface.OnClickListener dialogOnclickListerner = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case Dialog.BUTTON_POSITIVE:
+                                    DownTask downTask = new DownTask();
+                                    downTask.execute("unfollow", myFollowItem.getAccount());
+                                    break;
+                                case Dialog.BUTTON_NEGATIVE:
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyFollowActicity.myFollowActicity);
+                    builder.setTitle("提示");
+                    builder.setMessage("是否取消关注该用户？");
+                    builder.setIcon(R.drawable.app_icon);
+                    builder.setPositiveButton("确认", dialogOnclickListerner);
+                    builder.setNegativeButton("取消", dialogOnclickListerner);
+                    builder.create().show();
+                }
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.goldfish.sevenseconds.activities;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,12 +52,17 @@ public class UserHomePageActivity extends AppCompatActivity {
     private MyPageTimelineAdapter myPageTimelineAdapter;
     private List<MyPageTimelineItem> myPageTimelineItemList = new ArrayList<>();
     private ArrayList<String> memoryList;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         currentUser = getIntent().getStringExtra("account");
+
+        progressDialog = new ProgressDialog(UserHomePageActivity.this);
+        progressDialog.setMessage("正在加载该用户的忆单，请稍候~");
+        progressDialog.setCanceledOnTouchOutside(false);
 
         headPortrait = (ImageView) findViewById(R.id.home_headPortrait);
         toolBarBack = (ImageView) findViewById(R.id.home_back);
@@ -96,6 +102,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        progressDialog.show();
         DownTask downTask = new DownTask();
         downTask.execute("getMyMemoryList");
         DownTask ifFollow = new DownTask();
@@ -119,8 +126,35 @@ public class UserHomePageActivity extends AppCompatActivity {
             myPageTimelineItem.setTitle("该用户还没有忆单~");
             myPageTimelineItemList.add(myPageTimelineItem);
         }
+        myPageTimelineItemList = makeInorder(myPageTimelineItemList);
         myPageTimelineAdapter = new MyPageTimelineAdapter(myPageTimelineItemList, orientation);
         recyclerView.setAdapter(myPageTimelineAdapter);
+        progressDialog.dismiss();
+    }
+
+    // 排序
+    private List<MyPageTimelineItem> makeInorder(List<MyPageTimelineItem> apageTimelineItemList) {
+        for (int i = 0; i < apageTimelineItemList.size() - 1; i++) {
+            for (int j = i + 1; j < apageTimelineItemList.size(); j++) {
+                if (StringToInt(apageTimelineItemList.get(i).getTime()) < StringToInt(apageTimelineItemList.get(j).getTime())){
+                    MyPageTimelineItem temp = apageTimelineItemList.get(i);
+                    apageTimelineItemList.set(i, apageTimelineItemList.get(j));
+                    apageTimelineItemList.set(j, temp);
+                }
+            }
+        }
+        return apageTimelineItemList;
+    }
+
+    private int StringToInt(String s) {
+        if (s != null) {
+            if (s.length() >= 7) {
+                String temp = s.substring(3, 7);
+                temp += s.substring(0, 2);
+                return Integer.parseInt(temp);
+            }
+        }
+        return 0;
     }
 
     private String getImage() {

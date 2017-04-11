@@ -30,6 +30,7 @@ import okhttp3.Response;
 public class HttpBase {
     protected static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     protected static final MediaType PNG = MediaType.parse("image/png");
+    protected static final MediaType JPEG = MediaType.parse("image/jpeg");
     protected static final String CACHE_PATH = "/data/data/com.painterdrown.sevens/cache";
     protected static final String API_PATH = "http://www.sysu7s.cn:3000/api";
 
@@ -123,7 +124,7 @@ public class HttpBase {
         int count = 0;
         for (String imageUrl : imageUrls) {
             File file = new File(imageUrl);
-            builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(PNG, file));
+            builder.addFormDataPart(count++ + "", file.getName(), RequestBody.create(JPEG, file));
         }
 
         MultipartBody requestBody = builder.build();  // 构建请求体
@@ -202,7 +203,7 @@ public class HttpBase {
 
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
         } catch (IOException e) {

@@ -25,7 +25,7 @@
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="7S"
+        android:label="7秒"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:theme, android:label">

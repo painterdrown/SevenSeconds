@@ -46,7 +46,7 @@ public class MemoryHttpUtil extends HttpBase {
                 String[] dirs = new String[2];
                 dirs[0] = "memorys";
                 dirs[1] = jo.getString("memoryId");
-                saveBitmapToCache(bitmap, dirs, jo.getString("i") +".png");
+                saveBitmapToCache(bitmap, dirs, jo.getString("i") +".jpeg");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

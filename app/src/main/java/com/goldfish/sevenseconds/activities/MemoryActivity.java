@@ -826,6 +826,7 @@ public class MemoryActivity extends AppCompatActivity {
                 textView.setId(i);
                 textView.setText(text[i]);
                 textView.setLayoutParams(lp);
+                textView.setLineSpacing(0, (float) 1.3);
                 contextMain.addView(textView);
             }
         }
@@ -995,6 +996,7 @@ public class MemoryActivity extends AppCompatActivity {
     // +1动画
     private void showAddOne() {
         refreshNavBarTotally();
+        BarActivity.isCollectOrAdd = true;
         addOne.setVisibility(View.VISIBLE);
         Animation translateAnimation = new TranslateAnimation(0.0f, 0.0f,0.0f,-100.0f);
         Animation alphaAnimation = new AlphaAnimation(1.0f, 0.1f);
@@ -1051,7 +1053,10 @@ public class MemoryActivity extends AppCompatActivity {
             else if (result.equals("Succeed in deliver review")) { refreshMemoryReview(); }
             else if (result.equals("Succeed in getting review")) { refreshAllReview(); }
             else if (result.equals("Succeed in unlike")) { refreshNavBarTotally(); }
-            else if (result.equals("Succeed in sub")) { refreshNavBarTotally(); }
+            else if (result.equals("Succeed in sub")) {
+                BarActivity.isCollectOrAdd = true;
+                refreshNavBarTotally();
+            }
             else if (result.equals("Succeed in like memory")) { refreshNavBarTotally(); }
             else if (result.equals("Succeed in collect")) { showAddOne(); }
             else {

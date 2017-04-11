@@ -45,6 +45,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     private memViewHolder currentHolder;
     private int currentPosition;
     private int position;
+    private MemoryContext startNow;
 
     /*
      * sub = 0
@@ -101,14 +102,17 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         this.context = context;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(final memViewHolder holderTemp, final int position, boolean isItem) {
         holder = holderTemp;
+        startNow = list.get(position);
         final MemoryContext now = list.get(position);
         String memID = now.getMemoryId();
         this.position = position;
         // 更新底部按钮
         refreshStartCount();
+
         holder.pre_time.setText(now.getTime());
         String labels = "";
         for (int i = 0; i < now.getLabel().length; i++) {
@@ -209,7 +213,10 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in collect")) { showAddOne(); }
-            else if (result.equals("Succeed in sub")) { refreshAllCount(); }
+            else if (result.equals("Succeed in sub")) {
+                BarActivity.isCollectOrAdd = true;
+                refreshAllCount();
+            }
             else if (result.equals("Succeed in like memory")) { refreshAllCount(); }
             else if (result.equals("Succeed in unlike")) { refreshAllCount(); }
             else if (result.equals("Succeed in refreshAllTotally")) { refreshUI(); }
@@ -245,27 +252,33 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     }
 
     // 刚开始更新
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void refreshStartCount() {
-        new DownTask().execute(5);
+        //new DownTask().execute(5);
+        refreshAllUI();
     }
 
     // 更新UI
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshAllUI() {
-        MemoryContext now = list.get(position);
-        if (now.getCollectCount() > 0)
-            if (now.getCollectCount() <= 99)
-                holder.commentNum.setText(String.valueOf(now.getCollectCount()));
-            else
+        if (startNow.getReviewCount() > 0) {
+            if (startNow.getReviewCount() <= 99) {
+                holder.commentNum.setText(String.valueOf(startNow.getReviewCount()));
+            }
+            else {
                 holder.commentNum.setText("99+");
+            }
+        }
         else holder.commentNum.setText("");
-        if (now.getLikeCount() > 0)
-            if (now.getLikeCount() <= 99)
-                holder.likeNum.setText(String.valueOf(now.getLikeCount()));
+
+        if (startNow.getLikeCount() > 0)
+            if (startNow.getLikeCount() <= 99)
+                holder.likeNum.setText(String.valueOf(startNow.getLikeCount()));
             else
                 holder.likeNum.setText("99+");
         else holder.likeNum.setText("");
-        if (now.getIsLike()) {
+
+        if (startNow.getIsLike()) {
             holder.pre_like.setAlpha((float) 0.9);
             holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
         }
@@ -273,7 +286,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             holder.pre_like.setAlpha((float) 0.4);
             holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
         }
-        if (now.getIsAdd()) {
+        if (startNow.getIsAdd()) {
             holder.pre_add.setAlpha((float) 0.9);
             holder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
         }
@@ -340,9 +353,9 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshUI() {
         MemoryContext now = list.get(currentPosition);
-        if (now.getCollectCount() > 0)
-            if (now.getCollectCount() <= 99)
-                currentHolder.commentNum.setText(String.valueOf(now.getCollectCount()));
+        if (now.getReviewCount() > 0)
+            if (now.getReviewCount() <= 99)
+                currentHolder.commentNum.setText(String.valueOf(now.getReviewCount()));
             else
                 currentHolder.commentNum.setText("99+");
         else currentHolder.commentNum.setText("");
@@ -432,6 +445,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     // +1动画
     private void showAddOne() {
         refreshAllCount();
+        BarActivity.isCollectOrAdd = true;
         SquareFragment.showAddOne();
     }
     // 抓取正文

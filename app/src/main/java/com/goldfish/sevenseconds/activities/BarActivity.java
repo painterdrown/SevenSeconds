@@ -30,6 +30,8 @@ import static com.goldfish.sevenseconds.http.UserHttpUtil.getUsername;
 public class BarActivity extends AppCompatActivity {
     /*private  Toolbar toolbar;
     private  TextView textView;*/
+
+    public static boolean isCollectOrAdd = true;
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         //getMenuInflater().inflate(R.menu.square_toolbar,menu);

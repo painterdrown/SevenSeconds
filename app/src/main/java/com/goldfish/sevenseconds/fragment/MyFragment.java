@@ -71,7 +71,7 @@ public class MyFragment extends Fragment {
         currentUser = LogActivity.user;
 
         progressDialog = new ProgressDialog(BarActivity.barActivity);
-        progressDialog.setMessage("正在加载您的忆单，请稍候~");
+        progressDialog.setMessage("正在加载我的忆单，请稍候~");
         progressDialog.setCanceledOnTouchOutside(false);
 
         View view = inflater.inflate(R.layout.fragment_my_page,container,false);
@@ -91,12 +91,6 @@ public class MyFragment extends Fragment {
                 startActivityForResult(intent, 1);
             }
         });
-
-        // 从编辑忆单回来才需要重新加载
-        myPageTimelineItemList.clear();
-        nowPoint.setVisibility(View.INVISIBLE);
-        nowText.setVisibility(View.INVISIBLE);
-        initView();
 
         mySetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,10 +183,10 @@ public class MyFragment extends Fragment {
                     String returnData = data.getStringExtra("add memory return");
                     if (returnData.equals("refresh memory")) {
                         // 从编辑忆单回来才需要重新加载
-                        myPageTimelineItemList.clear();
+                        /*myPageTimelineItemList.clear();
                         nowPoint.setVisibility(View.INVISIBLE);
                         nowText.setVisibility(View.INVISIBLE);
-                        initView();
+                        initView();*/
                     }
                 }
                 break;
@@ -376,10 +370,30 @@ public class MyFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged (boolean hidden) {
+        if (!hidden) {
+            if (BarActivity.isCollectOrAdd) {
+                myPageTimelineItemList.clear();
+                nowPoint.setVisibility(View.INVISIBLE);
+                nowText.setVisibility(View.INVISIBLE);
+                initView();
+                BarActivity.isCollectOrAdd = false;
+            }
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         DownTask downTask = new DownTask();
         downTask.execute("getImage");
+        if (BarActivity.isCollectOrAdd) {
+            myPageTimelineItemList.clear();
+            nowPoint.setVisibility(View.INVISIBLE);
+            nowText.setVisibility(View.INVISIBLE);
+            initView();
+            BarActivity.isCollectOrAdd = false;
+        }
     }
 
     public static MyFragment newInstance(String libargument) {

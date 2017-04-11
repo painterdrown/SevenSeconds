@@ -140,7 +140,7 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
             JSONObject jo = new JSONObject();
             jo.put("account", LogActivity.user);
             jo.put("memoryId", now.getMemoryId());
-            jo.put("time", now.getTime());
+            jo.put("time", SearchActivity.getCollectTime());
             JSONObject jo_return = UserHttpUtil.collectMemory(jo);
             if (jo_return.getBoolean("ok")) {
                 result = "Succeed in collect";
@@ -346,7 +346,8 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
     // +1动画
     private void showAddOne() {
         refreshAllCount();
-        SquareFragment.showAddOne();
+        BarActivity.isCollectOrAdd = true;
+        SearchActivity.showAddOne();
     }
     // 抓取正文
     private void getMainContext(int position) {

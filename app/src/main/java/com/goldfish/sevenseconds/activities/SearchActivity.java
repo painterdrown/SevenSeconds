@@ -1,6 +1,7 @@
 package com.goldfish.sevenseconds.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.AsyncTask;
@@ -78,6 +79,7 @@ public class SearchActivity extends Activity{
     private String monthStr;
     static private ImageView addOne;
     static public SearchActivity searchActivity;
+    private ProgressDialog progressDialog;
 
 
 
@@ -95,8 +97,15 @@ public class SearchActivity extends Activity{
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in getAllMemoryList")) { refreshGetAllMemory(); }
             else if (result.equals("Succeed in getSomeMemory")) { refreshPreviewMemory(); }
+            else if (result.equals("没有忆单")) { refreshFailed(result); }
         }
     }
+    private void refreshFailed(String result) {
+        Toast.makeText(SearchActivity.this, result, Toast.LENGTH_SHORT).show();
+        progressDialog.dismiss();
+    }
+
+
     // 获取忆单ID后的操作
     private void refreshGetAllMemory() {
         new SearchActivity.refresh().execute("getSingleMemory");
@@ -113,6 +122,8 @@ public class SearchActivity extends Activity{
                 if (!getSingleMemory(i)) break;
             }
         }
+        if (allmem.size() == 0)
+            result = "没有忆单";
         return result;
     }
     // 获取一条忆单的内容
@@ -168,6 +179,7 @@ public class SearchActivity extends Activity{
     private void refreshPreviewMemory() {
         mAdapter = new SearchMemAdapter(memlist, this);
         mRecyclerView.setAdapter(mAdapter);
+        progressDialog.dismiss();
     }
     // 获取时间轴的时间
     static public String getCollectTime() {
@@ -218,7 +230,11 @@ public class SearchActivity extends Activity{
         year = getData.getBooleanExtra("year", false);
         setContentView(R.layout.activity_search);
 
-        Toast.makeText(getContext(), "query：" + query + "year:" + year, Toast.LENGTH_LONG).show();
+        progressDialog = new ProgressDialog(SearchActivity.this);
+        progressDialog.setMessage("正在搜索中...");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        //Toast.makeText(getContext(), "query：" + query + "year:" + year, Toast.LENGTH_LONG).show();
         Exception();
         ImageView back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -312,17 +328,17 @@ public class SearchActivity extends Activity{
 
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
-                Toast.makeText(BarActivity.barActivity, "Pull left!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(BarActivity.barActivity, "Pull left!", Toast.LENGTH_SHORT).show();
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
-                Toast.makeText(BarActivity.barActivity, "Pull right!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(BarActivity.barActivity, "Pull right!", Toast.LENGTH_SHORT).show();
                 mPullRefreshRecyclerView.onRefreshComplete();
             }
         });
-
+        progressDialog.show();
         new SearchActivity.refresh().execute("getAllMemoryList");
 
     }

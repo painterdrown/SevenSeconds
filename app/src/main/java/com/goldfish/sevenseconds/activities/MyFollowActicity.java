@@ -48,7 +48,7 @@ public class MyFollowActicity extends AppCompatActivity {
         myAccount = intent.getStringExtra("currentUser");
 
         // test
-        myAccount = "a";
+        myAccount = LogActivity.user;
 
         ImageView back = (ImageView) findViewById(R.id.my_follow_back);
         back.setOnClickListener(new View.OnClickListener() {

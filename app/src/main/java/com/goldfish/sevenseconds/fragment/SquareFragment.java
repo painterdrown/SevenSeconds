@@ -3,8 +3,10 @@ package com.goldfish.sevenseconds.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -491,17 +493,6 @@ public class SquareFragment extends Fragment{
         addOne.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (ifStart) {
-            mAdapter.refreshStartCount();
-        } else{
-            ifStart = true;
-        }
-
-    }
-
     // 时间轴相关
     private void initView() {
         for (int i = 0; i < 16; i++) {
@@ -511,6 +502,14 @@ public class SquareFragment extends Fragment{
         }
         myTimelineAdapter = new MyTimelineAdapter(myTimelineItems, orientation);
         recyclerView1.setAdapter(myTimelineAdapter);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onHiddenChanged (boolean hidden) {
+        if (!hidden) {
+            mAdapter.refreshStartCount();
+        }
     }
 
     @Override
