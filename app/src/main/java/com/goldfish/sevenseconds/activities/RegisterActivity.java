@@ -17,6 +17,9 @@ import com.goldfish.sevenseconds.http.UserHttpUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private String username;
@@ -66,11 +69,25 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 username = editTextn.getText().toString();
                 password = editTextp.getText().toString();
-                if (username.equals(""))
-                    Toast.makeText(RegisterActivity.this, "your do not input username", Toast.LENGTH_LONG).show();
+                String regUser = "^[\\u4e00-\\u9fa5_a-zA-Z0-9-]{6,16}$";
+                if(!username.matches(regUser)) {
+                    if(username.length() >= 6 && username.length() <= 18) {
+                        Toast.makeText(RegisterActivity.this, "您的用户名不合法", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(RegisterActivity.this, "您的用户名长度不合法，应该在6~18位", Toast.LENGTH_LONG).show();
+                    }
+                }
                 else {
-                    if (password.equals(""))
-                        Toast.makeText(RegisterActivity.this, "your do not input password", Toast.LENGTH_LONG).show();
+                    String regPass = "^([A-Z]|[a-z]|[0-9]|[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]){6,20}$";
+                    if(!password.matches(regPass)) {
+                        if (password.length() >= 6 && password.length() <= 18) {
+                            Toast.makeText(RegisterActivity.this, "您的密码不合法", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(RegisterActivity.this, "您的密码长度不合法，应该在6~18位", Toast.LENGTH_LONG).show();
+                        }
+                    }
                     else {
                         new Thread(new Runnable() {
                             @Override

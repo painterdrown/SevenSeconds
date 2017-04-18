@@ -1,135 +1,103 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tableLayout1"
+    android:background="#fdfde4"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:paddingTop="50dp"
-    android:paddingLeft="50dp"
-    android:paddingRight="50dp"
-    android:background="@drawable/log_background"
-    >
-    <TableRow android:layout_weight="2">
-    </TableRow>
-    <TableRow
-        android:id="@+id/tableRow_1"
-        android:gravity="center"
+    android:layout_width="match_parent">
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+        android:layout_below="@+id/log_toolbar"
+        android:layout_marginTop="48dp"
+        app:layout_heightPercent="30%"
+        app:layout_widthPercent="30%"
+        android:id="@+id/log_head_layout"
+        android:layout_centerHorizontal="true">
         <ImageView
             android:id="@+id/user_head"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/icon"
-            android:adjustViewBounds="true" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow_2"
-        android:layout_marginTop="50dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_gravity="center"
-            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名"
-            android:textSize="20sp"
-            />
+            android:src="@drawable/icon"/>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/log_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_head_layout"
+        app:layout_widthPercent="90%"
+        android:layout_centerHorizontal="true">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/log_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:textSize="18sp"
+                android:hint="用户名" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minWidth="150px"
-            android:textSize="15sp"
-            />
-    </TableRow>
+            android:id="@+id/log_password"
+            android:layout_below="@+id/log_username">
+            <EditText android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:inputType="textPassword"
+                android:hint="密码"/>
+        </android.support.design.widget.TextInputLayout>
 
-    <TableRow
-        android:id="@+id/tableRow_3"
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_below="@+id/log_input_layout"
+        app:layout_widthPercent="90%"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_gravity="center"
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="密    码"
-            android:textSize="20sp"
-            />
-
-        <EditText
-            android:layout_weight="1"
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="150px"
-            android:textSize="15sp"
-            android:inputType="textPassword"
-            />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow_4"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/button_log"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="登 录"
-            android:background="#00000000"
-            android:textSize="15sp"
-            />
-
-        <Button
-            android:background="#00000000"
-            android:id="@+id/button_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="注 册"
-            android:textSize="15sp"
-            />
-    </TableRow>
-
-    <TableRow
-        android:layout_weight="2">
-    </TableRow>
-
-    <TableRow
-        android:layout_weight="2"
-        android:gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/return_something"
-            android:gravity="left"
-            android:text="无法登录?"
             android:textSize="20sp"
-            android:layout_weight="1"
-            android:textColor="#FFF68F"
+            android:background="@drawable/button_style_1"
+            android:textColor="@color/white"
+            android:text="登陆"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/button_log"
+            android:id="@+id/button_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_style_1"
+            android:text="注册"/>
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/return_something"
+            android:layout_below="@+id/button_register"
+            android:layout_centerHorizontal="true"
+            android:text="无法登录?"
+            android:textSize="13sp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:background="#00000000"/>
 
-        <TextView />
-        <TextView />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
-        <Button
-            android:gravity="right"
-            android:layout_weight="1"
-            android:id="@+id/connect_us"
-            android:textColor="#FFF68F"
-            android:text="联系我们"
-            android:textSize="20sp"
-            android:background="#00000000"
-            />
-    </TableRow>
-</TableLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>
