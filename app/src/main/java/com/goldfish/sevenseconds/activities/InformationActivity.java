@@ -298,7 +298,7 @@ public class InformationActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder (InformationActivity.this);
 
-        builder.setIcon(R.drawable.app_icon);
+        //builder.setIcon(R.drawable.app_icon);
         builder.setTitle("请设置昵称");
         View view = LayoutInflater  // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
                 .from(InformationActivity.this)
@@ -382,7 +382,7 @@ public class InformationActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(InformationActivity.this);
 
-        builder.setIcon(R.drawable.app_icon);
+        //builder.setIcon(R.drawable.app_icon);
         builder.setTitle("请选择性别");
         final String[] sex = {"男", "女"};
 

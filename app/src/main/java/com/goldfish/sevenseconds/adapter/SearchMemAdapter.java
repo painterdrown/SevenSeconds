@@ -3,9 +3,11 @@ package com.goldfish.sevenseconds.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.LightingColorFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -119,7 +121,6 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
             return result;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in collect")) { showAddOne(); }
@@ -164,14 +165,16 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
     }
 
     // 更新UI
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshAllUI() {
         MemoryContext now = list.get(position);
-        if (now.getCollectCount() > 0)
-            if (now.getCollectCount() <= 99)
-                holder.commentNum.setText(String.valueOf(now.getCollectCount()));
-            else
+        if (now.getReviewCount() > 0) {
+            if (now.getReviewCount() <= 99) {
+                holder.commentNum.setText(String.valueOf(now.getReviewCount()));
+            }
+            else {
                 holder.commentNum.setText("99+");
+            }
+        }
         else holder.commentNum.setText("");
         if (now.getLikeCount() > 0)
             if (now.getLikeCount() <= 99)
@@ -179,21 +182,42 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
             else
                 holder.likeNum.setText("99+");
         else holder.likeNum.setText("");
-        if (now.getIsLike()) {
-            holder.pre_like.setAlpha((float) 0.9);
-            holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (now.getIsLike()) {
+                holder.pre_like.setAlpha((float) 0.9);
+                holder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                holder.pre_like.setAlpha((float) 0.4);
+                holder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
+            if (now.getIsAdd()) {
+                holder.pre_add.setAlpha((float) 0.9);
+                holder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                holder.pre_add.setAlpha((float) 0.4);
+                holder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
         }
         else {
-            holder.pre_like.setAlpha((float) 0.4);
-            holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-        }
-        if (now.getIsAdd()) {
-            holder.pre_add.setAlpha((float) 0.9);
-            holder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
-        }
-        else {
-            holder.pre_add.setAlpha((float) 0.4);
-            holder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+            if (now.getIsLike()) {
+                holder.pre_like.setAlpha((int) (255 * 0.9));
+                holder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                holder.pre_like.setAlpha((int) (255 * 0.4));
+                holder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
+            if (now.getIsAdd()) {
+                holder.pre_add.setAlpha((int) (255 * 0.9));
+                holder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                holder.pre_add.setAlpha((int) (255 * 0.4));
+                holder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
         }
     }
 
@@ -251,36 +275,61 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
         return result;
     }
     // 更新UI
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshUI() {
         MemoryContext now = list.get(currentPosition);
-        if (now.getCollectCount() > 0)
-            if (now.getCollectCount() <= 99)
-                currentHolder.commentNum.setText(String.valueOf(now.getCollectCount()));
-            else
+
+        if (now.getReviewCount() > 0) {
+            if (now.getReviewCount() <= 99) {
+                currentHolder.commentNum.setText(String.valueOf(now.getReviewCount()));
+            }
+            else {
                 currentHolder.commentNum.setText("99+");
+            }
+        }
         else currentHolder.commentNum.setText("");
+
         if (now.getLikeCount() > 0)
             if (now.getLikeCount() <= 99)
                 currentHolder.likeNum.setText(String.valueOf(now.getLikeCount()));
             else
                 currentHolder.likeNum.setText("99+");
         else currentHolder.likeNum.setText("");
-        if (now.getIsLike()) {
-            currentHolder.pre_like.setAlpha((float) 0.9);
-            currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (now.getIsLike()) {
+                currentHolder.pre_like.setAlpha((float) 0.9);
+                currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                currentHolder.pre_like.setAlpha((float) 0.4);
+                currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
+            if (now.getIsAdd()) {
+                currentHolder.pre_add.setAlpha((float) 0.9);
+                currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                currentHolder.pre_add.setAlpha((float) 0.4);
+                currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
         }
         else {
-            currentHolder.pre_like.setAlpha((float) 0.4);
-            currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-        }
-        if (now.getIsAdd()) {
-            currentHolder.pre_add.setAlpha((float) 0.9);
-            currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
-        }
-        else {
-            currentHolder.pre_add.setAlpha((float) 0.4);
-            currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+            if (now.getIsLike()) {
+                currentHolder.pre_like.setAlpha((int) (255 * 0.9));
+                currentHolder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                currentHolder.pre_like.setAlpha((int) (255 * 0.4));
+                currentHolder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
+            if (now.getIsAdd()) {
+                currentHolder.pre_add.setAlpha((int) (255 * 0.9));
+                currentHolder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                currentHolder.pre_add.setAlpha((int) (255 * 0.4));
+                currentHolder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
         }
     }
     // 取消收藏

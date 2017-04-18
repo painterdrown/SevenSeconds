@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.LightingColorFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -662,7 +663,6 @@ public class MemoryActivity extends AppCompatActivity {
     }
 
     // 更新导航栏UI
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshNavBar() {
         if (memoryContext.getCollectCount() > 0) {
             if (memoryContext.getCollectCount() <= 99) {
@@ -703,22 +703,43 @@ public class MemoryActivity extends AppCompatActivity {
         else {
             countReviewTv.setVisibility(View.INVISIBLE);
         }
-        if (memoryContext.getIsLike()) {
-            barLike.setAlpha((float) 0.9);
-            barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (memoryContext.getIsLike()) {
+                barLike.setAlpha((float) 0.9);
+                barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+            }
+            else {
+                barLike.setAlpha((float) 0.4);
+                barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+            }
+            if (memoryContext.getIsAdd()) {
+                barAdd.setAlpha((float) 0.9);
+                barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
+            }
+            else {
+                barAdd.setAlpha((float) 0.4);
+                barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+            }
         }
         else {
-            barLike.setAlpha((float) 0.4);
-            barLike.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+            if (memoryContext.getIsLike()) {
+                barLike.setAlpha((int) (255 * 0.9));
+                barLike.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                barLike.setAlpha((int) (255 * 0.4));
+                barLike.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
+            if (memoryContext.getIsAdd()) {
+                barAdd.setAlpha((int) (255 * 0.9));
+                barAdd.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                barAdd.setAlpha((int) (255 * 0.4));
+                barAdd.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
         }
-        if (memoryContext.getIsAdd()) {
-            barAdd.setAlpha((float) 0.9);
-            barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.lightorange)));
-        }
-        else {
-            barAdd.setAlpha((float) 0.4);
-            barAdd.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
-        }
+
         navBarFinished = true;
     }
 
@@ -1041,7 +1062,6 @@ public class MemoryActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... Progress) { }
 
         //doInBackground结束后回调该方法，结束。
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in titleBar")) { refreshTitleBarUI(); }

@@ -1,17 +1,24 @@
 package com.goldfish.sevenseconds.adapter;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.LightingColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,7 +109,6 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         this.context = context;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(final memViewHolder holderTemp, final int position, boolean isItem) {
         holder = holderTemp;
@@ -209,7 +215,6 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             return result;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("Succeed in collect")) { showAddOne(); }
@@ -252,14 +257,12 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
     }
 
     // 刚开始更新
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void refreshStartCount() {
         //new DownTask().execute(5);
         refreshAllUI();
     }
 
     // 更新UI
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshAllUI() {
         if (startNow.getReviewCount() > 0) {
             if (startNow.getReviewCount() <= 99) {
@@ -270,7 +273,6 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
             }
         }
         else holder.commentNum.setText("");
-
         if (startNow.getLikeCount() > 0)
             if (startNow.getLikeCount() <= 99)
                 holder.likeNum.setText(String.valueOf(startNow.getLikeCount()));
@@ -278,21 +280,41 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
                 holder.likeNum.setText("99+");
         else holder.likeNum.setText("");
 
-        if (startNow.getIsLike()) {
-            holder.pre_like.setAlpha((float) 0.9);
-            holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (startNow.getIsLike()) {
+                holder.pre_like.setAlpha((float) 0.9);
+                holder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                holder.pre_like.setAlpha((float) 0.4);
+                holder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
+            if (startNow.getIsAdd()) {
+                holder.pre_add.setAlpha((float) 0.9);
+                holder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                holder.pre_add.setAlpha((float) 0.4);
+                holder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
         }
         else {
-            holder.pre_like.setAlpha((float) 0.4);
-            holder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-        }
-        if (startNow.getIsAdd()) {
-            holder.pre_add.setAlpha((float) 0.9);
-            holder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
-        }
-        else {
-            holder.pre_add.setAlpha((float) 0.4);
-            holder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+            if (startNow.getIsLike()) {
+                holder.pre_like.setAlpha((int) (255 * 0.9));
+                holder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                holder.pre_like.setAlpha((int) (255 * 0.4));
+                holder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
+            if (startNow.getIsAdd()) {
+                holder.pre_add.setAlpha((int) (255 * 0.9));
+                holder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                holder.pre_add.setAlpha((int) (255 * 0.4));
+                holder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
         }
     }
 
@@ -350,36 +372,61 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         return result;
     }
     // 更新UI
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void refreshUI() {
         MemoryContext now = list.get(currentPosition);
-        if (now.getReviewCount() > 0)
-            if (now.getReviewCount() <= 99)
+
+        if (now.getReviewCount() > 0) {
+            if (now.getReviewCount() <= 99) {
                 currentHolder.commentNum.setText(String.valueOf(now.getReviewCount()));
-            else
+            }
+            else {
                 currentHolder.commentNum.setText("99+");
+            }
+        }
         else currentHolder.commentNum.setText("");
+
         if (now.getLikeCount() > 0)
             if (now.getLikeCount() <= 99)
                 currentHolder.likeNum.setText(String.valueOf(now.getLikeCount()));
             else
                 currentHolder.likeNum.setText("99+");
         else currentHolder.likeNum.setText("");
-        if (now.getIsLike()) {
-            currentHolder.pre_like.setAlpha((float) 0.9);
-            currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (now.getIsLike()) {
+                currentHolder.pre_like.setAlpha((float) 0.9);
+                currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                currentHolder.pre_like.setAlpha((float) 0.4);
+                currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
+            if (now.getIsAdd()) {
+                currentHolder.pre_add.setAlpha((float) 0.9);
+                currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
+            }
+            else {
+                currentHolder.pre_add.setAlpha((float) 0.4);
+                currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            }
         }
         else {
-            currentHolder.pre_like.setAlpha((float) 0.4);
-            currentHolder.pre_like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-        }
-        if (now.getIsAdd()) {
-            currentHolder.pre_add.setAlpha((float) 0.9);
-            currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.lightorange)));
-        }
-        else {
-            currentHolder.pre_add.setAlpha((float) 0.4);
-            currentHolder.pre_add.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+            if (now.getIsLike()) {
+                currentHolder.pre_like.setAlpha((int) (255 * 0.9));
+                currentHolder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                currentHolder.pre_like.setAlpha((int) (255 * 0.4));
+                currentHolder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
+            if (now.getIsAdd()) {
+                currentHolder.pre_add.setAlpha((int) (255 * 0.9));
+                currentHolder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
+            }
+            else {
+                currentHolder.pre_add.setAlpha((int) (255 * 0.4));
+                currentHolder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
+            }
         }
     }
     // 取消收藏

@@ -520,7 +520,6 @@ public class SquareFragment extends Fragment{
         recyclerView1.setAdapter(myTimelineAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onHiddenChanged (boolean hidden) {
         if (!hidden) {
