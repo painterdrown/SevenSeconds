@@ -1,4 +1,4 @@
-﻿package com.goldfish.sevenseconds.activities;
+package com.goldfish.sevenseconds.activities;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
