@@ -183,7 +183,8 @@
         android:layout_marginLeft="25dp"
         android:layout_alignBottom="@+id/my_page_now_point"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textColor="#b3a6a6a6"
+        android:layout_height="wrap_content"/>
 
     <!--<com.goldfish.sevenseconds.view.TurnCardListView
         android:layout_below="@+id/mySetting"

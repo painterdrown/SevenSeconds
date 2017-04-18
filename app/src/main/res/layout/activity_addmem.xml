@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_addmem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/log_background"
+    android:background="@color/white"
     tools:context="com.goldfish.sevenseconds.activities.Addmem">
 
     <android.support.v7.widget.Toolbar
@@ -47,6 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/admem_toolbar"
         android:paddingTop="14dp"
+        android:paddingBottom="11.5dp"
+        android:background="#1afff45c"
         android:id="@+id/add_date">
 
         <TextView
@@ -55,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:paddingRight="29.5dp"
+            android:textColor="#8c8c8c"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -66,6 +69,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_chose_year" />
     </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/add_date"
+        android:layout_width="0dp"
+        android:layout_centerHorizontal="true"
+        app:layout_widthPercent="85%"
+        android:background="@color/lightgray"
+        android:layout_height="1dp"/>
 
     <me.originqiu.library.EditTag
         android:id="@+id/admem_edit_tag"
@@ -80,30 +91,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_pic2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="#00000000"
-        android:paddingBottom="9dp"
-        android:layout_marginRight="9dp"
-        android:src="@drawable/ic_add_circle_black_36dp"
-        app:rippleColor="#00000000"
-        android:layout_below="@+id/add_contents"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:id="@+id/add_mem_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00000000"
-        android:layout_alignParentBottom="true" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:id="@+id/a_mem_title"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8.5dp"
         android:hint="回忆标题..."
         android:textSize="14sp"
         android:textColorHint="#a6a6a6"
@@ -112,12 +106,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <View
+        android:layout_below="@+id/a_mem_title"
+        android:layout_width="wrap_content"
+        android:background="@color/lightgray"
+        android:layout_centerHorizontal="true"
+        app:layout_widthPercent="85%"
+        android:layout_height="1dp"/>
+
     <LinearLayout
         android:id="@+id/add_contents"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/admem_edit_tag"
-        android:layout_above="@+id/add_mem_pic"
+        android:layout_above="@+id/add_button_layout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -127,4 +129,17 @@
             android:layout_height="match_parent"
             android:id="@+id/admem_content"/>
     </LinearLayout>
-</RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_pic2"
+        app:rippleColor="@color/orange"
+        app:backgroundTint="@color/bisque"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_circle_black_36dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</com.zhy.android.percent.support.PercentRelativeLayout>
