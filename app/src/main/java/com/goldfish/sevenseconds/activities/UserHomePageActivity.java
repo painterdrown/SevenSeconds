@@ -53,6 +53,8 @@ public class UserHomePageActivity extends AppCompatActivity {
     private List<MyPageTimelineItem> myPageTimelineItemList = new ArrayList<>();
     private ArrayList<String> memoryList;
     private ProgressDialog progressDialog;
+    private TextView nowText;
+    private ImageView nowPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class UserHomePageActivity extends AppCompatActivity {
         progressDialog.setMessage("正在加载该用户的忆单，请稍候~");
         progressDialog.setCanceledOnTouchOutside(false);
 
+        nowPoint = (ImageView) findViewById(R.id.home_now_point);
+        nowText = (TextView) findViewById(R.id.home_now_text);
         headPortrait = (ImageView) findViewById(R.id.home_headPortrait);
         toolBarBack = (ImageView) findViewById(R.id.home_back);
         toolBarFollow = (ImageView) findViewById(R.id.home_follow);
@@ -126,6 +130,12 @@ public class UserHomePageActivity extends AppCompatActivity {
             myPageTimelineItem.setTitle("该用户还没有忆单~");
             myPageTimelineItemList.add(myPageTimelineItem);
         }
+        nowPoint.setVisibility(View.VISIBLE);
+        Time t=new Time("GMT+8");
+        t.setToNow();
+        int year = t.year;
+        nowText.setText(String.valueOf(year));
+        nowText.setVisibility(View.VISIBLE);
         myPageTimelineItemList = makeInorder(myPageTimelineItemList);
         myPageTimelineAdapter = new MyPageTimelineAdapter(myPageTimelineItemList, orientation);
         recyclerView.setAdapter(myPageTimelineAdapter);

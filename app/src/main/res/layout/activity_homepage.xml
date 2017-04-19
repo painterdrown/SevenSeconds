@@ -50,7 +50,7 @@
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="25dp"
         android:background="#1afff45c"
         android:layout_height="wrap_content">
 
@@ -141,6 +141,24 @@
         android:layout_marginRight="16dp"
         android:layout_below="@id/home_information"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/home_now_point"
+        android:src="@drawable/red_point"
+        android:layout_above="@+id/home_timeline"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="64dp"
+        android:tint="#ff8900"
+        android:layout_width="12.5dp"
+        android:layout_height="12.5dp" />
+    <TextView
+        android:id="@+id/home_now_text"
+        android:text="2017"
+        android:layout_marginLeft="25dp"
+        android:layout_alignBottom="@+id/home_now_point"
+        android:layout_width="wrap_content"
+        android:textColor="#b3a6a6a6"
         android:layout_height="wrap_content"/>
 
 </RelativeLayout>

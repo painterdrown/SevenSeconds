@@ -550,7 +550,7 @@ public class MemAdapter extends BaseRecyclerAdapter<MemAdapter.memViewHolder> {
         String contents = "";
         for (int i = 0; i < textCount; i++) {
             if (text[i].equals("<img>")) {
-                if (i != 0) contents += "\n";
+                if (i != 0) contents += "";
             } else {
                 contents += text[i];
             }

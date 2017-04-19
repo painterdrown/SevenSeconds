@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    android:background="#fdfde4">
+    android:background="#fffff0">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/square_toolbar"

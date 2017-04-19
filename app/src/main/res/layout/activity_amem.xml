@@ -104,6 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/amem_music_time_layout"
                     android:layout_alignLeft="@+id/amem_music_time_layout"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp">
 
@@ -132,7 +134,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="15dp">
                         </LinearLayout>
                     </RelativeLayout>
                 </RelativeLayout>
@@ -146,8 +148,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="25dp"
-                    android:layout_alignLeft="@+id/amem_cover"
-                    android:layout_alignRight="@+id/amem_cover"/>
+                    android:gravity="end"
+                    android:textAlignment="gravity"
+                    android:layout_alignLeft="@+id/amem_context_layout"
+                    android:layout_alignRight="@+id/amem_context_layout"/>
 
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
