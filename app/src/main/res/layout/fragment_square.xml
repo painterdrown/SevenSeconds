@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_centerInParent="true"
     android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             android:alpha="0.5" />
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <com.zhy.android.percent.support.PercentRelativeLayout
         android:background="#ffffff"
         android:id="@+id/square_timeline_layout"
         android:layout_below="@+id/square_toolbar"
@@ -79,7 +79,7 @@
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
 
-    </RelativeLayout>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
     <com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView
         android:layout_below="@+id/square_timeline_layout"
@@ -89,4 +89,4 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         ptr:ptrMode="both" />
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

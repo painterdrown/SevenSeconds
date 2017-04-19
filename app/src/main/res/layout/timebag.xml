@@ -70,20 +70,6 @@
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/timebag_contents"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/timebag_date"
-        android:background="@drawable/timebag_background"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <com.sendtion.xrichtext.RichTextEditor
-            android:paddingLeft="10.5dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/timbag_content"/>
-    </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/timebag_add_pic"
         app:rippleColor="@color/orange"
@@ -125,4 +111,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/timebag_contents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/timebag_background"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <com.sendtion.xrichtext.RichTextEditor
+            android:paddingLeft="10.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/timbag_content"/>
+    </LinearLayout>
 </com.zhy.android.percent.support.PercentRelativeLayout>
