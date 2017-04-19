@@ -392,7 +392,7 @@ public class SquareFragment extends Fragment{
                         .setLastUpdatedLabel(label);
                 refreshView.getLoadingLayoutProxy()
                         .setLastUpdatedLabel(label);*/
-                Toast.makeText(BarActivity.barActivity, "左拉刷新", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BarActivity.barActivity, "正在刷新", Toast.LENGTH_SHORT).show();
                 memlist.clear();
                 allmem.clear();
                 //progressDialog.show();
@@ -423,7 +423,7 @@ public class SquareFragment extends Fragment{
                     Toast.makeText(BarActivity.barActivity,"没有更多的忆单了",Toast.LENGTH_LONG).show();
                     mPullRefreshRecyclerView.onRefreshComplete();
                 }else {
-                Toast.makeText(BarActivity.barActivity, "右拉加载更多", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BarActivity.barActivity, "加载更多", Toast.LENGTH_SHORT).show();
                 //loadProgressDialog.show();
                 new refresh().execute("getmore");}
                 //new GetDataTask().execute();
