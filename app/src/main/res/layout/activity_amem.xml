@@ -53,7 +53,7 @@
 
             <com.zhy.android.percent.support.PercentRelativeLayout
                 android:id="@+id/activity_amem"
-                android:background="#F5F5F5"
+                android:background="#fafaf2"
                 android:layout_below="@+id/amem_titlebar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -104,6 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@+id/amem_music_time_layout"
                     android:layout_alignLeft="@+id/amem_music_time_layout"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp">
 
@@ -132,7 +134,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="8dp">
                         </LinearLayout>
                     </RelativeLayout>
                 </RelativeLayout>
@@ -141,21 +143,21 @@
                     android:id="@+id/amem_label"
                     android:text="#五月天"
                     android:textColor="@color/darkgray"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="15dp"
                     android:layout_below="@+id/amem_context_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="25dp"
-                    android:layout_alignLeft="@+id/amem_cover"
-                    android:layout_alignRight="@+id/amem_cover"/>
+                    android:gravity="end"
+                    android:textAlignment="gravity"
+                    android:layout_alignLeft="@+id/amem_context_layout"
+                    android:layout_alignRight="@+id/amem_context_layout"/>
 
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/amem_review_title"
                 android:layout_below="@+id/activity_amem"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -171,10 +173,11 @@
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:background="#f5f5f5"
                 android:id="@+id/amem_review_layout"
                 android:layout_below="@+id/amem_review_title"
                 android:layout_width="match_parent"
@@ -189,7 +192,7 @@
         android:layout_height="wrap_content"/>
 
     <RelativeLayout
-        android:background="#ffffff"
+        android:background="#fffff0"
         android:id="@+id/my_timeline_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -216,16 +219,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:visibility="invisible"
-            android:id="@+id/amem_add_one"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_plus_one_black_24dp"
-            android:tint="@color/lightcoral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_timeline"
             android:layout_below="@id/next_year"
@@ -235,6 +228,17 @@
             android:layout_width="300dp"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_below="@+id/my_timeline"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            android:id="@+id/amem_add_one"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_plus_one_black_24dp"
+            android:tint="@color/lightcoral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

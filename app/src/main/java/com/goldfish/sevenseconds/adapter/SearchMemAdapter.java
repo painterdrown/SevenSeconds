@@ -48,6 +48,7 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
     private memViewHolder currentHolder;
     private int currentPosition;
     private int position;
+    private MemoryContext startNow;
 
     /*
      * sub = 0
@@ -166,25 +167,24 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
 
     // 更新UI
     private void refreshAllUI() {
-        MemoryContext now = list.get(position);
-        if (now.getReviewCount() > 0) {
-            if (now.getReviewCount() <= 99) {
-                holder.commentNum.setText(String.valueOf(now.getReviewCount()));
+        if (startNow.getReviewCount() > 0) {
+            if (startNow.getReviewCount() <= 99) {
+                holder.commentNum.setText(String.valueOf(startNow.getReviewCount()));
             }
             else {
                 holder.commentNum.setText("99+");
             }
         }
         else holder.commentNum.setText("");
-        if (now.getLikeCount() > 0)
-            if (now.getLikeCount() <= 99)
-                holder.likeNum.setText(String.valueOf(now.getLikeCount()));
+        if (startNow.getLikeCount() > 0)
+            if (startNow.getLikeCount() <= 99)
+                holder.likeNum.setText(String.valueOf(startNow.getLikeCount()));
             else
                 holder.likeNum.setText("99+");
         else holder.likeNum.setText("");
 
         if (Build.VERSION.SDK_INT >= 21) {
-            if (now.getIsLike()) {
+            if (startNow.getIsLike()) {
                 holder.pre_like.setAlpha((float) 0.9);
                 holder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
             }
@@ -192,7 +192,7 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
                 holder.pre_like.setAlpha((float) 0.4);
                 holder.pre_like.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
             }
-            if (now.getIsAdd()) {
+            if (startNow.getIsAdd()) {
                 holder.pre_add.setAlpha((float) 0.9);
                 holder.pre_add.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lightorange)));
             }
@@ -202,7 +202,7 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
             }
         }
         else {
-            if (now.getIsLike()) {
+            if (startNow.getIsLike()) {
                 holder.pre_like.setAlpha((int) (255 * 0.9));
                 holder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
             }
@@ -210,7 +210,7 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
                 holder.pre_like.setAlpha((int) (255 * 0.4));
                 holder.pre_like.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFF000000));
             }
-            if (now.getIsAdd()) {
+            if (startNow.getIsAdd()) {
                 holder.pre_add.setAlpha((int) (255 * 0.9));
                 holder.pre_add.setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xffff8900));
             }
@@ -472,6 +472,7 @@ public class SearchMemAdapter extends BaseRecyclerAdapter<SearchMemAdapter.memVi
     @Override
     public void onBindViewHolder(final memViewHolder holderTemp, final int position, boolean isItem) {
         holder = holderTemp;
+        startNow = list.get(position);
         final MemoryContext now = list.get(position);
         String memID = now.getMemoryId();
         this.position = position;

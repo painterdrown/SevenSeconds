@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -81,6 +82,7 @@ public class Addmem extends AppCompatActivity {
     static boolean is;
     private ProgressDialog loadingDialog;
     private ProgressDialog insertDialog;
+    private TextView addmem_title;
 
     private Subscription subsLoading;
     private Subscription subsInsert;
@@ -271,6 +273,9 @@ public class Addmem extends AppCompatActivity {
         Connector.getDatabase();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmem);
+
+        addmem_title = (TextView) findViewById(R.id.addmem_title);
+        addmem_title.setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/方正清刻本悦宋简体.TTF"));
 
         set_date = (TextView) findViewById(R.id.add_mem_day);
         set_date.setOnClickListener(new View.OnClickListener() {

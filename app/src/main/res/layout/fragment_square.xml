@@ -3,7 +3,7 @@
     android:layout_centerInParent="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#fdfde4"
+    android:background="#fffff0"
     android:orientation="vertical"
     android:id="@+id/container">
 
@@ -34,7 +34,7 @@
     </android.support.v7.widget.Toolbar>
 
     <com.zhy.android.percent.support.PercentRelativeLayout
-        android:background="#ffffff"
+        android:background="#fffff0"
         android:id="@+id/square_timeline_layout"
         android:layout_below="@+id/square_toolbar"
         android:layout_width="match_parent"
@@ -59,16 +59,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:visibility="invisible"
-            android:id="@+id/square_add_one"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_plus_one_black_24dp"
-            android:tint="@color/lightcoral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/square_timeline"
             android:layout_below="@id/square_next_year"
@@ -81,12 +71,32 @@
 
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
-    <com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView
-        android:layout_below="@+id/square_timeline_layout"
-        android:id="@+id/hor_rec_refresh"
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
-        ptr:ptrMode="both" />
+        android:background="#fffff0"
+        android:layout_below="@+id/square_timeline_layout">
+
+        <com.goldfish.sevenseconds.tools.PullToRefreshRecyclerView
+            android:background="#fffff0"
+            android:id="@+id/hor_rec_refresh"
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            ptr:ptrMode="both" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        android:id="@+id/square_add_one"
+        android:layout_below="@+id/square_timeline_layout"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_plus_one_black_24dp"
+        android:tint="@color/lightcoral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </com.zhy.android.percent.support.PercentRelativeLayout>

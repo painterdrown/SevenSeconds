@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -1019,12 +1020,15 @@ public class MemoryActivity extends AppCompatActivity {
         refreshNavBarTotally();
         BarActivity.isCollectOrAdd = true;
         addOne.setVisibility(View.VISIBLE);
-        Animation translateAnimation = new TranslateAnimation(0.0f, 0.0f,0.0f,-100.0f);
-        Animation alphaAnimation = new AlphaAnimation(1.0f, 0.1f);
+        Animation translateAnimation = new TranslateAnimation(0.0f, 0.0f,0.0f,-200.0f);
+        Animation scaleAnimation = new ScaleAnimation(2.5f, 0.1f, 2.5f, 0.1f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         AnimationSet set = new AnimationSet(true);
+        Animation alphaAnimation = new AlphaAnimation(1.0f, 0.1f);
         set.addAnimation(translateAnimation);
+        set.addAnimation(scaleAnimation);
         set.addAnimation(alphaAnimation);
-        set.setDuration(1000);
+        set.setDuration(1500);
         addOne.startAnimation(set);
         addOne.setVisibility(View.GONE);
     }

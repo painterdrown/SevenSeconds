@@ -5,6 +5,7 @@
     android:id="@+id/activity_square"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fffff0"
     tools:context="com.goldfish.sevenseconds.activities.BarActivity">
 
     <com.ycl.tabview.library.TabView
@@ -13,6 +14,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="#fffff0"
         app:tab_tabViewBackgroundColor="@color/shellowyellow"
         app:tab_textViewSize="0sp">
     </com.ycl.tabview.library.TabView>

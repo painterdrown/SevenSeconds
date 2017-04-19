@@ -160,4 +160,5 @@
     <color name="color_blank">#292929</color>
     <color name="color_gray">#c1c1c1</color>
     <color name="bottom_bg">#aaaaaa</color>
+    <color name="context_color">#fafaf2</color>
 </resources>

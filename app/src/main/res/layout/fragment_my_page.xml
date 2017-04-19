@@ -5,7 +5,7 @@
     android:id="@+id/activity_"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffff4">
+    android:background="#fffff0">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_page_toolbar"
