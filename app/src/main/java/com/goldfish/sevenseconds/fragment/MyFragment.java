@@ -92,6 +92,16 @@ public class MyFragment extends Fragment {
             }
         });
 
+        DownTask downTask = new DownTask();
+        downTask.execute("getImage");
+        if (BarActivity.isCollectOrAdd) {
+            myPageTimelineItemList.clear();
+            nowPoint.setVisibility(View.INVISIBLE);
+            nowText.setVisibility(View.INVISIBLE);
+            initView();
+            BarActivity.isCollectOrAdd = false;
+        }
+
         mySetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -385,15 +395,6 @@ public class MyFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        DownTask downTask = new DownTask();
-        downTask.execute("getImage");
-        if (BarActivity.isCollectOrAdd) {
-            myPageTimelineItemList.clear();
-            nowPoint.setVisibility(View.INVISIBLE);
-            nowText.setVisibility(View.INVISIBLE);
-            initView();
-            BarActivity.isCollectOrAdd = false;
-        }
     }
 
     public static MyFragment newInstance(String libargument) {

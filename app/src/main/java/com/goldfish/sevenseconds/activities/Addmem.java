@@ -242,7 +242,7 @@ public class Addmem extends AppCompatActivity {
         picker.setTopPadding(2);
         picker.setRangeStart(1900, 1, 1);
         picker.setRangeEnd(2018, 1, 1);
-        picker.setSelectedItem(2017, 2, 23);
+        picker.setSelectedItem(2017, 4, 21);
         picker.setOnDatePickListener(new DatePicker.OnYearMonthDayPickListener() {
             @Override
             public void onDatePicked(String year, String month, String day) {
@@ -295,10 +295,6 @@ public class Addmem extends AppCompatActivity {
         admem_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("add memory return", "refresh memory");
-                setResult(RESULT_OK, intent);
-                BarActivity.isCollectOrAdd = true;
                 finish();
             }
         });
