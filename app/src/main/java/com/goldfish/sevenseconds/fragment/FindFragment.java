@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class FindFragment extends Fragment {
     private SearchView mSearchView;
     private List<TimeLineModel> mDataList = new ArrayList<>();
     private ImageView editMemory;
+    private RelativeLayout searchLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle svaedInstanceState){
@@ -69,6 +71,7 @@ public class FindFragment extends Fragment {
         Button btn8 = (Button) view.findViewById(R.id.label_music);
         Button btn9 = (Button) view.findViewById(R.id.label_sport);
         Button btn10 = (Button) view.findViewById(R.id.label_tv);
+        searchLayout = (RelativeLayout) view.findViewById(R.id.search_layout);
         mSearchView = (SearchView) view.findViewById(R.id.search);
         mSearchView.setQueryHint("今日忆");
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){

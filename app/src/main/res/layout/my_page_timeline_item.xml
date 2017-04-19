@@ -17,7 +17,7 @@
         android:layout_toRightOf="@+id/my_page_time"
         android:id="@+id/my_page_layout"
         android:layout_marginTop="50dp"
-        app:cardBackgroundColor="#1afff45c"
+        app:cardBackgroundColor="#40dcdcdc"
         android:layout_width="265dp"
         app:cardElevation="0dp"
         android:layout_marginLeft="11dp"
@@ -34,8 +34,7 @@
             android:ellipsize="end"
             android:textColor="#cc000000"
             android:lines="1"
-            android:gravity="center_vertical"
-            android:textAlignment="gravity"
+            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.goldfish.sevenseconds.view.CircleImageView

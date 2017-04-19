@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fffff0"
     android:layout_gravity="center"
     android:layout_centerVertical="true"
     android:layout_width="290dp"
-    android:layout_height="425dp"
+    android:layout_height="460dp"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -15,26 +16,32 @@
         android:paddingLeft="30dp"
         android:layout_gravity="center"
         android:layout_centerInParent="true"
-        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardBackgroundColor="#fafaf2"
         card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="12dp">
+        app:cardMaxElevation="12dp"
+        app:cardElevation="12dp"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true">
 
         <RelativeLayout
             android:layout_gravity="center"
             android:id="@+id/memlist_recyler"
             android:layout_width="255dp"
             android:layout_height="425dp"
+            android:background="#fafaf2"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:paddingBottom="15dp">
             <ImageView
                 android:id="@+id/premem_bgr"
-                android:layout_width="255dp"
+                android:layout_width="match_parent"
                 android:scaleType="centerCrop"
                 android:layout_centerHorizontal="true"
-                android:layout_height="150dp"/>
+                android:layout_height="165dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:id="@+id/preview_time"
                 android:layout_below="@+id/premem_bgr"
                 android:layout_alignRight="@+id/premem_bgr"
@@ -48,7 +55,10 @@
                 android:id="@+id/premem_title"
                 android:textAlignment="center"
                 android:layout_marginTop="10dp"
+                android:textStyle="bold"
                 android:layout_centerInParent="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:lines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +84,8 @@
                 android:layout_alignRight="@+id/premem_bgr"
                 android:ellipsize="end"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:id="@+id/pre_tag"
                 android:textSize="12sp"
                 android:textColor="#a6a6a6"
@@ -123,8 +135,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_marginLeft="15dp"
                 android:id="@+id/premem_button" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>
