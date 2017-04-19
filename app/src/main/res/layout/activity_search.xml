@@ -70,16 +70,7 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        android:layout_below="@+id/square_timeline_layout"
-        android:id="@+id/square_add_one"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_plus_one_black_24dp"
-        android:tint="@color/lightcoral"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -96,5 +87,16 @@
             android:layout_centerInParent="true"
             ptr:ptrMode="both" />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        android:layout_below="@+id/square_timeline_layout"
+        android:id="@+id/square_add_one"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_plus_one_black_24dp"
+        android:tint="@color/lightcoral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
