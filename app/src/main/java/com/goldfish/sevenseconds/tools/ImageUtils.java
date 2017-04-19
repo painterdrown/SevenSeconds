@@ -143,7 +143,14 @@ public class ImageUtils {
             return null;
         try {
             baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 32, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            int want = 90;
+            while (baos.toByteArray().length / 1024 > 50) { // 循环判断如果压缩后图片是否大于50kb,大于继续压缩
+                baos.reset(); // 重置baos即清空baos
+                bitmap.compress(Bitmap.CompressFormat.JPEG, want, baos);// 这里压缩options%，把压缩后的数据存放到baos中
+                want -= 10;// 每次都减少10
+                if (want == 0) break;
+            }
         } finally {
             try {
                 if (baos != null)
@@ -156,6 +163,9 @@ public class ImageUtils {
         if (bitmap != null){
             bitmap.recycle();
         }*/
+
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
+        bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
         return bitmap;
     }
 
