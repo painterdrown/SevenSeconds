@@ -47,6 +47,7 @@
         <activity android:name=".activities.MemoryReviewActivity" />
         <activity android:name=".activities.InformationActivity" />
         <activity android:name=".activities.SearchActivity" />
+        <activity android:name=".activities.BaseActivity"/>
     </application>
 
 </manifest>

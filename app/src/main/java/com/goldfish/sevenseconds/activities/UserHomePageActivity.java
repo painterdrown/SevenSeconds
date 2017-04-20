@@ -32,7 +32,7 @@ import java.util.List;
  * Created by lenovo on 2017/3/4.
  */
 
-public class UserHomePageActivity extends AppCompatActivity {
+public class UserHomePageActivity extends BaseActivity {
 
     private String currentUser;
     private Bitmap face;
@@ -46,6 +46,7 @@ public class UserHomePageActivity extends AppCompatActivity {
     private TextView introduction;
     private TitleBarInfo titleBarInfo;
     private boolean hadFollowed = false;
+    private UserHomePageActivity userHomePageActivity;
 
     private Orientation orientation;
     private RecyclerView recyclerView;
@@ -61,6 +62,8 @@ public class UserHomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         currentUser = getIntent().getStringExtra("account");
+        BaseActivity.getInstance().addActivity(this);
+        userHomePageActivity = this;
 
         progressDialog = new ProgressDialog(UserHomePageActivity.this);
         progressDialog.setMessage("正在加载该用户的忆单，请稍候~");
@@ -81,7 +84,7 @@ public class UserHomePageActivity extends AppCompatActivity {
         toolBarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(userHomePageActivity);
             }
         });
         toolBarFollow.setOnClickListener(new View.OnClickListener() {

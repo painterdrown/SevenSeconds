@@ -1,5 +1,6 @@
 package com.goldfish.sevenseconds.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -31,7 +32,7 @@ import java.util.List;
  * Created by lenovo on 2017/2/22.
  */
 
-public class MyFollowActicity extends AppCompatActivity {
+public class MyFollowActicity extends BaseActivity {
 
     private List<MyFollowItem> followItemList = new ArrayList<>();
     private SQLiteDatabase db;            // 数据库
@@ -39,22 +40,27 @@ public class MyFollowActicity extends AppCompatActivity {
     private ArrayList<String> myFollow;
     private DownTask downTask;
     public static MyFollowActicity myFollowActicity;
+    private ProgressDialog progressDialog;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_follow);
         Intent intent = getIntent();
+        BaseActivity.getInstance().addActivity(this);
         myFollowActicity = this;
-        myAccount = intent.getStringExtra("currentUser");
-
-        // test
         myAccount = LogActivity.user;
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setTitle("正在加载您的关注列表");
+        progressDialog.setMessage("请稍候~");
+        progressDialog.setCancelable(false);
 
         ImageView back = (ImageView) findViewById(R.id.my_follow_back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(myFollowActicity);
             }
         });
 
@@ -63,6 +69,7 @@ public class MyFollowActicity extends AppCompatActivity {
 
     private void initMyFollowItem() {
         // 本地更新异步联网加载
+        progressDialog.show();
         downTask = new DownTask();
         downTask.execute("getFollowList");
     }
@@ -161,6 +168,9 @@ public class MyFollowActicity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s.equals("Succeed in getting follow list")) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
                 if(myFollow != null) {
                     if (myFollow.size() > 0) {
                         downTask = new DownTask();
@@ -178,6 +188,9 @@ public class MyFollowActicity extends AppCompatActivity {
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 downTask = new DownTask();
                 downTask.execute("storeInLocal");
+            }
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
             }
         }
     }

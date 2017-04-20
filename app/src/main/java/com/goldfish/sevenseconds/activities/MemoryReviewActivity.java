@@ -20,7 +20,7 @@ import java.util.List;
  * Created by lenovo on 2017/3/5.
  */
 
-public class MemoryReviewActivity extends AppCompatActivity {
+public class MemoryReviewActivity extends BaseActivity {
 
     private List<AmemReviewItem> reviewItemList = new ArrayList<>();
     public static MemoryReviewActivity memoryReviewActivity;
@@ -28,6 +28,7 @@ public class MemoryReviewActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
+        BaseActivity.getInstance().addActivity(this);
         setContentView(R.layout.activity_amem_review);
         initReview();
         recyclerView = (RecyclerView) findViewById(R.id.amem_review_layout);

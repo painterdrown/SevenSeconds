@@ -1,5 +1,6 @@
 package com.goldfish.sevenseconds.activities;
 
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,23 +36,31 @@ import java.util.List;
  * Created by lenovo on 2017/2/22.
  */
 
-public class MessageActivity extends AppCompatActivity {
+public class MessageActivity extends BaseActivity {
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
     public static MessageActivity messageActivity;
     private List<MyReviewItem> myReviewItems = new ArrayList<>();
     private ArrayList<JSONObject> jsonComment;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_review);
+        BaseActivity.getInstance().addActivity(this);
+
         messageActivity = this;
         ImageView back = (ImageView) findViewById(R.id.my_review_back);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setTitle("正在加载您的评论");
+        progressDialog.setMessage("请稍候~");
+        progressDialog.setCancelable(false);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(messageActivity);
             }
         });
         init();
@@ -74,6 +83,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void init() {
+        progressDialog.show();
         DownTask downTask = new DownTask();
         downTask.execute("getCommentAboutMe");
     }
@@ -147,6 +157,9 @@ public class MessageActivity extends AppCompatActivity {
                 case "Succeed in getting comment":
                     refreshComment();
                     break;
+            }
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
             }
         }
     }

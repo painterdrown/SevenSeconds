@@ -20,11 +20,12 @@ import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private String username;
     private String password;
     private  boolean check;
+    private RegisterActivity registerActivity;
     private  String err_msg;
     private Handler handler = new Handler() {
       public void handleMessage(Message msg){
@@ -57,6 +58,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        BaseActivity.getInstance().addActivity(this);
+        registerActivity = this;
+
         Exception();
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.hide();
@@ -120,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
         button_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                BaseActivity.getInstance().finishActivity(registerActivity);
             }
         });
     }

@@ -27,7 +27,7 @@ import java.util.List;
 
 import static com.goldfish.sevenseconds.http.UserHttpUtil.getUsername;
 
-public class BarActivity extends AppCompatActivity {
+public class BarActivity extends BaseActivity {
     /*private  Toolbar toolbar;
     private  TextView textView;*/
 
@@ -63,6 +63,7 @@ public class BarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_square);
+        BaseActivity.getInstance().addActivity(this);
         barActivity = this;
         Exception();
         Connector.getDatabase();

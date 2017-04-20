@@ -77,7 +77,9 @@
             android:textSize="20sp"
             android:textColor="#e6ff8900"/>
         <com.zhy.android.percent.support.PercentLinearLayout
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="14dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
@@ -102,6 +104,8 @@
                 android:textSize="15sp"/>
         </com.zhy.android.percent.support.PercentLinearLayout>
         <com.zhy.android.percent.support.PercentLinearLayout
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
@@ -145,8 +149,10 @@
             android:textColor="#e6ff8900"
             />
         <LinearLayout
-            android:layout_marginTop="21dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
@@ -171,8 +177,10 @@
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
@@ -197,8 +205,10 @@
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button

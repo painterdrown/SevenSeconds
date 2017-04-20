@@ -52,11 +52,12 @@ import static com.darsh.multipleimageselect.helpers.Constants.REQUEST_CODE;
  * Created by lenovo on 2017/2/22.
  */
 
-public class InformationActivity extends AppCompatActivity {
+public class InformationActivity extends BaseActivity {
 
     private String currentUser;        // 当前操作的User
     private SQLiteDatabase db;            // 数据库
     private DownTask downTask;
+    private InformationActivity informationActivity;
 
     private RelativeLayout setNameLayout;
     private RelativeLayout setSexLayout;
@@ -82,6 +83,8 @@ public class InformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
         setContentView(R.layout.activity_set_information);
+        BaseActivity.getInstance().addActivity(this);
+        informationActivity = this;
 
         // 得到MyPage操作的当前用户账号
         Intent getCurrentUser = getIntent();
@@ -136,7 +139,7 @@ public class InformationActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(informationActivity);
             }
         });
         setAccount.setText(currentUser);
@@ -468,7 +471,7 @@ public class InformationActivity extends AppCompatActivity {
 
         downTask = new DownTask();
         downTask.execute("setUserInfo");
-        finish();
+        BaseActivity.getInstance().finishActivity(this);
     }
 
     @Override

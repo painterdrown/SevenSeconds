@@ -59,11 +59,12 @@ import rx.schedulers.Schedulers;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.goldfish.sevenseconds.http.MemoryHttpUtil.addMemory;
 
-public class Addmem extends AppCompatActivity {
+public class Addmem extends BaseActivity {
     private EditTag editText_tag;
     private EditText editText_title;
     private ImageView admem_clear;
     private ImageView admem_add;
+    private Addmem addmem;
 
     private  ProgressDialog progressDialog;
     private int length;
@@ -145,7 +146,7 @@ public class Addmem extends AppCompatActivity {
                     intent.putExtra("add memory return", "refresh memory");
                     setResult(RESULT_OK, intent);
                     BarActivity.isCollectOrAdd = true;
-                    finish();
+                    BaseActivity.getInstance().finishActivity(addmem);
                 }
                 else {
                     Toast.makeText(Addmem.this,"上传成功但校验失败请询问服务器原因",Toast.LENGTH_LONG);
@@ -191,7 +192,18 @@ public class Addmem extends AppCompatActivity {
             st = up_contents.indexOf("<img src"); ed = up_contents.indexOf("\"/>",st);
             now++;
         }
-        add.execute();
+        if (!up_contents.equals("") && up_contents != null) {
+            if (!up_title.equals("") && up_title != null ) {
+                add.execute();
+            }
+            else {
+                Toast.makeText(this, "请输入标题", Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            Toast.makeText(this, "内容不能为空", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     /*@Override
@@ -272,7 +284,9 @@ public class Addmem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Connector.getDatabase();
         super.onCreate(savedInstanceState);
+        BaseActivity.getInstance().addActivity(this);
         setContentView(R.layout.activity_addmem);
+        addmem = this;
 
         addmem_title = (TextView) findViewById(R.id.addmem_title);
         addmem_title.setTypeface(Typeface.createFromAsset(this.getAssets(), "fonts/方正清刻本悦宋简体.TTF"));
@@ -295,7 +309,7 @@ public class Addmem extends AppCompatActivity {
         admem_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(addmem);
             }
         });
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.admem_toolbar);

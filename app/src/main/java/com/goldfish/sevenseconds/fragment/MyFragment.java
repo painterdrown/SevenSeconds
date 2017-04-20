@@ -94,13 +94,11 @@ public class MyFragment extends Fragment {
 
         DownTask downTask = new DownTask();
         downTask.execute("getImage");
-        if (BarActivity.isCollectOrAdd) {
-            myPageTimelineItemList.clear();
-            nowPoint.setVisibility(View.INVISIBLE);
-            nowText.setVisibility(View.INVISIBLE);
-            initView();
-            BarActivity.isCollectOrAdd = false;
-        }
+        myPageTimelineItemList.clear();
+        nowPoint.setVisibility(View.INVISIBLE);
+        nowText.setVisibility(View.INVISIBLE);
+        initView();
+        BarActivity.isCollectOrAdd = false;
 
         mySetting.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -48,7 +48,7 @@ import static org.litepal.LitePalApplication.getContext;
  * Created by bytrain on 2017/3/31.
  */
 
-public class SearchActivity extends Activity{
+public class SearchActivity extends BaseActivity {
     boolean year;
     String query;
     private PullToRefreshRecyclerView mPullRefreshRecyclerView;
@@ -228,9 +228,10 @@ public class SearchActivity extends Activity{
         super.onCreate(a);
         Intent getData = getIntent();
         query = getData.getStringExtra("querydata");
+        BaseActivity.getInstance().addActivity(this);
         year = getData.getBooleanExtra("year", false);
         setContentView(R.layout.activity_search);
-
+        searchActivity = this;
         progressDialog = new ProgressDialog(SearchActivity.this);
         progressDialog.setMessage("正在搜索中...");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -241,7 +242,7 @@ public class SearchActivity extends Activity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(searchActivity);
             }
         });
 

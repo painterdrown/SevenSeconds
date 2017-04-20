@@ -64,8 +64,9 @@ import static com.goldfish.sevenseconds.http.UserHttpUtil.addFollow;
 import static com.goldfish.sevenseconds.http.UserHttpUtil.deleteFollow;
 import static com.goldfish.sevenseconds.http.UserHttpUtil.getUserInfo;
 
-public class MemoryActivity extends AppCompatActivity {
+public class MemoryActivity extends BaseActivity {
 
+    private MemoryActivity memoryActivity;
     /**
      *  TitleBar
      */
@@ -152,6 +153,9 @@ public class MemoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amem);
+        BaseActivity.getInstance().addActivity(this);
+        memoryActivity = this;
+
         Intent getData = getIntent();
         context = this;
         memID = getData.getStringExtra("memoryID");
@@ -197,7 +201,7 @@ public class MemoryActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                BaseActivity.getInstance().finishActivity(memoryActivity);
             }
         });
 

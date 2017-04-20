@@ -2,6 +2,7 @@ package com.goldfish.sevenseconds.activities;
 
 import android.app.Notification;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,10 +15,12 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,11 +51,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LogActivity extends AppCompatActivity {
+public class LogActivity extends BaseActivity {
     public static String user;
     private String psw;
     private boolean check;
     private  String err_msg;
+    private LogActivity logActivity;
     private ChattingDatabaseHelper dbChattingDatabaseHelper;
     private Handler handler = new Handler(){
         @Override
@@ -80,6 +84,8 @@ public class LogActivity extends AppCompatActivity {
 
         Connector.getDatabase();
         super.onCreate(savedInstanceState);
+        logActivity = this;
+        BaseActivity.getInstance().addActivity(this);
         Exception();
         setContentView(R.layout.activity_log);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -110,7 +116,7 @@ public class LogActivity extends AppCompatActivity {
                         lastUser.updateAll();
                         Intent intent = new Intent(LogActivity.this, BarActivity.class);
                         startActivity(intent);
-                        finish();
+                        BaseActivity.getInstance().finishActivity(logActivity);
                                       }
             }
                             }).start();
@@ -167,7 +173,7 @@ public class LogActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             Intent intent = new Intent(LogActivity.this, BarActivity.class);
                             startActivity(intent);
-                            finish();
+                            BaseActivity.getInstance().finishActivity(logActivity);
                         } else {
                             progressDialog.dismiss();
                             Looper.prepare();
@@ -193,6 +199,29 @@ public class LogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(logActivity).setTitle("系统提示")//设置对话框标题
+                    .setMessage("是否退出7秒")//设置显示的内容
+                    .setPositiveButton("确定",new DialogInterface.OnClickListener() {//添加确定按钮
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                            BaseActivity.getInstance().exit();
+                        }
+                    }).setNegativeButton("返回",new DialogInterface.OnClickListener() {//添加返回按钮
+                @Override
+                public void onClick(DialogInterface dialog, int which) { }
+            }).show();//在按键响应事件中显示此对话框
+        }
+        return true;
     }
 
     private void compare_user() throws JSONException {

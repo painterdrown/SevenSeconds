@@ -33,7 +33,7 @@
             android:alpha="0.5" />
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
+    <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/my_information"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
@@ -56,106 +56,131 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-
-        <RelativeLayout
-            android:id="@+id/myMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.zhy.android.percent.support.PercentRelativeLayout
             android:layout_toRightOf="@+id/headPortrait"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:id="@+id/my_review_icon"
-                android:src="@drawable/ic_comment_black_24dp"
-                android:alpha="0.4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/my_review_icon"
-                android:text="我的评论"
-                android:textSize="13sp"
-                android:layout_marginLeft="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/myInformation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/myMessage"
-            android:layout_toEndOf="@+id/myMessage"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:id="@+id/my_information_icon"
-                android:src="@drawable/ic_border_color_black_24dp"
-                android:alpha="0.4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/my_information_icon"
-                android:text="编辑资料"
-                android:textSize="13sp"
-                android:layout_marginLeft="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+            <com.zhy.android.percent.support.PercentLinearLayout
+                android:id="@+id/my_page_button_layout"
+                android:layout_width="0dp"
+                app:layout_widthPercent="80%"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/myFollow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/headPortrait"
-            android:layout_toEndOf="@+id/headPortrait"
-            android:layout_marginLeft="25dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignBottom="@+id/headPortrait">
-            <ImageView
-                android:id="@+id/my_follow_icon"
-                android:src="@drawable/ic_center_focus_strong_black_24dp"
-                android:alpha="0.4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/my_follow_icon"
-                android:text="我的关注"
-                android:textSize="13sp"
-                android:layout_marginLeft="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/myMessage"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/mySetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/headPortrait"
-            android:layout_toEndOf="@+id/headPortrait"
-            android:layout_marginBottom="10dp"
-            android:layout_alignLeft="@+id/myInformation"
-            android:layout_alignStart="@+id/myInformation"
-            android:layout_alignBottom="@+id/headPortrait">
-            <ImageView
-                android:id="@+id/my_setting_icon"
-                android:src="@drawable/ic_settings_black_24dp"
-                android:alpha="0.4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/my_setting_icon"
-                android:text="我的设置"
-                android:textSize="13sp"
-                android:layout_marginLeft="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/my_review_icon"
+                        android:src="@drawable/ic_comment_black_24dp"
+                        android:alpha="0.4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/my_review_icon"
+                        android:text="我的评论"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:id="@+id/myInformation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/my_information_icon"
+                        android:src="@drawable/ic_border_color_black_24dp"
+                        android:alpha="0.4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/my_information_icon"
+                        android:text="编辑资料"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </com.zhy.android.percent.support.PercentLinearLayout>
+
+            <com.zhy.android.percent.support.PercentLinearLayout
+                android:layout_below="@+id/my_page_button_layout"
+                android:layout_width="0dp"
+                app:layout_widthPercent="80%"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_alignBottom="@+id/headPortrait">
+
+                <RelativeLayout
+                    android:id="@+id/myFollow"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/headPortrait"
+                    android:layout_toEndOf="@+id/headPortrait">
+
+                    <ImageView
+                        android:id="@+id/my_follow_icon"
+                        android:src="@drawable/ic_center_focus_strong_black_24dp"
+                        android:alpha="0.4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/my_follow_icon"
+                        android:text="我的关注"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mySetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/my_setting_icon"
+                        android:src="@drawable/ic_settings_black_24dp"
+                        android:alpha="0.4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/my_setting_icon"
+                        android:text="我的设置"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </com.zhy.android.percent.support.PercentLinearLayout>
+
+
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+
+
+
+
+
+
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
 
 
