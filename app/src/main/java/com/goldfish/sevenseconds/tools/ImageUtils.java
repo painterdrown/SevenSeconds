@@ -144,14 +144,15 @@ public class ImageUtils {
         try {
             baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            int want = 50;
+            int want = 90;
             while (baos.toByteArray().length / 1024 > 50) { // 循环判断如果压缩后图片是否大于50kb,大于继续压缩
                 baos.reset(); // 重置baos即清空baos
                 bitmap.compress(Bitmap.CompressFormat.JPEG, want, baos);// 这里压缩options%，把压缩后的数据存放到baos中
-                want -= 5;// 每次都减少10
+                want -= 10;// 每次都减少10
                 if (want == 0) break;
             }
-        } finally {
+        }
+        finally {
             try {
                 if (baos != null)
                     baos.close();
