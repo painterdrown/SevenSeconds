@@ -1,5 +1,17 @@
-# <font color = #FFFF00>7秒</font>
-### ——你的回忆管家
+# 7秒
+
+> 你的回忆管家。
+
+![](assets/images/haohao.png)
+
+![](assets/images/old.png)
+
+![](assets/images/find.png)
+
+![](assets/images/new.png)
+
+![](assets/images/mine.png)
+
 ## 功能总览
 * 登录
 * 注册
